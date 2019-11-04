@@ -1,0 +1,273 @@
+digraph arpeggio_graph {
+46371432 [label="program=Sequence"];
+46371432->47994144 [label="1"]
+
+47994144 [label="code=ZeroOrMore"];
+47994144->47994408 [label="1"]
+
+47994408 [label="statement=OrderedChoice"];
+47994408->47994456 [label="1"]
+
+47994456 [label="Sequence"];
+47994456->47994528 [label="1"]
+
+47994528 [label="StrMatch(let)"];
+47994456->47994624 [label="2"]
+
+47994624 [label="variable_declaration=Sequence"];
+47994624->47994768 [label="1"]
+
+47994768 [label="decl=Sequence"];
+47994768->47994888 [label="1"]
+
+47994888 [label="identifier=RegExMatch([a-z][a-zA-z_0-9]*)"];
+47994768->47994744 [label="2"]
+
+47994744 [label="Optional"];
+47994744->47994840 [label="1"]
+
+47994840 [label="Sequence"];
+47994840->47995032 [label="1"]
+
+47995032 [label="StrMatch(=)"];
+47994840->47994960 [label="2"]
+
+47994960 [label="expr=OrderedChoice"];
+47994960->47994936 [label="1"]
+
+47994936 [label="Sequence"];
+47994936->47995152 [label="1"]
+
+47995152 [label="StrMatch(fn)"];
+47994936->47995224 [label="2"]
+
+47995224 [label="function_definition=Sequence"];
+47995224->47995368 [label="1"]
+
+47995368 [label="param_list=OrderedChoice"];
+47995368->47995440 [label="1"]
+
+47995440 [label="Sequence"];
+47995440->47995512 [label="1"]
+
+47995512 [label="StrMatch(()"];
+47995440->47994888 [label="2"]
+
+47995440->47995344 [label="3"]
+
+47995344 [label="ZeroOrMore"];
+47995344->47995536 [label="1"]
+
+47995536 [label="Sequence"];
+47995536->47995608 [label="1"]
+
+47995608 [label="StrMatch(,)"];
+47995536->47994888 [label="2"]
+
+47995440->47995584 [label="4"]
+
+47995584 [label="StrMatch())"];
+47995368->47995488 [label="2"]
+
+47995488 [label="Sequence"];
+47995488->47995656 [label="1"]
+
+47995656 [label="StrMatch(()"];
+47995488->47995680 [label="2"]
+
+47995680 [label="StrMatch())"];
+47995224->47995416 [label="2"]
+
+47995416 [label="brace_block=Sequence"];
+47995416->47995704 [label="1"]
+
+47995704 [label="StrMatch({)"];
+47995416->47994144 [label="2"]
+
+47995416->47995728 [label="3"]
+
+47995728 [label="StrMatch(})"];
+47994960->47995104 [label="2"]
+
+47995104 [label="Sequence"];
+47995104->47995200 [label="1"]
+
+47995200 [label="StrMatch(if)"];
+47995104->47995632 [label="2"]
+
+47995632 [label="if_expression=Sequence"];
+47995632->47994960 [label="1"]
+
+47995632->47995416 [label="2"]
+
+47995632->47995320 [label="3"]
+
+47995320 [label="Optional"];
+47995320->47995776 [label="1"]
+
+47995776 [label="Sequence"];
+47995776->47995824 [label="1"]
+
+47995824 [label="StrMatch(else)"];
+47995776->47995416 [label="2"]
+
+47994960->47995296 [label="3"]
+
+47995296 [label="boolean_expression=Sequence"];
+47995296->47995872 [label="1"]
+
+47995872 [label="arithmetic_expression=OrderedChoice"];
+47995872->47995920 [label="1"]
+
+47995920 [label="Sequence"];
+47995920->47996016 [label="1"]
+
+47996016 [label="mult_term=OrderedChoice"];
+47996016->47996064 [label="1"]
+
+47996064 [label="Sequence"];
+47996064->47996160 [label="1"]
+
+47996160 [label="primary=OrderedChoice"];
+47996160->47996280 [label="1"]
+
+47996280 [label="integer=RegExMatch(-?[0-9]+)"];
+47996160->47996400 [label="2"]
+
+47996400 [label="function_call=OrderedChoice"];
+47996400->47996472 [label="1"]
+
+47996472 [label="Sequence"];
+47996472->47996544 [label="1"]
+
+47996544 [label="variable_reference=RegExMatch([a-z][a-zA-z_0-9]*)"];
+47996472->47996496 [label="2"]
+
+47996496 [label="StrMatch(()"];
+47996472->47996328 [label="3"]
+
+47996328 [label="call_arguments=Optional"];
+47996328->47996592 [label="1"]
+
+47996592 [label="Sequence"];
+47996592->47994960 [label="1"]
+
+47996592->47996568 [label="2"]
+
+47996568 [label="ZeroOrMore"];
+47996568->47996664 [label="1"]
+
+47996664 [label="Sequence"];
+47996664->47996736 [label="1"]
+
+47996736 [label="StrMatch(,)"];
+47996664->47994960 [label="2"]
+
+47996472->47996520 [label="4"]
+
+47996520 [label="StrMatch())"];
+47996400->47996376 [label="2"]
+
+47996376 [label="Sequence"];
+47996376->47996640 [label="1"]
+
+47996640 [label="StrMatch(print)"];
+47996376->47996712 [label="2"]
+
+47996712 [label="StrMatch(()"];
+47996376->47996328 [label="3"]
+
+47996376->47996760 [label="4"]
+
+47996760 [label="StrMatch())"];
+47996160->47996544 [label="3"]
+
+47996160->47996232 [label="4"]
+
+47996232 [label="Sequence"];
+47996232->47996448 [label="1"]
+
+47996448 [label="StrMatch(()"];
+47996232->47995872 [label="2"]
+
+47996232->47996304 [label="3"]
+
+47996304 [label="StrMatch())"];
+47996064->47996208 [label="2"]
+
+47996208 [label="mulop=OrderedChoice"];
+47996208->47996784 [label="1"]
+
+47996784 [label="StrMatch(*)"];
+47996208->47996808 [label="2"]
+
+47996808 [label="StrMatch(/)"];
+47996064->47996016 [label="3"]
+
+47996016->47996160 [label="2"]
+
+47995920->47996112 [label="2"]
+
+47996112 [label="addop=OrderedChoice"];
+47996112->47996256 [label="1"]
+
+47996256 [label="StrMatch(+)"];
+47996112->47996832 [label="2"]
+
+47996832 [label="StrMatch(-)"];
+47995920->47995872 [label="3"]
+
+47995872->47996016 [label="2"]
+
+47995296->47996088 [label="2"]
+
+47996088 [label="relop=OrderedChoice"];
+47996088->47996856 [label="1"]
+
+47996856 [label="StrMatch(==)"];
+47996088->47996880 [label="2"]
+
+47996880 [label="StrMatch(!=)"];
+47996088->47996904 [label="3"]
+
+47996904 [label="StrMatch(>=)"];
+47996088->48082984 [label="4"]
+
+48082984 [label="StrMatch(>)"];
+47996088->48083008 [label="5"]
+
+48083008 [label="StrMatch(<=)"];
+47996088->48083032 [label="6"]
+
+48083032 [label="StrMatch(<)"];
+47995296->47995872 [label="3"]
+
+47994960->47995872 [label="4"]
+
+47994624->47994600 [label="2"]
+
+47994600 [label="ZeroOrMore"];
+47994600->47994696 [label="1"]
+
+47994696 [label="Sequence"];
+47994696->47994816 [label="1"]
+
+47994816 [label="StrMatch(,)"];
+47994696->47994768 [label="2"]
+
+47994408->47994576 [label="2"]
+
+47994576 [label="assignment=Sequence"];
+47994576->47994888 [label="1"]
+
+47994576->47994720 [label="2"]
+
+47994720 [label="StrMatch(=)"];
+47994576->47994960 [label="3"]
+
+47994408->47994960 [label="3"]
+
+46371432->47994432 [label="2"]
+
+47994432 [label="EOF"];
+}
