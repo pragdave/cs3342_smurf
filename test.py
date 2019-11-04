@@ -1,3 +1,4 @@
+#pip install arpeggio
 from arpeggio import Optional, ZeroOrMore, OneOrMore, EOF
 from arpeggio import RegExMatch as _
 from arpeggio import ParserPython
@@ -11,28 +12,51 @@ for i in (string.ascii_letters + string.digits + "_"):
     identChars.append(i)
 
 def program(): return               (code, EOF)
+
 def comment(): return               ("#", _(r'.*'))
+
 def code(): return                  ZeroOrMore(statement)
+
 def statement(): return             [("let", variable_declaration), assignment, expr]
+
 def variable_declaration(): return  (decl, ZeroOrMore((",", decl)))
+
 def decl(): return                  (identifier, Optional(("=", expr)))
+
 def identifier(): return            (aToz, ZeroOrMore(identChars))
+
 def variable_reference(): return    identifier
+
 def if_expression(): return         (expr, brace_block, Optional(("else", brace_block)))
+
 def assignment(): return            (identifier, "=", expr)
+
 def expr(): return                  [("fn", function_definition), ("if", if_expression), boolean_expression, arithmetic_expression]
+
 def boolean_expression(): return    (arithmetic_expression, relop, arithmetic_expression)
+
 def arithmetic_expression(): return [(mult_term, addop, arithmetic_expression), mult_term]
+
 def mult_term(): return             [(primary, mulop, mult_term,), primary]
+
 def primary(): return               [_(r'\d'), function_call, variable_reference, ("(", arithmetic_expression, ")")]
+
 def integer(): return               (Optional("-"), OneOrMore(_(r'\d')))
+
 def addop(): return                 ["+", "-"]
+
 def mulop(): return                 ["*", "/"]
+
 def relop(): return                 ["==", "!=", ">=", ">", "<=", "<"]
+
 def function_call(): return         [(variable_reference, "(", call_arguments, ")"), ("print", "(", call_arguments, ")")]
+
 def call_arguments(): return        Optional((expr, ZeroOrMore((",", expr))))
+
 def function_definition(): return   (param_list, brace_block)
+
 def param_list(): return            [("(", identifier, ZeroOrMore((",", identifier)), ")"), ("(",")")]
+
 def brace_block(): return           ("{", code, "}")
 '''
 def number():     return _(r'\d*\.\d*|\d+')
