@@ -1,0 +1,23 @@
+{
+  "name": "cs3342_smurf",
+  "version": "1.0.0",
+  "description": "prog lang final project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyrasegraves/cs3342_smurf.git"
+  },
+  "author": "ksegraves",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kyrasegraves/cs3342_smurf/issues"
+  },
+  "homepage": "https://github.com/kyrasegraves/cs3342_smurf#readme",
+  "dependencies": {
+    "file-system": "^2.2.2",
+    "pegjs": "^0.10.0"
+  }
+}
