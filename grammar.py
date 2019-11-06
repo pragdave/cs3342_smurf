@@ -22,7 +22,7 @@ def integer():                  return _(r'-?[0-9]+')
 def addop():                    return ["+","-"]
 def mulop():                    return ["*","/"]
 def relop():                    return ["==","!=",">=",">","<=","<"]
-def function_call():            return [(variable_reference,"(",call_arguments,")"),("print","(",call_arguments,")")]
+def function_call():            return [("print","(",call_arguments,")"),(variable_reference,"(",call_arguments,")")]
 def call_arguments():           return Optional(expr, ZeroOrMore(expr))
 def function_definition():      return param_list, brace_block
 def param_list():               return [("(",identifier,ZeroOrMore(identifier),")"),("(",")")]
