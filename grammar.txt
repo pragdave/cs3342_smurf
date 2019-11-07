@@ -1,43 +1,42 @@
 program = code
 
-comment = "#" .*
+comment = "#" _ .*
 
 code = statement*
 
-statement = "let" variable_declaration
-          / assignment
-          / expr
+statement = "let" __ variable_declaration _
+          / assignment _
+          / expr _
 
-variable_declaration  = decl ("," decl)*
+variable_declaration  = decl _ ("," decl)*
 
-decl = identifier ("=" expr)?
+decl = identifier __ ("=" _ expr)?
 
 identifier = [a-z][a-zA-Z_0-9]*
 
 variable_reference = identifier
 
-if_expression = expr brace_block ( "else" brace_block )?
+if_expression = expr _ brace_block _ ( "else" _ brace_block _ )?
 
-assignment  = identifier "=" expr
+assignment  = identifier _ "=" _ expr _
 
-expr  = "fn" function_definition
-      / "if" if_expression
+expr  = "fn" _ function_definition
+      / "if" _ if_expression
       / boolean_expression
       / arithmetic_expression
 
-boolean_expression  = arithmetic_expression relop arithmetic_expression
+boolean_expression  = arithmetic_expression _ relop _ arithmetic_expression
 
-arithmetic_expression  = mult_term addop arithmetic_expression
-                       / mult_term
+arithmetic_expression  = mult_term _ addop _ arithmetic_expression
+                       / mult_term _
 
-mult_term  = primary mulop mult_term
-           / primary
+mult_term  = primary _ mulop _ mult_term
+           / primary _
 
 primary  = integer
          / function_call
          / variable_reference
-         / "(" arithmetic_expression ")"
-
+         / "(" _ arithmetic_expression _ ")"
 
 integer = "-"? [0-9]+
 
@@ -45,15 +44,17 @@ addop   = '+' / '-'
 mulop   = '*' / '/'
 relop   = '==' / '!=' / '>=' / '>' / '<=' / '<'
 
+function_call  = variable_reference _ "(" _ call_arguments _ ")"
+               / "print" _ "(" _ call_arguments _ ")"
 
-function_call  = variable_reference "(" call_arguments ")"
-               / "print" "(" call_arguments ")"
+call_arguments = (expr _ ("," _ expr)*)?
 
-call_arguments = (expr ("," expr)*)?
+function_definition = param_list _ brace_block __
 
-function_definition = param_list brace_block
+param_list =  "(" _ identifier _ ("," _ identifier _)* ")"
+           /  "(" _ ")"
 
-param_list =  "(" identifier ("," identifier)* ")"
-           /  "(" ")"
+brace_block = "{" _ code _ "}"
 
-brace_block = "{" code  "}"
+_ = [ \t\r\n]*
+__ = [ \t\r\n]+
