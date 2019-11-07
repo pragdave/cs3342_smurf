@@ -1,13 +1,11 @@
 program = code
 
-comment = "#" _ .* _
-
 code = statement*
 
 statement = let_term variable_declaration
           / assign:assignment _ { return assign; }
           / expression:expr _ { return expression; }
-let_term = _ term:"let" __ { return term; }
+let_term = _ term:"let" _ { return term; }
 
 variable_declaration  = decl (commaop decl)*
 
@@ -77,5 +75,8 @@ brace_block = leftbraceop code rightbraceop
 leftbraceop =  _ op:"{" _ { return op; }
 rightbraceop = _ op:"}" _ { return op; }
 
-_ = [ \t\r\n]*
-__ = [ \t\r\n]+
+whitespace = [ \t\r\n]+
+comment_chars = [. \t]*
+comment = "#" comment_chars [\r\n]
+
+_ = ( whitespace / comment )*
