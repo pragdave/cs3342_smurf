@@ -46,19 +46,19 @@ primary  = integer
 
 integer = "-"? [0-9]+
 
-addop   = _ op:'+' _ { return op; }
-          / _ op:'-' _ { return op; }
-mulop   = _ op:'*' _ { return op; }
-          / _ op:'/' _ { return op; }
-relop   = _ op:'==' _ { return op; }
+addop   =   _ op:'+' _  { return op; }
+          / _ op:'-' _  { return op; }
+mulop   =   _ op:'*' _  { return op; }
+          / _ op:'/' _  { return op; }
+relop   =   _ op:'==' _ { return op; }
           / _ op:'!=' _ { return op; }
           / _ op:'>=' _ { return op; }
-          / _ op:'>' _ { return op; }
+          / _ op:'>' _  { return op; }
           / _ op:'<=' _ { return op; }
-          / _ op:'<' _ { return op; }
+          / _ op:'<' _  { return op; }
 
-function_call  = variable_reference leftparentop call_arguments rightparentop
-               / "print" leftparentop call_arguments rightparentop
+function_call  = "print" leftparentop call_arguments rightparentop
+                  / variable_reference leftparentop call_arguments rightparentop
 
 leftparentop =  _ op:"(" _ { return op; }
 rightparentop = _ op:")" _ { return op; }
