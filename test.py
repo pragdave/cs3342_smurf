@@ -10,6 +10,7 @@ for i in string.ascii_lowercase:
 identChars = []
 for i in (string.ascii_letters + string.digits + "_"):
     identChars.append(i)
+nums = ['0','1','2','3','4','5','6','7','8','9']
 
 def program(): return               (code, EOF)
 
@@ -19,7 +20,8 @@ def code(): return                  ZeroOrMore(statement)
 
 def statement(): return             [("let", variable_declaration), 
                                      assignment, 
-                                     expr]
+                                     expr,
+                                     comment]
 
 def variable_declaration(): return  (decl, ZeroOrMore((",", decl)))
 
@@ -46,12 +48,12 @@ def arithmetic_expression(): return [(mult_term, addop, arithmetic_expression),
 def mult_term(): return             [(primary, mulop, mult_term,), 
                                      primary]
 
-def primary(): return               [_(r'\d'), 
+def primary(): return               [integer, 
                                      function_call, 
                                      variable_reference, 
                                      ("(", arithmetic_expression, ")")]
 
-def integer(): return               (Optional("-"), OneOrMore(_(r'\d')))
+def integer(): return               (Optional("-"), OneOrMore(nums))
 
 def addop(): return                 ["+", "-"]
 
@@ -78,25 +80,44 @@ def expression(): return term, ZeroOrMore(["+", "-"], term)
 def calc():       return expression, EOF
 '''
 
-parser = ParserPython(program, debug=True)   # calc is the root rule of your grammar
+parser = ParserPython(program, comment, debug=True)   # calc is the root rule of your grammar
                               # Use param debug=True for verbose debugging
                               # messages and grammar and parse tree visualization
                               # using graphviz and dot
                               # add debug=True for thourough print and .dot file
                               # dot -Tpng -O .\program_parse_tree.dot to turn dot to png
-parse_tree = parser.parse("(4 - 1) * 5 + (2 + 4) + 7")   
+# parse_tree = parser.parse("(4 - 1) * 5 + (2 + 4) + 7")   
 
-print(parse_tree)     
+# print(parse_tree)     
 
-parse_tree = parser.parse("let x0Z_y = 3")   
+# parse_tree = parser.parse("let x0Z_y = 3")   
 
-print(parse_tree)         
+# print(parse_tree)         
 
-parse_tree = parser.parse("let x, y, z")   
+# parse_tree = parser.parse("let x, y, z")   
 
-print(parse_tree)   
+# print(parse_tree)   
 
-parse_tree = parser.parse("if 3 <= 4 { let x = 4 } else {let y = 4}")   
+# parse_tree = parser.parse("print( 123 )")   
+
+# print(parse_tree)   
+
+parse_tree = parser.parse('''
+                            let x = 0
+                            if 312 <= 4 { 
+                                x = 4 
+                                print(3 + 2)
+
+                            } 
+                            else {
+                                x = 5 #a comment
+                                print(2 + 5)
+                            }
+                            #comment x 
+                            let y = 6
+                          ''')   
 
 print(parse_tree)                               
-                            
+  
+
+                          
