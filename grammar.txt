@@ -1,60 +1,81 @@
 program = code
 
-comment = "#" _ .*
+comment = "#" _ .* _
 
 code = statement*
 
-statement = "let" __ variable_declaration _
-          / assignment _
-          / expr _
+statement = let_term variable_declaration
+          / assign:assignment _ { return assign; }
+          / expression:expr _ { return expression; }
+let_term = _ term:"let" __ { return term; }
 
-variable_declaration  = decl _ ("," decl)*
+variable_declaration  = decl (commaop decl)*
 
-decl = identifier __ ("=" _ expr)?
+commaop = _ op:"," _ { return op; }
 
-identifier = [a-z][a-zA-Z_0-9]*
+decl = _ pattern:(identifier (assignop expr)?) _ { return pattern; }
+
+assignop = _ op:"=" _ { return op; }
+
+identifier = _ pattern:([a-z][a-zA-Z_0-9]*) _ { return pattern; }
 
 variable_reference = identifier
 
-if_expression = expr _ brace_block _ ( "else" _ brace_block _ )?
+if_expression = expr brace_block ( "else" brace_block )?
 
-assignment  = identifier _ "=" _ expr _
+assignment  = identifier assignop expr
 
-expr  = "fn" _ function_definition
-      / "if" _ if_expression
+expr  = fn_term function_definition
+      / if_term if_expression
       / boolean_expression
       / arithmetic_expression
 
-boolean_expression  = arithmetic_expression _ relop _ arithmetic_expression
+fn_term = _ term:"fn" _ { return term; }
+if_term = _ term:"if" _ { return term; }
 
-arithmetic_expression  = mult_term _ addop _ arithmetic_expression
-                       / mult_term _
+boolean_expression  = arithmetic_expression relop arithmetic_expression
 
-mult_term  = primary _ mulop _ mult_term
-           / primary _
+arithmetic_expression  = mult_term addop arithmetic_expression
+                       / _ term:mult_term _ { return term; }
+
+mult_term  = primary mulop mult_term
+           / _ term:primary _ { return term; }
 
 primary  = integer
          / function_call
          / variable_reference
-         / "(" _ arithmetic_expression _ ")"
+         / leftparentop arithmetic_expression rightparentop
 
 integer = "-"? [0-9]+
 
-addop   = '+' / '-'
-mulop   = '*' / '/'
-relop   = '==' / '!=' / '>=' / '>' / '<=' / '<'
+addop   = _ op:'+' _ { return op; }
+          / _ op:'-' _ { return op; }
+mulop   = _ op:'*' _ { return op; }
+          / _ op:'/' _ { return op; }
+relop   = _ op:'==' _ { return op; }
+          / _ op:'!=' _ { return op; }
+          / _ op:'>=' _ { return op; }
+          / _ op:'>' _ { return op; }
+          / _ op:'<=' _ { return op; }
+          / _ op:'<' _ { return op; }
 
-function_call  = variable_reference _ "(" _ call_arguments _ ")"
-               / "print" _ "(" _ call_arguments _ ")"
+function_call  = variable_reference leftparentop call_arguments rightparentop
+               / "print" leftparentop call_arguments rightparentop
 
-call_arguments = (expr _ ("," _ expr)*)?
+leftparentop =  _ op:"(" _ { return op; }
+rightparentop = _ op:")" _ { return op; }
 
-function_definition = param_list _ brace_block __
+call_arguments = _ pattern:(expr (commaop expr)*)? _ { return pattern; }
 
-param_list =  "(" _ identifier _ ("," _ identifier _)* ")"
-           /  "(" _ ")"
+function_definition = param_list brace_block
 
-brace_block = "{" _ code _ "}"
+param_list =  leftparentop identifier (commaop identifier)* rightparentop
+           /  leftparentop rightparentop
+
+brace_block = leftbraceop code rightbraceop
+
+leftbraceop =  _ op:"{" _ { return op; }
+rightbraceop = _ op:"}" _ { return op; }
 
 _ = [ \t\r\n]*
 __ = [ \t\r\n]+

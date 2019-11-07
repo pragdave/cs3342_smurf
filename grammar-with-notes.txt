@@ -5,8 +5,8 @@ comment = "#" _ .*                                // "#", optional whitespace, 0
 code = statement*                                 // 0+ num of statements
 
 statement = "let" __ variable_declaration _       // "let", mandatory whitespace, variable declaration, optional whitespace
-          / assignment _                          // OR assignment, optional whitespace
-          / expr _                                // OR expr, optional whitespace
+          / assignment _ { return assignment; }   // OR if match (assignment, optional whitespace), return assignment
+          / expr _ { return expr; }               // OR if match (expr, optional whitespace), return expr
 
 variable_declaration  = decl _ ("," decl)*        // decl, optional whitespace, 0+ num of: ",", another decl
 
