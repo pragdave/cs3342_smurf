@@ -1,0 +1,64 @@
+program = code
+
+comment = "#" _ .*                                // "#", optional whitespace, 0+ num of characters
+
+code = statement*                                 // 0+ num of statements
+
+statement = "let" __ variable_declaration _       // "let", mandatory whitespace, variable declaration, optional whitespace
+          / assignment _                          // OR assignment, optional whitespace
+          / expr _                                // OR expr, optional whitespace
+
+variable_declaration  = decl _ ("," decl)*        // decl, optional whitespace, 0+ num of: ",", another decl
+
+decl = identifier __ ("=" _ expr)?          // identifier, mandatory whitespace, 0-1 num of: "=", optional whitespace, expr
+
+identifier = [a-z][a-zA-Z_0-9]*                   // lwrcase char, 0+ num of letter or number char
+
+variable_reference = identifier
+
+if_expression = expr _ brace_block _ ( "else" _ brace_block _ )?
+                                            // expr, opt whitespace, {code}, 0-1 num of: "else", opt whitespace, {code}
+
+assignment  = identifier _ "=" _ expr _           // identifier, opt whitespace, "=", opt whitespace, expr
+
+expr  = "fn" _ function_definition                // "fn", opt whitespace, function_definition, opt whitespace
+      / "if" _ if_expression                      // OR "if", opt whitespace, if_expression, opt whitespace
+      / boolean_expression                        // OR boolean_expression, opt whitespace
+      / arithmetic_expression                     // OR arithmetic_expression, opt whitespace
+
+boolean_expression  = arithmetic_expression _ relop _ arithmetic_expression
+
+arithmetic_expression  = mult_term _ addop _ arithmetic_expression
+                       / mult_term _
+
+mult_term  = primary _ mulop _ mult_term
+           / primary _
+
+primary  = integer
+         / function_call
+         / variable_reference
+         / "(" _ arithmetic_expression _ ")"      // "(", opt whitespace, arithmetic_expression, opt whitespace, ")"
+
+
+integer = "-"? [0-9]+                             // 0-1 "-", 1+ num of numbers
+
+addop   = '+' / '-'
+mulop   = '*' / '/'
+relop   = '==' / '!=' / '>=' / '>' / '<=' / '<'
+
+function_call  = variable_reference _ "(" _ call_arguments _ ")"
+               / "print" _ "(" _ call_arguments _ ")"
+
+call_arguments = (expr _ ("," _ expr)*)?          // 0-1 of: expr, opt whitespace, ( 0+ num of: ",", opt whitespace, expr )
+
+function_definition = param_list _ brace_block __
+
+param_list =  "(" _ identifier _ ("," _ identifier _)* ")"
+           /  "(" _ ")"
+                                  // "(", opt wht, identifier, opt wht, (0+ num of: ",", opt wht, identifier, opt wht), ")"
+                                  // OR "(", opt whitespace, ")" (empty params list)
+
+brace_block = "{" _ code _ "}"                    // brackets with opt whitespace and code in between
+
+_ = [ \t\r\n]*                                    // optional whitespace
+__ = [ \t\r\n]+                                   // mandatory whitespace
