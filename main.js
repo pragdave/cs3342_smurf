@@ -2,8 +2,31 @@ treeNodes = require("./treeNodes");
 fs = require("file-system");
 peg = require("pegjs");
 
-function generateASTNodes(ast) {
-	// create nodes based on ast types?
+function printFunction(valArr) { console.log(valArr[0]); }
+
+function generateASTNodes(statement) {
+	// iterate through generated ast and create AST nodes
+	// ast.forEach(statement => {
+	if (statement.type === "function") {
+		const body = statement.fcn_name === "print" ? printFunction : statement.body;
+			// TODO: generateASTNodes for statement.body
+		const newNode = new treeNodes.FunctionNode(statement.fcn_name);
+		const params = statement.params.map(p => generateASTNodes(p)).filter(p => !!p);
+		const paramsNode = new treeNodes.ParamsNode(params);
+		newNode.setParams(paramsNode);
+		newNode.setBody(body);
+		return newNode;
+	} else if (statement.type === "integer") {
+		const newNode = new treeNodes.ValueNode(statement.value);
+		return newNode;
+	}
+	// })
+}
+
+function executeAST(astNode) {
+	if (astNode.type === "function") {
+		astNode.executeBody();
+	}
 }
 
 const codeExample = "print(1)";
@@ -25,10 +48,8 @@ fs.readFile("grammar.txt", "utf8", function (err, data) {
 	fs.writeFile("ast.txt", JSON.stringify(ast), function(err) {
 		if (err) {console.log(err);}
 	})
-	generateASTNodes(ast);
-
-	const rootFunction = new treeNodes.FunctionNode("print", 1, function(val) {console.log(val)});
-	rootFunction.executeBody();
+	const newAST = generateASTNodes(ast[0]);
+	executeAST(newAST);
 });
 
 // run w/	node main.js
