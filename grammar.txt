@@ -39,12 +39,12 @@ arithmetic_expression  = mult_term addop arithmetic_expression
 mult_term  = primary mulop mult_term
            / _ term:primary _ { return term; }
 
-primary  = integer
+primary  = value:integer { return {type: "integer", value: value} }
          / function_call
          / variable_reference
          / leftparentop arithmetic_expression rightparentop
 
-integer = "-"? [0-9]+
+integer = sign:"-"? num:[0-9]+ { return sign ? Number((sign+num).replace(',','')) : Number(num.toString().replace(',',''));}
 
 addop   =   _ op:'+' _  { return op; }
           / _ op:'-' _  { return op; }
@@ -57,7 +57,7 @@ relop   =   _ op:'==' _ { return op; }
           / _ op:'<=' _ { return op; }
           / _ op:'<' _  { return op; }
 
-function_call  = "print" leftparentop call_arguments rightparentop
+function_call  = name:"print" leftparentop params:call_arguments rightparentop { return {type: "function", fcn_name: name, params: params} }
                   / variable_reference leftparentop call_arguments rightparentop
 
 leftparentop =  _ op:"(" _ { return op; }
