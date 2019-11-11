@@ -88,12 +88,8 @@ def brace_block(): return           ("{", code, "}")
 class CalcVisitor(PTNodeVisitor):
 
     def visit_integer(self, node, children):
-        print("-----------------integer-----------------")
+        printState(node, children, 'integer')
         print("self:" + str(self))
-        for i, n in enumerate(node):
-            print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
-        for i, c in enumerate(children):
-            print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
         if children[0] == "-":            
             val = ''
             for i in range(1, len(children)):
@@ -106,29 +102,18 @@ class CalcVisitor(PTNodeVisitor):
             return Int(val)
         
     def visit_primary(self, node, children):
-        print("-----------------primary-----------------")
+        printState(node, children, 'primary')
         print("self:" + str(self))
-        for i, n in enumerate(node):
-            print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
-        for i, c in enumerate(children):
-            print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
         return children[0]
     
     def visit_mult_term(self, node, children):
-        print("-----------------multerm-----------------")
+        printState(node, children, 'mult_term')
         print("self:" + str(self))
-        print("node:" + str(node))
-        for i, c in enumerate(children):
-            print("children[" + str(i) + "]:" + str(c))
         return binop_list(children)
     
     def visit_arithmetic_expression(self, node, children):
-        print("-----------------arithmetic_expr-----------------")
+        printState(node, children, 'arithmetic_expression')
         print("self:" + str(self))
-        for i, n in enumerate(node):
-            print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
-        for i, c in enumerate(children):
-            print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
         return binop_list(children)
     
     def visit_assignment(self, node, children):
@@ -138,32 +123,33 @@ class CalcVisitor(PTNodeVisitor):
         return Code(children)
     
     def visit_decl(self, node, children):
-        print("-----------------decl-----------------")
+        printState(node, children, 'decl')
         print("self:" + str(self))
-        for i, n in enumerate(node):
-            print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
-        for i, c in enumerate(children):
-            print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
         return VarDec(children[0], children[1])
     
     def visit_variable_reference(self, node, children):
-        print("-----------------variable_reference-----------------")
+        printState(node, children, 'var_ref')
         print("self:" + str(self))
-        for i, n in enumerate(node):
-            print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
-        for i, c in enumerate(children):
-            print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
         return VarRef(children)
     
     def visit_function_call(self, node, children):
-        print("-----------------function_call-----------------")
+        printState(node, children, 'function_call')
         print("self:" + str(self))
-        for i, n in enumerate(node):
-            print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
-        for i, c in enumerate(children):
-            print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
         if children[0].getName() == 'print':
             return Printer(children[1])
+
+    def visit_boolean_expression(self, node, children):
+        return RelOp(children[0], children[1], children[2])
+    
+    def visit_relop(self, node, children):
+        return children[0]
+        
+def printState(node, children, funcName):
+    print("-----------------" + funcName + "-----------------")
+    for i, n in enumerate(node):
+        print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
+    for i, c in enumerate(children):
+        print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
 
 def binop_list(nodes):
     left = nodes[0]
@@ -218,6 +204,31 @@ class binOp:
         print("op:" + self.op)
         print("rval ----")
         self.right.print()
+
+class RelOp:
+    def __init__(self, l, op, r):
+        self.left = l
+        self.op = op
+        self.right = r
+        
+    def evaluate(self, binding):
+        lval = self.left.evaluate(binding)
+        rval = self.right.evaluate(binding)
+        
+        if self.op == '==' and lval == rval:
+            return True
+        elif self.op == '!=' and lval != rval:
+            return True
+        elif self.op == '>=' and lval >= rval:
+            return True
+        elif self.op == '>' and lval > rval:
+            return True
+        elif self.op == '<=' and lval <= rval:
+            return True
+        elif self.op == '<' and lval < rval:
+            return True  
+        else:
+            return False
 
 class Assignment:
     def __init__(self, name, expression):
@@ -285,7 +296,7 @@ class Printer:
         return val
 
 
-parser = ParserPython(program, comment, debug=True)   
+parser = ParserPython(program, comment, debug=False)   
                               # calc is the root rule of the grammar
                               # Use param debug=True for verbose debugging
                               # messages and grammar and parse tree visualization
@@ -308,17 +319,17 @@ parser = ParserPython(program, comment, debug=True)
 #                             let y = 6
 #                           ''')   
 
-toEval = '''-52 + 1'''
+toEval = '''2 != 2'''
 parse_tree = parser.parse(toEval)
 
 print("parse_tree:" + str(parse_tree))                         
 
 result = visit_parse_tree(parse_tree, CalcVisitor(debug=True))
 
-print("---------------result----------------")
-
 binding = Binding()
 res = result.evaluate(binding)
+
+print("---------------result----------------")
 print(result)
 try:
     res.print()
@@ -327,7 +338,6 @@ except:
     binding.print()
     
 print(toEval + " = " + str(res))
-
 print("---------------result----------------")
 
                           
