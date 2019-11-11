@@ -96,8 +96,8 @@ class CalcVisitor(PTNodeVisitor):
             print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
         if children[0] == "-":            
             val = ''
-            for i in children:
-                val = val + str(i)
+            for i in range(1, len(children)):
+                val = val + str(children[i])
             return Int(val, '-')
         else:
             val = ''
@@ -285,7 +285,7 @@ class Printer:
         return val
 
 
-parser = ParserPython(program, comment, debug=False)   
+parser = ParserPython(program, comment, debug=True)   
                               # calc is the root rule of the grammar
                               # Use param debug=True for verbose debugging
                               # messages and grammar and parse tree visualization
@@ -308,7 +308,7 @@ parser = ParserPython(program, comment, debug=False)
 #                             let y = 6
 #                           ''')   
 
-toEval = '''print(1 + 2 * 5)'''
+toEval = '''-52 + 1'''
 parse_tree = parser.parse(toEval)
 
 print("parse_tree:" + str(parse_tree))                         
