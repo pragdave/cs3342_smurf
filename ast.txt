@@ -4,19 +4,18 @@
 		"fcn_name": "print",
 		"params": [
 			{
-				"type": "integer",
-				"value": 1
-			},
-			[]
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "integer",
-				"value": 2
+				"type": "arithmetic_expr",
+				"params": [
+					{
+						"type": "integer",
+						"value": 1
+					},
+					"-",
+					{
+						"type": "integer",
+						"value": 2
+					}
+				]
 			},
 			[]
 		]

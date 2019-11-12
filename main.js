@@ -5,28 +5,52 @@ peg = require("pegjs");
 function printFunction(valArr) { console.log(valArr[0]); }
 
 function generateNode(statement) {
-	if (statement.type === "function") {
-		const body = statement.fcn_name === "print" ? printFunction : statement.body;
-			// TODO: generateNode for statement.body
-		const newNode = new treeNodes.FunctionNode(statement.fcn_name);
-		const params = statement.params.map(p => generateNode(p)).filter(p => !!p);
-		const paramsNode = new treeNodes.ParamsNode(params);
-		newNode.setParams(paramsNode);
-		newNode.setBody(body);
-		return newNode;
-	} else if (statement.type === "integer") {
-		const newNode = new treeNodes.ValueNode(statement.value);
-		return newNode;
+	if (!statement.type) {
+		return {};
 	}
+
+	let newNode = {};
+	switch(statement.type) {
+		case "function":
+			const body = statement.fcn_name === "print" ? printFunction : statement.body;
+				// TODO: generateNode for statement.body
+			newNode = new treeNodes.FunctionNode(statement.fcn_name);
+			const params = statement.params.map(p => generateNode(p)).filter(p => !!p && !!p.type);
+			const paramsNode = new treeNodes.ParamsNode(params);
+			newNode.setParams(paramsNode);
+			newNode.setBody(body);
+			break;
+		case "integer":
+			newNode = new treeNodes.ValueNode(statement.value);
+			break;
+		case "arithmetic_expr":
+			const operator = statement.params[1];
+			newNode = new treeNodes.ArithmeticExprNode(operator);
+			const leftSide = generateNode(statement.params[0]);
+			newNode.setLeftSide(leftSide);
+			const rightSide = generateNode(statement.params[2]);
+			newNode.setRightSide(rightSide);
+			break;
+		default: 
+			console.log(`${statement.type} is an invalid statement type`);
+	}
+	return newNode;
 }
 
 function generateASTNodes(ast) {
 	return ast.map(statement => generateNode(statement));
 }
 
-function executeNode(astNode) {
-	if (astNode.type === "function") {
-		astNode.executeBody();
+function executeNode(node) {
+	switch(node.type) {
+		case "function":
+			node.executeBody();
+			break;
+		case "arithmetic_expr":
+			node.executeExpr();
+			break;
+		default:
+			console.log(`${node.type} is an invalid node type`);
 	}
 }
 
@@ -34,8 +58,7 @@ function executeAST(ast) {
 	ast.forEach(node => executeNode(node));
 }
 
-const codeExample = `print(1)\n` +
-					`print(2)`;
+const codeExample = `print(1 - 2)`;
 
 // const codeExample = `let a = 99\n
 //   		let f = fn(x) { x + a }\n

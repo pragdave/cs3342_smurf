@@ -33,7 +33,7 @@ if_term = _ term:"if" _ { return term; }
 
 boolean_expression  = arithmetic_expression relop arithmetic_expression
 
-arithmetic_expression  = mult_term addop arithmetic_expression
+arithmetic_expression  = pattern:(mult_term addop arithmetic_expression) { return {type:"arithmetic_expr", params: pattern} }
                        / _ term:mult_term _ { return term; }
 
 mult_term  = primary mulop mult_term
@@ -63,7 +63,7 @@ function_call  = name:"print" leftparentop params:call_arguments rightparentop {
 leftparentop =  _ op:"(" _ { return op; }
 rightparentop = _ op:")" _ { return op; }
 
-call_arguments = _ pattern:(expr (commaop expr)*)? _ { return pattern; }
+call_arguments = _ pattern:(expr (commaop expr)*)? _ { return pattern && pattern[0].length ? pattern[0] : pattern; }
 
 function_definition = param_list brace_block
 

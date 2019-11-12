@@ -54,6 +54,57 @@ exports.FunctionNode = function FunctionNode(definition) {
 	}
 }
 
+
+exports.ArithmeticExprNode = function ArithmeticExprNode(operator) {
+	this.parent = null;
+	this.type = "arithmetic_expr";
+	this.children = {};
+	this.operator = operator;
+
+	this.setParent = function(node) { this.parent = node; }
+	this.getParent = function() { return this.parent; }
+
+	this.setLeftSide = function(node) {
+		node.setParent(this);
+		this.children.leftSide = node;
+	}
+	this.setRightSide = function(node) {
+		node.setParent(this);
+		this.children.rightSide = node;
+	}
+
+	this.executeExpr = function() {
+		let result = 0;
+		let finalLeftSide = this.children.leftSide;
+		let finalRightSide = this.children.rightSide;
+		if (finalLeftSide.type === "arithmetic_expr") {
+			finalLeftSide = this.children.leftSide.executeExpr();
+		}
+		if (finalRightSide.type === "arithmetic_expr") {
+			finalRightSide = this.children.rightSide.executeExpr();
+		}
+		switch(this.operator) {
+			case "+":
+				result = finalLeftSide.getValue() + finalRightSide.getValue();
+				break;
+			case "-":
+				result = finalLeftSide.getValue() - finalRightSide.getValue();
+				break;
+			case "*":
+				result = finalLeftSide.getValue() * finalRightSide.getValue();
+				break;
+			case "/":
+				result = finalLeftSide.getValue() / finalRightSide.getValue();
+				break;
+			default:
+				console.log(`${this.operator} is an invalid operator`);
+				result = 0;
+		}
+		return result;
+	}
+	
+}
+
 exports.ParamsNode = function ParamsNode(paramsArr) {
 	this.children = paramsArr;
 	this.parent = null;
@@ -64,9 +115,18 @@ exports.ParamsNode = function ParamsNode(paramsArr) {
 
 	this.executeParams = function() {
 		return this.children.map(param => {
-			if (param.type === "value") {
-				return param.getValue();
+			let returnVal = null;
+			switch(param.type) {
+				case "value":
+					returnVal = param.getValue();
+					break;
+				case "arithmetic_expr":
+					returnVal = param.executeExpr();
+					break;
+				default:
+					console.log(`${param.type} is an invalid param type`)
 			}
+			return returnVal;
 		})
 	}
 }
