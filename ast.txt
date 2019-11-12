@@ -1,1 +1,24 @@
-[{"type":"function","fcn_name":"print","params":[{"type":"integer","value":1},[]]}]
+[
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "integer",
+				"value": 1
+			},
+			[]
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "integer",
+				"value": 2
+			},
+			[]
+		]
+	}
+]
