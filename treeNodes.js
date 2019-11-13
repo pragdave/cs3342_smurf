@@ -54,7 +54,6 @@ exports.FunctionNode = function FunctionNode(definition) {
 	}
 }
 
-
 exports.ArithmeticExprNode = function ArithmeticExprNode(operator) {
 	this.parent = null;
 	this.type = "arithmetic_expr";
@@ -74,7 +73,7 @@ exports.ArithmeticExprNode = function ArithmeticExprNode(operator) {
 	}
 
 	this.executeExpr = function() {
-		let result = 0;
+		let value = 0;
 		let finalLeftSide = this.children.leftSide;
 		let finalRightSide = this.children.rightSide;
 		if (finalLeftSide.type === "arithmetic_expr") {
@@ -85,22 +84,23 @@ exports.ArithmeticExprNode = function ArithmeticExprNode(operator) {
 		}
 		switch(this.operator) {
 			case "+":
-				result = finalLeftSide.getValue() + finalRightSide.getValue();
+				value = finalLeftSide.getValue() + finalRightSide.getValue();
 				break;
 			case "-":
-				result = finalLeftSide.getValue() - finalRightSide.getValue();
+				value = finalLeftSide.getValue() - finalRightSide.getValue();
 				break;
 			case "*":
-				result = finalLeftSide.getValue() * finalRightSide.getValue();
+				value = finalLeftSide.getValue() * finalRightSide.getValue();
 				break;
 			case "/":
-				result = finalLeftSide.getValue() / finalRightSide.getValue();
+				value = finalLeftSide.getValue() / finalRightSide.getValue();
 				break;
 			default:
 				console.log(`${this.operator} is an invalid operator`);
-				result = 0;
+				value = 0;
 		}
-		return result;
+		const resultNode = new exports.ValueNode(value);
+		return resultNode;
 	}
 	
 }
@@ -121,7 +121,8 @@ exports.ParamsNode = function ParamsNode(paramsArr) {
 					returnVal = param.getValue();
 					break;
 				case "arithmetic_expr":
-					returnVal = param.executeExpr();
+					const returnNode = param.executeExpr();
+					returnVal = returnNode.getValue();
 					break;
 				default:
 					console.log(`${param.type} is an invalid param type`)

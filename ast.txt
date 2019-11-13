@@ -3,21 +3,22 @@
 		"type": "function",
 		"fcn_name": "print",
 		"params": [
+			"(",
 			{
 				"type": "arithmetic_expr",
 				"params": [
 					{
 						"type": "integer",
-						"value": 1
+						"value": 3
 					},
-					"-",
+					"*",
 					{
 						"type": "integer",
-						"value": 2
+						"value": 1
 					}
 				]
 			},
-			[]
+			")"
 		]
 	}
 ]

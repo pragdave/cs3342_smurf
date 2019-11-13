@@ -25,18 +25,18 @@ assignment  = identifier assignop expr
 
 expr  = fn_term function_definition
       / if_term if_expression
-      / boolean_expression
       / arithmetic_expression
+      / boolean_expression
 
 fn_term = _ term:"fn" _ { return term; }
 if_term = _ term:"if" _ { return term; }
 
 boolean_expression  = arithmetic_expression relop arithmetic_expression
 
-arithmetic_expression  = pattern:(mult_term addop arithmetic_expression) { return {type:"arithmetic_expr", params: pattern} }
+arithmetic_expression  = pattern:(mult_term addop arithmetic_expression) { return {type: "arithmetic_expr", params: pattern} }
                        / _ term:mult_term _ { return term; }
 
-mult_term  = primary mulop mult_term
+mult_term  = pattern:(primary mulop mult_term) { return {type: "arithmetic_expr", params: pattern}; }
            / _ term:primary _ { return term; }
 
 primary  = value:integer { return {type: "integer", value: value} }

@@ -26,9 +26,17 @@ function generateNode(statement) {
 		case "arithmetic_expr":
 			const operator = statement.params[1];
 			newNode = new treeNodes.ArithmeticExprNode(operator);
-			const leftSide = generateNode(statement.params[0]);
+			let leftParams = statement.params[0];
+			if (!leftParams.type && leftParams.length > 1) {
+				leftParams = leftParams[1];
+			}
+			const leftSide = generateNode(leftParams);
 			newNode.setLeftSide(leftSide);
-			const rightSide = generateNode(statement.params[2]);
+			let rightParams = statement.params[2];
+			if (!rightParams.type && rightParams.length > 1) {
+				rightParams = rightParams[1];
+			}
+			const rightSide = generateNode(rightParams);
 			newNode.setRightSide(rightSide);
 			break;
 		default: 
@@ -46,9 +54,6 @@ function executeNode(node) {
 		case "function":
 			node.executeBody();
 			break;
-		case "arithmetic_expr":
-			node.executeExpr();
-			break;
 		default:
 			console.log(`${node.type} is an invalid node type`);
 	}
@@ -58,7 +63,7 @@ function executeAST(ast) {
 	ast.forEach(node => executeNode(node));
 }
 
-const codeExample = `print(1 - 2)`;
+const codeExample = `print((3*1))`;
 
 // const codeExample = `let a = 99\n
 //   		let f = fn(x) { x + a }\n
@@ -76,7 +81,7 @@ fs.readFile("grammar.txt", "utf8", function (err, data) {
 	const parser = peg.generate(grammar);
 	const ast = parser.parse(codeExample);
 	fs.writeFile("ast.txt", JSON.stringify(ast, null, "\t"), function(err) {
-		if (err) {console.log(err);}
+		if (err) { console.log(err); }
 	})
 	const astArr = generateASTNodes(ast);
 	executeAST(astArr)
