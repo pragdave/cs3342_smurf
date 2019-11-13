@@ -1,4 +1,4 @@
-from arpeggio import ZeroOrMore, OneOrMore, Optional, EOF, ParserPython
+from arpeggio import *#ZeroOrMore, OneOrMore, Optional, EOF, ParserPython
 from arpeggio.export import PMDOTExporter
 from arpeggio.export import PTDOTExporter
 from arpeggio import RegExMatch as _
@@ -29,16 +29,9 @@ def param_list():               return [("(",identifier,ZeroOrMore(identifier),"
 def brace_block():              return "{",code,"}"
 
 
-parser = ParserPython(code,comment)
-parse_tree = parser.parse("let y = 7")
+#parser = ParserPython(code,comment)
+#parse_tree = parser.parse("let y = 7")
 
-PTDOTExporter().exportFile(parse_tree,"my_parse_tree.dot")
+#PTDOTExporter().exportFile(parse_tree,"my_parse_tree.dot")
 
-print(parse_tree)
-
-
-
-
-
-
-
+#print(parse_tree)
