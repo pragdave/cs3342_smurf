@@ -15,7 +15,7 @@
 									"type": "integer",
 									"value": 3
 								},
-								"+",
+								"-",
 								{
 									"type": "integer",
 									"value": 1
@@ -34,7 +34,7 @@
 									"type": "integer",
 									"value": 3
 								},
-								"-",
+								"+",
 								{
 									"type": "integer",
 									"value": 1

@@ -2,78 +2,64 @@ program = code
 
 code = statement*
 
-statement = let_term variable_declaration
-          / assign:assignment _ { return assign; }
-          / expression:expr _ { return expression; }
-let_term = _ term:"let" _ { return term; }
+statement = "let" variable_declaration
+          / assignment
+          / expr
 
-variable_declaration  = decl (commaop decl)*
+variable_declaration  = decl ("," decl)*
 
-commaop = _ op:"," _ { return op; }
+decl = identifier ("=" expr)?
 
-decl = _ pattern:(identifier (assignop expr)?) _ { return pattern; }
-
-assignop = _ op:"=" _ { return op; }
-
-identifier = _ pattern:([a-z][a-zA-Z_0-9]*) _ { return pattern; }
+identifier = pattern:([a-z][a-zA-Z_0-9]*) { return text(pattern); }
 
 variable_reference = identifier
 
 if_expression = expr brace_block ( "else" brace_block )?
 
-assignment  = identifier assignop expr
+assignment  = identifier "=" expr
 
-expr  = fn_term function_definition
-      / if_term if_expression
+expr  = "fn" function_definition
+      / "if" if_expression
       / arithmetic_expression
       / boolean_expression
-
-fn_term = _ term:"fn" _ { return term; }
-if_term = _ term:"if" _ { return term; }
 
 boolean_expression  = arithmetic_expression relop arithmetic_expression
 
 arithmetic_expression  = pattern:(mult_term addop arithmetic_expression) { return {type: "arithmetic_expr", params: pattern} }
-                       / _ term:mult_term _ { return term; }
+                       / mult_term
 
 mult_term  = pattern:(primary mulop mult_term) { return {type: "arithmetic_expr", params: pattern}; }
-           / _ term:primary _ { return term; }
+           / primary
 
-primary  = value:integer { return {type: "integer", value: value} }
+primary  = _ value:integer _ { return {type: "integer", value: value} }
          / function_call
          / variable_reference
-         / leftparentop arithmetic_expression rightparentop
+         / "(" arithmetic_expression ")"
 
 integer = sign:"-"? num:[0-9]+ { return sign ? Number((sign+num).replace(',','')) : Number(num.toString().replace(',',''));}
 
-addop   =   _ op:'+' _  { return op; }
-          / _ op:'-' _  { return op; }
-mulop   =   _ op:'*' _  { return op; }
-          / _ op:'/' _  { return op; }
-relop   =   _ op:'==' _ { return op; }
-          / _ op:'!=' _ { return op; }
-          / _ op:'>=' _ { return op; }
-          / _ op:'>' _  { return op; }
-          / _ op:'<=' _ { return op; }
-          / _ op:'<' _  { return op; }
+addop   =   '+' 
+          / '-' 
+mulop   =   '*' 
+          / '/' 
+relop   =   '=='
+          / '!='
+          / '>='
+          / '>' 
+          / '<='
+          / '<' 
 
-function_call  = name:"print" leftparentop params:call_arguments rightparentop { return {type: "function", fcn_name: name, params: params} }
-                  / variable_reference leftparentop call_arguments rightparentop
+function_call  = fcn_name:"print" "(" params:call_arguments ")" { return {type: "function", fcn_name, params}; }
+                  / fcn_name:variable_reference "(" params:call_arguments ")" { return {type: "function", fcn_name, params}; }
 
-leftparentop =  _ op:"(" _ { return op; }
-rightparentop = _ op:")" _ { return op; }
-
-call_arguments = _ pattern:(expr (commaop expr)*)? _ { return pattern && pattern[0].length ? pattern[0] : pattern; }
+call_arguments = pattern:(expr ("," expr)*)? { return pattern && pattern[0].length ? pattern[0] : pattern; }
 
 function_definition = param_list brace_block
 
-param_list =  leftparentop identifier (commaop identifier)* rightparentop
-           /  leftparentop rightparentop
+param_list =  "(" identifier ("," identifier)* ")"
+           /  "()"
 
-brace_block = leftbraceop code rightbraceop
-
-leftbraceop =  _ op:"{" _ { return op; }
-rightbraceop = _ op:"}" _ { return op; }
+brace_block = "{" code "}"
 
 whitespace = [ \t\r\n]+
 comment_chars = [. \t]*

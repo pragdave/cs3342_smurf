@@ -63,7 +63,7 @@ function executeAST(ast) {
 	ast.forEach(node => executeNode(node));
 }
 
-const codeExample = `print((3+1)*(3-1))`;
+const codeExample = `print((3-1)*(3+1))`;
 
 // const codeExample = `let a = 99\n
 //   		let f = fn(x) { x + a }\n
@@ -80,7 +80,7 @@ fs.readFile("grammar.txt", "utf8", function (err, data) {
 	const grammar = data;
 	const parser = peg.generate(grammar);
 	const ast = parser.parse(codeExample);
-	fs.writeFile("ast.txt", JSON.stringify(ast, null, "\t"), function(err) {
+	fs.writeFile("ast.json", JSON.stringify(ast, null, "\t"), function(err) {
 		if (err) { console.log(err); }
 	})
 	const astArr = generateASTNodes(ast);
