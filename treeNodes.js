@@ -23,14 +23,65 @@ exports.TreeNode = function TreeNode(value) {
 	}
 }
 
-exports.FunctionNode = function FunctionNode(definition) {
+exports.RootNode = function RootNode() {
+	this.type = "root";
+	this.children = { variables: {}, functions: {}, statements: [] };
+
+	this.assignVariable = function(node) {
+		this.children.variables[node.getName()] = node;
+	}
+	this.getVariable = function(name) { return this.children.variables[name]; }
+
+	this.defineFunction = function(node) {
+		this.children.functions[node.getName()] = node;
+	}
+	this.callFunction = function(name) { return this.children.functions[name].executeBody(); }
+
+	this.addStatements = function(statementArr) {
+		statementArr.forEach(node => {
+			switch(node.type) {
+				case "function":
+					this.defineFunction(node);
+					this.children.statements.push(node);
+					break;
+				case "variable_dec":
+					const declarations = node.getDeclarations();
+					declarations.forEach(assignmentNode => {
+						this.assignVariable(assignmentNode);
+						this.children.statements.push(assignmentNode);
+					})
+					break;
+				default:
+					console.log(`${node.type} is an invalid node type`);
+			}
+		});
+	}
+	this.executeStatements = function() {
+		this.children.statements.forEach(node => {
+			switch(node.type) {
+				case "function":
+					node.executeBody();
+					break;
+				case "variable":
+					console.log(`variable name: ${node.getName()}, variable value: TODO`) // TODO: remove this
+					break;
+				default:
+					console.log(`${node.type} is an invalid node type`);
+			}
+		})
+	}
+}
+
+exports.FunctionNode = function FunctionNode(name) {
 	this.type = "function";
-	this.fndef = definition;
+	this.name = name;
 	this.parent = null;
 	this.children = { params: null, body: null };
 
 	this.setParent = function(node) { this.parent = node; }
 	this.getParent = function() { return this.parent; }
+
+	this.getName = function() { return this.name; }
 
 	this.setParams = function(node) {
 		node.setParent(this);
@@ -117,6 +168,7 @@ exports.VariableDecNode = function VariableDecNode() {
 		decArr.forEach(node => node.setParent(this));
 		this.declarations = decArr;
 	}
+	this.getDeclarations = function() { return this.declarations; }
 }
 
 exports.AssignmentNode = function AssignmentNode(name) {
@@ -126,6 +178,8 @@ exports.AssignmentNode = function AssignmentNode(name) {
 
 	this.setParent = function(node) { this.parent = node; }
 	this.getParent = function() { return this.parent; }
+
+	this.getName = function() { return this.children.name; }
 
 	this.setExpr = function(node) {
 		node.setParent(this);

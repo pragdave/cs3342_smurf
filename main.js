@@ -56,24 +56,14 @@ function generateNode(statement) {
 }
 
 function generateASTNodes(ast) {
-	return ast.map(statement => generateNode(statement));
+	const rootNode = new treeNodes.RootNode();
+	nodes = ast.map(statement => generateNode(statement));
+	rootNode.addStatements(nodes);
+	return rootNode;
 }
 
-function executeNode(node) {
-	switch(node.type) {
-		case "function":
-			node.executeBody();
-			break;
-		case "variable_dec":
-			console.log(node);
-			break;
-		default:
-			console.log(`${node.type} is an invalid node type`);
-	}
-}
-
-function executeAST(ast) {
-	ast.forEach(node => executeNode(node));
+function executeAST(rootNode) {
+	rootNode.executeStatements();
 }
 
 const codeExample = "print(1)\nlet a = 3";
@@ -90,8 +80,8 @@ fs.readFile("grammar.txt", "utf8", function (err, data) {
 	fs.writeFile("ast.json", JSON.stringify(ast, null, "\t"), function(err) {
 		if (err) { console.log(err); }
 	})
-	const astArr = generateASTNodes(ast);
-	executeAST(astArr)
+	const rootNode = generateASTNodes(ast);
+	executeAST(rootNode)
 });
 
 // run w/ node main.js
