@@ -24,10 +24,10 @@ exports.TreeNode = function TreeNode(value) {
 }
 
 exports.FunctionNode = function FunctionNode(definition) {
+	this.type = "function";
 	this.fndef = definition;
 	this.parent = null;
-	this.children = {};
-	this.type = "function";
+	this.children = { params: null, body: null };
 
 	this.setParent = function(node) { this.parent = node; }
 	this.getParent = function() { return this.parent; }
@@ -55,9 +55,9 @@ exports.FunctionNode = function FunctionNode(definition) {
 }
 
 exports.ArithmeticExprNode = function ArithmeticExprNode(operator) {
-	this.parent = null;
 	this.type = "arithmetic_expr";
-	this.children = {};
+	this.parent = null;
+	this.children = { leftSide: null, rightSide: null };
 	this.operator = operator;
 
 	this.setParent = function(node) { this.parent = node; }
@@ -108,21 +108,21 @@ exports.ArithmeticExprNode = function ArithmeticExprNode(operator) {
 exports.VariableDecNode = function VariableDecNode() {
 	this.type = "variable_dec";
 	this.parent = null;
-	this.children = {};
+	this.declarations = null;
 
 	this.setParent = function(node) { this.parent = node; }
 	this.getParent = function() { return this.parent; }
 
 	this.setDeclarations = function(decArr) {
 		decArr.forEach(node => node.setParent(this));
-		this.children.declarations = decArr;
+		this.declarations = decArr;
 	}
 }
 
 exports.AssignmentNode = function AssignmentNode(name) {
 	this.type = "variable";
-	this.children = {name: name};
 	this.parent = null;
+	this.children = { name: name, expr: null };
 
 	this.setParent = function(node) { this.parent = node; }
 	this.getParent = function() { return this.parent; }
@@ -134,10 +134,10 @@ exports.AssignmentNode = function AssignmentNode(name) {
 }
 
 exports.ParamsNode = function ParamsNode(paramsArr) {
-	this.children = paramsArr;
-	this.parent = null;
 	this.type = "params";
-
+	this.parent = null;
+	this.children = paramsArr;
+	
 	this.setParent = function(node) { this.parent = node; }
 	this.getParent = function() { return this.parent; }
 
