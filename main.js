@@ -39,6 +39,16 @@ function generateNode(statement) {
 			const rightSide = generateNode(rightParams);
 			newNode.setRightSide(rightSide);
 			break;
+		case "variable_dec":
+			newNode = new treeNodes.VariableDecNode();
+			const declarations = statement.declarations.map(d => generateNode(d));
+			newNode.setDeclarations(declarations)
+			break;
+		case "assignment":
+			newNode = new treeNodes.AssignmentNode(statement.name);
+			const exprNode = generateNode(statement.expr);
+			newNode.setExpr(exprNode);
+			break;
 		default: 
 			console.log(`${statement.type} is an invalid statement type`);
 	}
@@ -54,6 +64,9 @@ function executeNode(node) {
 		case "function":
 			node.executeBody();
 			break;
+		case "variable_dec":
+			console.log(node);
+			break;
 		default:
 			console.log(`${node.type} is an invalid node type`);
 	}
@@ -63,23 +76,7 @@ function executeAST(ast) {
 	ast.forEach(node => executeNode(node));
 }
 
-const codeExample = 
-
-`print(1)          \n` +
-`print(3 - 1)      \n` +
-`print(2+1)        \n` +
-`print(2 * 5 - 3*2)\n` +
-`print(4 - -1)     \n` +
-`print(5--1)       \n` +
-`print(21/3)       \n` +
-`print((3-1)*(3+1))`;
-
-
-// const codeExample = `let a = 99\n
-//   		let f = fn(x) { x + a }\n
-//   		print(f(1))     #=> 100\n
-//   		a = 100\n
-//   		print(f(1))     #=> 101\n`;
+const codeExample = "print(1)\nlet a = 3";
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {
 	if (err) {

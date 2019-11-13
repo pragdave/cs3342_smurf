@@ -105,6 +105,34 @@ exports.ArithmeticExprNode = function ArithmeticExprNode(operator) {
 	
 }
 
+exports.VariableDecNode = function VariableDecNode() {
+	this.type = "variable_dec";
+	this.parent = null;
+	this.children = {};
+
+	this.setParent = function(node) { this.parent = node; }
+	this.getParent = function() { return this.parent; }
+
+	this.setDeclarations = function(decArr) {
+		decArr.forEach(node => node.setParent(this));
+		this.children.declarations = decArr;
+	}
+}
+
+exports.AssignmentNode = function AssignmentNode(name) {
+	this.type = "variable";
+	this.children = {name: name};
+	this.parent = null;
+
+	this.setParent = function(node) { this.parent = node; }
+	this.getParent = function() { return this.parent; }
+
+	this.setExpr = function(node) {
+		node.setParent(this);
+		this.children.expr = node;
+	}
+}
+
 exports.ParamsNode = function ParamsNode(paramsArr) {
 	this.children = paramsArr;
 	this.parent = null;
