@@ -4,7 +4,7 @@ code = statement*
 
 statement = "let" variable_declaration
           / assignment
-          / expr
+          / expr:expr _ { return expr; }
 
 variable_declaration  = decl ("," decl)*
 
@@ -56,7 +56,7 @@ call_arguments = pattern:(expr ("," expr)*)? { return pattern && pattern[0].leng
 
 function_definition = param_list brace_block
 
-param_list =  "(" identifier ("," identifier)* ")"
+param_list =  "(" pattern:(identifier ("," identifier)*) ")" { return pattern; }
            /  "()"
 
 brace_block = "{" code "}"
