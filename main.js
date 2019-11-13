@@ -63,7 +63,7 @@ function executeAST(ast) {
 	ast.forEach(node => executeNode(node));
 }
 
-const codeExample = `print((3*1))`;
+const codeExample = `print((3+1)*(3-1))`;
 
 // const codeExample = `let a = 99\n
 //   		let f = fn(x) { x + a }\n

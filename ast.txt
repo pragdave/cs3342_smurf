@@ -3,22 +3,49 @@
 		"type": "function",
 		"fcn_name": "print",
 		"params": [
-			"(",
 			{
 				"type": "arithmetic_expr",
 				"params": [
-					{
-						"type": "integer",
-						"value": 3
-					},
+					[
+						"(",
+						{
+							"type": "arithmetic_expr",
+							"params": [
+								{
+									"type": "integer",
+									"value": 3
+								},
+								"+",
+								{
+									"type": "integer",
+									"value": 1
+								}
+							]
+						},
+						")"
+					],
 					"*",
-					{
-						"type": "integer",
-						"value": 1
-					}
+					[
+						"(",
+						{
+							"type": "arithmetic_expr",
+							"params": [
+								{
+									"type": "integer",
+									"value": 3
+								},
+								"-",
+								{
+									"type": "integer",
+									"value": 1
+								}
+							]
+						},
+						")"
+					]
 				]
 			},
-			")"
+			[]
 		]
 	}
 ]
