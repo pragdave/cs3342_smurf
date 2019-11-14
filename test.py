@@ -5,6 +5,9 @@ from arpeggio import ParserPython
 from arpeggio import PTNodeVisitor
 from arpeggio import visit_parse_tree
 from arpeggio import Sequence
+from arpeggio.export import PMDOTExporter
+from arpeggio.export import PTDOTExporter
+
 import sys
 import string
 import math
@@ -130,12 +133,15 @@ class AstVisitor(PTNodeVisitor):
     def visit_decl(self, node, children):
         printState(node, children, 'decl')
          #print("self:" + str(self))
-        defl = DecList()
-        for i in range(0, len(children), 2):
-            declar = VarDec(children[i], children[i+1])
-            defl.push(declar)
         return VarDec(children[0], children[1])
     
+    def visit_variable_declaration(self, node, children):
+        defl = DecList()
+        for i in children:
+            if i != '\n':
+                defl.push(i)
+        return defl
+        
     def visit_variable_reference(self, node, children):
         printState(node, children, 'var_ref')
          #print("self:" + str(self))
@@ -162,10 +168,13 @@ class AstVisitor(PTNodeVisitor):
         printState(node, children, 'function_call')
          #print("self:" + str(self))
         # print("Calling function " + children[0].getName())
+        print("visitng func call, children:" +str(children))
         if children[0].getName() == 'print':
             return Printer(children[1])
-        else:
+        elif len(children) > 1:
             return FnCall(children[0], children[1])
+        else:
+            return FnCall(children[0], [])
         
     def visit_param_list(self, node, children):
         l = []
@@ -177,6 +186,7 @@ class AstVisitor(PTNodeVisitor):
         l = []
         for i in children:
             l.append(i)
+        print("call args:" + str(l))
         return l
 
     def visit_identifier(self, node, children):
@@ -300,7 +310,7 @@ class Binding:
         if name in self.bindings:
             self.bindings[name] = value    
         else:
-            raise LookupError(name + " not declared")
+            raise LookupError(name + " not declared in set val")
 
     def get_var(self, name):
         if name in self.bindings:
@@ -308,7 +318,7 @@ class Binding:
         elif self.outer:
             return self.outer.get_var(name)
         else:
-            raise LookupError(name + " not declared")
+            raise LookupError(name + " not declared in get var")
 
     def print(self):
         print(str(self.bindings))
@@ -333,16 +343,18 @@ class VarDec:
         binding.set_var(self.name, val)
         return val
 
-class DefList:
+class DecList:
     def __init__(self, decls=[]):
         self.decls = decls
         
     def push(self, decl):
         self.decls.append(decl)
         
-    def eval(self, binding):
+    def evaluate(self, binding):
+        last = ''
         for i in self.decls:
-            i.evaluate(binding)
+            last = i.evaluate(binding)
+        return last
 
 class VarRef:
     def __init__(self, name):
@@ -431,8 +443,11 @@ class Thunk:
     def evaluate(self, args):
         outer = self.binding
         outer = outer.push()
-        
+        print("evaluating thunk")
+        print("self bind:" + str(self.binding.print()) + "outer:" + str(outer.print()))
+        print("params:" + str(self.params) + "args:" + str(args))
         for key, val in zip(self.params, args):
+            print("key:" + key + "val:" + str(val))
             outer.set_var(key, val)
             
         result = self.block.evaluate(outer)
@@ -441,7 +456,7 @@ class Thunk:
         
         
 
-parser = ParserPython(program, comment, debug=True, ws='\t\r ')   
+parser = ParserPython(program, comment, debug=False, ws='\t\r ')   
                               # calc is the root rule of the grammar
                               # Use param debug=True for verbose debugging
                               # messages and grammar and parse tree visualization
@@ -456,8 +471,8 @@ for i in file:
     toEval = toEval + str(i)
 
          
-toEval = '''let a = 4, b = 5, c = b + a
-print(a, b, c)'''
+# toEval = '''let a = 4, b = 5, c = b + a
+# print(a, b, c)'''
             
 '''let x = 1
             let y = 2
@@ -476,7 +491,7 @@ print(a, b, c)'''
 
          ''' 
 parse_tree = parser.parse(toEval)
-
+PTDOTExporter().exportFile(parse_tree, "parse_tree.dot")
 # print("parse_tree:" + str(parse_tree))                         
 
 result = visit_parse_tree(parse_tree, AstVisitor(debug=False))
