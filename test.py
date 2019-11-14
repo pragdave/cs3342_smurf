@@ -130,7 +130,10 @@ class AstVisitor(PTNodeVisitor):
     def visit_decl(self, node, children):
         printState(node, children, 'decl')
          #print("self:" + str(self))
-        DefList.push((children[0], children[1]))
+        defl = DecList()
+        for i in range(0, len(children), 2):
+            declar = VarDec(children[i], children[i+1])
+            defl.push(declar)
         return VarDec(children[0], children[1])
     
     def visit_variable_reference(self, node, children):
@@ -329,6 +332,17 @@ class VarDec:
         val = self.value.evaluate(binding)
         binding.set_var(self.name, val)
         return val
+
+class DefList:
+    def __init__(self, decls=[]):
+        self.decls = decls
+        
+    def push(self, decl):
+        self.decls.append(decl)
+        
+    def eval(self, binding):
+        for i in self.decls:
+            i.evaluate(binding)
 
 class VarRef:
     def __init__(self, name):
