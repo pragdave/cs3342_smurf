@@ -23,6 +23,9 @@ function generateNode(statement) {
 		case "integer":
 			newNode = new treeNodes.ValueNode(statement.value);
 			break;
+		case "identifier":
+			newNode = new treeNodes.IdentifierNode(statement.name);
+			break;
 		case "arithmetic_expr":
 			const operator = statement.params[1];
 			newNode = new treeNodes.ArithmeticExprNode(operator);
@@ -66,7 +69,7 @@ function executeAST(rootNode) {
 	rootNode.executeStatements();
 }
 
-const codeExample = "print(1)\nlet a = 3";
+const codeExample = "print(1)\nlet a = 3\nlet b = 4\n\nprint(b)";
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {
 	if (err) {

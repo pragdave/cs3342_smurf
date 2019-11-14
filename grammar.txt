@@ -13,7 +13,7 @@ decl = name:identifier _ "=" expr:expr { return {type: "assignment", name, expr:
 
 identifier = pattern:([a-z][a-zA-Z0-9]*) { return text(pattern); }
 
-variable_reference = identifier
+variable_reference = name:identifier { return {type: "identifier", name}; }
 
 if_expression = expr brace_block ( "else" brace_block )?
 
@@ -53,7 +53,7 @@ relop   =   '=='
 function_call  = fcn_name:"print" "(" params:call_arguments ")" { return {type: "function", fcn_name, params}; }
                   / fcn_name:variable_reference "(" params:call_arguments ")" { return {type: "function", fcn_name, params}; }
 
-call_arguments = pattern:(expr ("," expr)*)? { return pattern && pattern[0].length ? pattern[0] : pattern; }
+call_arguments = (expr ("," expr)*)?
 
 function_definition = param_list brace_block
 

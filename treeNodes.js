@@ -35,7 +35,6 @@ exports.RootNode = function RootNode() {
 	this.defineFunction = function(node) {
 		this.children.functions[node.getName()] = node;
 	}
-	this.callFunction = function(name) { return this.children.functions[name].executeBody(); }
 
 	this.addStatements = function(statementArr) {
 		statementArr.forEach(node => {
@@ -60,10 +59,10 @@ exports.RootNode = function RootNode() {
 		this.children.statements.forEach(node => {
 			switch(node.type) {
 				case "function":
-					node.executeBody();
+					node.executeBody(this.children.variables);
 					break;
 				case "variable":
-					console.log(`variable name: ${node.getName()}, variable value: TODO`) // TODO: remove this
+					// console.log(`variable name: ${node.getName()}, variable value: ${node.getValue()}`) // TODO: remove this
 					break;
 				default:
 					console.log(`${node.type} is an invalid node type`);
@@ -99,8 +98,8 @@ exports.FunctionNode = function FunctionNode(name) {
 		return this.children.body;
 	}
 
-	this.executeBody = function() {
-		const result = this.children.params.executeParams();
+	this.executeBody = function(variables) {
+		const result = this.children.params.executeParams(variables);
 		return this.children.body(result)
 	}
 }
@@ -185,6 +184,11 @@ exports.AssignmentNode = function AssignmentNode(name) {
 		node.setParent(this);
 		this.children.expr = node;
 	}
+	this.getValue = function() {
+		if (this.children.expr.type === "value") {
+			return this.children.expr.getValue();
+		}
+	}
 }
 
 exports.ParamsNode = function ParamsNode(paramsArr) {
@@ -195,7 +199,7 @@ exports.ParamsNode = function ParamsNode(paramsArr) {
 	this.setParent = function(node) { this.parent = node; }
 	this.getParent = function() { return this.parent; }
 
-	this.executeParams = function() {
+	this.executeParams = function(variables) {
 		return this.children.map(param => {
 			let returnVal = null;
 			switch(param.type) {
@@ -206,6 +210,11 @@ exports.ParamsNode = function ParamsNode(paramsArr) {
 					const returnNode = param.executeExpr();
 					returnVal = returnNode.getValue();
 					break;
+				case "identifier": {
+					const assignmentNode = variables[param.name];
+					returnVal = assignmentNode.getValue();
+					break;
+				}
 				default:
 					console.log(`${param.type} is an invalid param type`)
 			}
@@ -214,10 +223,21 @@ exports.ParamsNode = function ParamsNode(paramsArr) {
 	}
 }
 
-exports.ValueNode = function ValueNode(value) {
-	this.value = value;
+exports.IdentifierNode = function IdentifierNode(name) {
+	this.type = "identifier";
+	this.name = name;
 	this.parent = null;
+
+	this.setParent = function(node) { this.parent = node; }
+	this.getParent = function() { return this.parent; }
+
+	this.getName = function() { return this.name; }
+}
+
+exports.ValueNode = function ValueNode(value) {
 	this.type = "value";
+	this.parent = null;
+	this.value = value;
 
 	this.setParent = function(node) { this.parent = node; }
 	this.getParent = function() { return this.parent; }
