@@ -132,18 +132,51 @@ class CalcVisitor(PTNodeVisitor):
         print("self:" + str(self))
         return VarRef(children)
     
-    def visit_function_call(self, node, children):
-        printState(node, children, 'function_call')
-        print("self:" + str(self))
-        if children[0].getName() == 'print':
-            return Printer(children[1])
-
     def visit_boolean_expression(self, node, children):
         return RelOp(children[0], children[1], children[2])
     
     def visit_relop(self, node, children):
         return children[0]
         
+    def visit_if_expression(self, node, children):
+        printState(node, children, 'if_expr' )
+        if len(children) < 3:
+            return If(children[0], children[1])
+        else:
+            return IfElse(children[0], children[1], children[2])
+       
+    def visit_function_definition(self, node, children):
+        printState(node, children, 'func_def')
+        return FnDef(children[0], children[1])
+    
+    def visit_function_call(self, node, children):
+        printState(node, children, 'function_call')
+        print("self:" + str(self))
+        print("Calling function " + children[0].getName())
+        if children[0].getName() == 'print':
+            return Printer(children[1])
+        else:
+            return FnCall(children[0], children[1])
+        
+    def visit_param_list(self, node, children):
+        l = []
+        for i in children:
+            l.append(i)
+        return l
+    
+    def visit_call_arguments(self, node, children):
+        l = []
+        for i in children:
+            l.append(i)
+        return l
+
+    def visit_identifier(self, node, children):
+        i = ''
+        for l in children:
+            i = i + l
+        return i
+    
+             
 def printState(node, children, funcName):
     print("-----------------" + funcName + "-----------------")
     for i, n in enumerate(node):
@@ -216,19 +249,19 @@ class RelOp:
         rval = self.right.evaluate(binding)
         
         if self.op == '==' and lval == rval:
-            return True
+            return 1
         elif self.op == '!=' and lval != rval:
-            return True
+            return 1
         elif self.op == '>=' and lval >= rval:
-            return True
+            return 1
         elif self.op == '>' and lval > rval:
-            return True
+            return 1
         elif self.op == '<=' and lval <= rval:
-            return True
+            return 1
         elif self.op == '<' and lval < rval:
-            return True  
+            return 1  
         else:
-            return False
+            return 0
 
 class Assignment:
     def __init__(self, name, expression):
@@ -237,18 +270,36 @@ class Assignment:
         
     def evaluate(self, binding):
         val = self.expression.evaluate(binding)
-        binding.set_var(self.name, val)   
+        binding.set_var_val(self.name, val)   
         return val     
 
 class Binding:
-    def __init__(self):
+    def __init__(self, outer={}):
         self.bindings={}
+        self.outer = outer
+        
+    def push(self):
+        return Binding(self)
+    
+    def pop(self):
+        return self.outer
         
     def set_var(self, name, value):
         self.bindings[name] = value
+        
+    def set_var_val(self, name, value):
+        if name in self.bindings:
+            self.bindings[name] = value    
+        else:
+            raise LookupError(name + " not declared")
 
     def get_var(self, name):
-        return self.bindings.get(name, 0)
+        if name in self.bindings:
+            return self.bindings.get(name, 0)
+        elif self.outer:
+            return self.outer.get_var(name)
+        else:
+            raise LookupError(name + " not declared")
 
     def print(self):
         print(str(self.bindings))
@@ -288,13 +339,80 @@ class VarRef:
 
 class Printer:
     def __init__(self, expression):
+        print("-------------------------------------got print expr of " + str(expression))
         self.expression = expression
         
     def evaluate(self, binding):
-        val = self.expression.evaluate(binding)
+        # newBind = Binding()
+        # newBind.copy(binding)
+        val = self.expression[0].evaluate(binding)
         print("Print: " + str(val))
         return val
 
+class If:
+    def __init__(self, expr, code):
+        self.expr = expr
+        self.code = code
+    
+    def evaluate(self, binding):
+        if self.expr.evaluate(binding) == 1:
+            return self.code.evaluate(binding)
+        else:
+            return False
+        
+class IfElse:
+    def __init__(self, expr, ifCode, elseCode):
+        self.expr = expr
+        self.ifCode = ifCode
+        self.elseCode = elseCode
+        
+    def evaluate(self, binding):
+        if self.expr.evaluate(binding) == 1:
+            return self.ifCode.evaluate(binding)
+        else:
+            return self.elseCode.evaluate(binding)
+
+class FnDef:
+    def __init__(self, params, body):
+        self.params = params
+        self.body = body
+        
+    def evaluate(self, binding):
+        thun = Thunk(self.params, self.body, binding)
+        return thun
+    
+class FnCall:
+    def __init__(self, name, args):
+        self.name = name
+        self.args = args
+        
+    def evaluate(self, binding):
+        params = []
+        
+        for i in self.args:
+            params.append(i.evaluate(binding))
+        
+        thun = self.name.evaluate(binding)
+        return thun.evaluate(params)
+            
+class Thunk:
+    def __init__(self, params, block, binding):
+        self.params = params
+        self.block = block
+        self.binding = binding
+    
+    def evaluate(self, args):
+        outer = self.binding
+        outer = outer.push()
+        
+        for key, val in zip(self.params, args):
+            outer.set_var(key, val)
+            
+        result = self.block.evaluate(outer)
+        outer = binding.pop()
+        return result
+        
+        
 
 parser = ParserPython(program, comment, debug=False)   
                               # calc is the root rule of the grammar
@@ -304,22 +422,28 @@ parser = ParserPython(program, comment, debug=False)
                               # add debug=True for thorough print and .dot file
                               # dot -Tpng -O .\program_parse_tree.dot to turn dot to png
 
-# parse_tree = parser.parse('''
-#                             let x = 0
-#                             if 312 <= 4 { 
-#                                 x = 4 
-#                                 print(3 + 2)
+toEval = '''let x = 1
+            let y = 2
+            let z = 3
+            let yTimex = fn(y, x) {
+                print(y*x)
+                y = 5
+                x = 6
+                print(y*x)
+                print(z)
+            }
+            yTimex(y, x)
+            print(y)
+            print(x)
+            yTimex(5, 2)
 
-#                             } 
-#                             else {
-#                                 x = 5 #a comment
-#                                 print(2 + 5)
-#                             }
-#                             #comment x 
-#                             let y = 6
-#                           ''')   
-
-toEval = '''2 != 2'''
+         ''' 
+                          
+# toEval = '''let a = 5
+#             let b = 10
+#             if 1 == 1{b = a}
+#             let c = b + a
+#             '''
 parse_tree = parser.parse(toEval)
 
 print("parse_tree:" + str(parse_tree))                         
@@ -327,7 +451,9 @@ print("parse_tree:" + str(parse_tree))
 result = visit_parse_tree(parse_tree, CalcVisitor(debug=True))
 
 binding = Binding()
+print('--------------------execution-----------------')
 res = result.evaluate(binding)
+print('--------------------execution-----------------')
 
 print("---------------result----------------")
 print(result)
