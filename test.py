@@ -4,6 +4,8 @@ from arpeggio import RegExMatch as _
 from arpeggio import ParserPython
 from arpeggio import PTNodeVisitor
 from arpeggio import visit_parse_tree
+from arpeggio import Sequence
+import sys
 import string
 import math
 
@@ -13,10 +15,12 @@ aToz = []
 for i in string.ascii_lowercase:
     aToz.append(i)
 identChars = []
-for i in (string.ascii_letters + string.digits + "_"):
-    identChars.append(i)
 nums = ['0','1','2','3','4','5','6','7','8','9']
-
+for i in (string.ascii_letters):
+    identChars.append(i)
+for i in nums:
+    identChars.append(i)
+identChars.append("_")
 '''begin grammar rules for parser'''
 
 def program(): return               (code, EOF)
@@ -25,16 +29,17 @@ def comment(): return               ("#", _(r'.*'))
 
 def code(): return                  ZeroOrMore(statement)
 
-def statement(): return             [("let", variable_declaration), 
-                                     assignment, 
-                                     expr,
-                                     comment]
+def statement(): return             (ZeroOrMore('\n'), 
+                                     [("let", variable_declaration), 
+                                        assignment, 
+                                        expr], 
+                                     ZeroOrMore('\n'))
 
-def variable_declaration(): return  (decl, ZeroOrMore((",", decl)))
+def variable_declaration(): return  (decl, ZeroOrMore((",", ZeroOrMore('\n'), decl)))
 
 def decl(): return                  (identifier, Optional(("=", expr)))
 
-def identifier(): return            (aToz, ZeroOrMore(identChars))
+def identifier(): return            aToz, ZeroOrMore(identChars)
 
 def variable_reference(): return    identifier
 
@@ -78,18 +83,18 @@ def function_definition(): return   (param_list, brace_block)
 def param_list(): return            [("(", identifier, ZeroOrMore((",", identifier)), ")"), 
                                      ("(",")")]
 
-def brace_block(): return           ("{", code, "}")
+def brace_block(): return           (ZeroOrMore('\n'), "{", ZeroOrMore('\n'), code, "}", ZeroOrMore('\n'))
 
 
 '''-------------------------------------------------------------------------'''
 
 '''Begin semantic analysis rules'''
 
-class CalcVisitor(PTNodeVisitor):
+class AstVisitor(PTNodeVisitor):
 
     def visit_integer(self, node, children):
         printState(node, children, 'integer')
-        print("self:" + str(self))
+         #print("self:" + str(self))
         if children[0] == "-":            
             val = ''
             for i in range(1, len(children)):
@@ -103,17 +108,17 @@ class CalcVisitor(PTNodeVisitor):
         
     def visit_primary(self, node, children):
         printState(node, children, 'primary')
-        print("self:" + str(self))
+         #print("self:" + str(self))
         return children[0]
     
     def visit_mult_term(self, node, children):
         printState(node, children, 'mult_term')
-        print("self:" + str(self))
+         #print("self:" + str(self))
         return binop_list(children)
     
     def visit_arithmetic_expression(self, node, children):
         printState(node, children, 'arithmetic_expression')
-        print("self:" + str(self))
+         #print("self:" + str(self))
         return binop_list(children)
     
     def visit_assignment(self, node, children):
@@ -124,12 +129,13 @@ class CalcVisitor(PTNodeVisitor):
     
     def visit_decl(self, node, children):
         printState(node, children, 'decl')
-        print("self:" + str(self))
+         #print("self:" + str(self))
+        DefList.push((children[0], children[1]))
         return VarDec(children[0], children[1])
     
     def visit_variable_reference(self, node, children):
         printState(node, children, 'var_ref')
-        print("self:" + str(self))
+         #print("self:" + str(self))
         return VarRef(children)
     
     def visit_boolean_expression(self, node, children):
@@ -151,8 +157,8 @@ class CalcVisitor(PTNodeVisitor):
     
     def visit_function_call(self, node, children):
         printState(node, children, 'function_call')
-        print("self:" + str(self))
-        print("Calling function " + children[0].getName())
+         #print("self:" + str(self))
+        # print("Calling function " + children[0].getName())
         if children[0].getName() == 'print':
             return Printer(children[1])
         else:
@@ -178,11 +184,12 @@ class CalcVisitor(PTNodeVisitor):
     
              
 def printState(node, children, funcName):
-    print("-----------------" + funcName + "-----------------")
-    for i, n in enumerate(node):
-        print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
-    for i, c in enumerate(children):
-        print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
+    pass
+    # print("-----------------" + funcName + "-----------------")
+    # for i, n in enumerate(node):
+    #     print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
+    # for i, c in enumerate(children):
+    #     print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
 
 def binop_list(nodes):
     left = nodes[0]
@@ -199,7 +206,6 @@ class Int:
     value = 0
     
     def __init__(self, value, sign='+'):
-        print("value = " + str(value))
         self.sign = sign
         self.value = value
         
@@ -323,7 +329,7 @@ class VarDec:
         val = self.value.evaluate(binding)
         binding.set_var(self.name, val)
         return val
-    
+
 class VarRef:
     def __init__(self, name):
         n = ''
@@ -338,15 +344,22 @@ class VarRef:
         return self.name
 
 class Printer:
-    def __init__(self, expression):
-        print("-------------------------------------got print expr of " + str(expression))
-        self.expression = expression
+    def __init__(self, expressions):
+        # print("-------------------------------------got print expr of " + str(expression))
+        self.expressions = expressions
         
     def evaluate(self, binding):
         # newBind = Binding()
         # newBind.copy(binding)
-        val = self.expression[0].evaluate(binding)
-        print("Print: " + str(val))
+        val = 0
+        print("Print: ", end='')
+        for i, x in enumerate(self.expressions):
+            val = x.evaluate(binding)
+            if i < len(self.expressions) - 1:
+                print(str(val), end='|')
+            else:
+                print(str(val))      
+            
         return val
 
 class If:
@@ -414,7 +427,7 @@ class Thunk:
         
         
 
-parser = ParserPython(program, comment, debug=False)   
+parser = ParserPython(program, comment, debug=True, ws='\t\r ')   
                               # calc is the root rule of the grammar
                               # Use param debug=True for verbose debugging
                               # messages and grammar and parse tree visualization
@@ -422,7 +435,17 @@ parser = ParserPython(program, comment, debug=False)
                               # add debug=True for thorough print and .dot file
                               # dot -Tpng -O .\program_parse_tree.dot to turn dot to png
 
-toEval = '''let x = 1
+fileName = sys.argv[1]
+file = open(fileName, "r")
+toEval = ""
+for i in file:
+    toEval = toEval + str(i)
+
+         
+toEval = '''let a = 4, b = 5, c = b + a
+print(a, b, c)'''
+            
+'''let x = 1
             let y = 2
             let z = 3
             let yTimex = fn(y, x) {
@@ -438,32 +461,28 @@ toEval = '''let x = 1
             yTimex(5, 2)
 
          ''' 
-                          
-# toEval = '''let a = 5
-#             let b = 10
-#             if 1 == 1{b = a}
-#             let c = b + a
-#             '''
 parse_tree = parser.parse(toEval)
 
-print("parse_tree:" + str(parse_tree))                         
+# print("parse_tree:" + str(parse_tree))                         
 
-result = visit_parse_tree(parse_tree, CalcVisitor(debug=True))
+result = visit_parse_tree(parse_tree, AstVisitor(debug=False))
 
 binding = Binding()
-print('--------------------execution-----------------')
+# print('--------------------execution-----------------')
 res = result.evaluate(binding)
-print('--------------------execution-----------------')
+# print('--------------------execution-----------------')
 
-print("---------------result----------------")
-print(result)
-try:
-    res.print()
-    binding.print()
-except:
-    binding.print()
+# print("---------------result----------------")
+# print(result)
+# try:
+#     res.print()
+#     binding.print()
+# except:
+#     binding.print()
     
-print(toEval + " = " + str(res))
-print("---------------result----------------")
+# print(toEval + " = " + str(res))
+# print("---------------result----------------")
 
-                          
+
+# '''python test_runner.py "C:\Users\green\AppData\Local\Programs\Python\Python38\python C:\Users\green\'OneDrive - Southern Methodist University'\'Fall 2019'\'Programming Languages'\cs3342_smurf\test.py"'''
+# '''python test_runner.py "C:\Users\green\AppData\Local\Programs\Python\Python38\python C:\Users\green\OneDrive - Southern Methodist University\Fall 2019\Programming Languages\cs3342_smurf\test.py"'''
