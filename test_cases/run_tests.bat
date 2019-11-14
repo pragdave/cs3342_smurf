@@ -1,0 +1,1 @@
+py ../test_runner.py "py ../Smurf.py"

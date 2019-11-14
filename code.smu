@@ -1,0 +1,3 @@
+let a =2, c = 3
+let f = fn (a, b) { a }
+print(f(4,3))
