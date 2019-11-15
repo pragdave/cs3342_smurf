@@ -136,11 +136,14 @@ class AstVisitor(PTNodeVisitor):
         return VarDec(children[0], children[1])
     
     def visit_variable_declaration(self, node, children):
-        defl = DecList()
-        for i in children:
-            if i != '\n':
-                defl.push(i)
-        return defl
+        if len(children) > 1:
+            defl = DecList()
+            for i in children:
+                if i != '\n':
+                    defl.push(i)
+            return defl
+        else:
+            return children[0]
         
     def visit_variable_reference(self, node, children):
         printState(node, children, 'var_ref')
@@ -168,14 +171,11 @@ class AstVisitor(PTNodeVisitor):
         printState(node, children, 'function_call')
          #print("self:" + str(self))
         # print("Calling function " + children[0].getName())
-        print("visiting func call, children:" +str(children))
         if children[0].getName() == 'print':
             return Printer(children[1])
         elif len(children) > 1:
-            print("children for len > 1: " + str(children[0]) + str(children[1]))
             return FnCall(children[0], children[1])
         else:
-            print("children for else: " + str(children[0]) + str([]))
             return FnCall(children[0], [])
         
     def visit_param_list(self, node, children):
@@ -188,7 +188,6 @@ class AstVisitor(PTNodeVisitor):
         l = []
         for i in children:
             l.append(i)
-        print("call args:" + str(l))
         return l
 
     def visit_identifier(self, node, children):
@@ -315,8 +314,6 @@ class Binding:
             raise LookupError(name + " not declared in set val")
 
     def get_var(self, name):
-        print("getting:" + str(name))
-        self.print()
         if name in self.bindings:
             return self.bindings.get(name, 0)
         elif self.outer:
@@ -354,6 +351,7 @@ class DecList:
         
     def push(self, decl):
         self.decls.append(decl)
+        print(str("declarations pushed: " + str(self.decls)))
         
     def evaluate(self, binding):
         last = ''
@@ -377,7 +375,6 @@ class VarRef:
 class Printer:
     def __init__(self, expressions):
         # print("-------------------------------------got print expr of " + str(expression))
-        print("in print, expr=" + str(expressions))
         self.expressions = expressions
         
     def evaluate(self, binding):
@@ -385,10 +382,8 @@ class Printer:
         # newBind.copy(binding)
         val = 0
         print("Print: ", end='')
-        print(self.expressions)
         for i, x in enumerate(self.expressions):
             val = x.evaluate(binding)
-            print("in loop")
             if i < len(self.expressions) - 1:
                 print(str(val), end='|')
             else:
@@ -425,8 +420,6 @@ class FnDef:
         self.body = body
         
     def evaluate(self, binding):
-        print("binding at fnDef:")
-        binding.print()
         thun = Thunk(self.params, self.body, binding)
         return thun
     
@@ -437,15 +430,10 @@ class FnCall:
         
     def evaluate(self, binding):
         params = []
-        
-        print("fncall evaluate args:" + str(self.args))
-        print("fncall bindings:")
-        binding.print()
+
         for i in self.args:
             params.append(i.evaluate(binding))
         
-        print("name: " + str(self.name))
-
         thun = self.name.evaluate(binding)
         return thun.evaluate(binding, params)
             
@@ -456,14 +444,13 @@ class Thunk:
         self.binding = binding
     
     def evaluate(self, binding, args):
-        print("binding in evaluate")
-        binding.print()
         outer = binding.push()
-        print("evaluating thunk")
-        print("self bind:" + str(self.binding.print()) + " outer:" + str(outer.print()))
-        print("params:" + str(self.params) + "args:" + str(args))
+        # print("evaluating thunk")
+        # print("self bind:" + str(self.binding.print()) + " outer:" + str(outer.print()))
+        # print("params:" + str(self.params) + "args:" + str(args))
+        if len(args) < len(self.params):
+            raise Exception('Not enough arguments for function')
         for key, val in zip(self.params, args):
-            print("key:" + key + "val:" + str(val))
             outer.set_var(key, val)
             
         result = self.block.evaluate(outer)
@@ -479,7 +466,6 @@ parser = ParserPython(program, comment, debug=False, ws='\t\r ')
                               # using graphviz and dot
                               # add debug=True for thorough print and .dot file
                               # dot -Tpng -O .\program_parse_tree.dot to turn dot to png
-
 fileName = sys.argv[1]
 file = open(fileName, "r")
 toEval = ""
@@ -487,11 +473,11 @@ for i in file:
     toEval = toEval + str(i)
 
          
-toEval = '''
-let a = fn(){2}
-print(a())
-let a = fn(x){x}
-'''
+# toEval = '''
+# let a = fn(){2}
+# print(a())
+# let a = fn(x){x}
+# '''
             
 '''let x = 1
             let y = 2
