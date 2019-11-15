@@ -2,6 +2,9 @@ exports.ExecuteStatement = function ExecuteStatement(node) {
 	return ExecuteNode(node);
 }
 
+variables = {};
+functions = {};
+
 ExecuteNode = function ExecuteNode(node) {
 	let returnVal = null;
 	switch(node.type) {
@@ -39,7 +42,7 @@ ExecuteValue = function ExecuteValue(node) {
 }
 
 ExecuteIdentifier = function ExecuteIdentifier(node) {
-	return node.value;
+	return variables[node.name];
 }
 
 ExecuteArithmeticExpr = function ExecuteArithmeticExpr(node) {
@@ -68,7 +71,7 @@ ExecuteArithmeticExpr = function ExecuteArithmeticExpr(node) {
 		default:
 			console.log(`${this.operator} is an invalid operator`);
 	}
-	return value; // TODO: possibly return node somewhere?
+	return value;
 }
 
 ExecuteParams = function ExecuteParams(node) {
@@ -79,6 +82,6 @@ ExecuteParams = function ExecuteParams(node) {
 
 ExecuteAssignment = function ExecuteAssignment(node) {
 	const value = ExecuteNode(node.expr);
-	console.log("name: " + node.name + ", value: " + value) // TODO: remove this
+	variables[node.name] = value;
 	return value;
 }

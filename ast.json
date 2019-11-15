@@ -1,5 +1,18 @@
 [
 	{
+		"type": "variable_dec",
+		"declarations": [
+			{
+				"type": "assignment",
+				"name": "a",
+				"expr": {
+					"type": "integer",
+					"value": 1
+				}
+			}
+		]
+	},
+	{
 		"type": "function",
 		"fcn_name": "print",
 		"params": [
@@ -11,24 +24,16 @@
 		]
 	},
 	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
+		"type": "variable_dec",
+		"declarations": [
 			{
-				"type": "arithmetic_expr",
-				"params": [
-					{
-						"type": "integer",
-						"value": 3
-					},
-					"-",
-					{
-						"type": "integer",
-						"value": 1
-					}
-				]
-			},
-			[]
+				"type": "assignment",
+				"name": "b",
+				"expr": {
+					"type": "integer",
+					"value": 4
+				}
+			}
 		]
 	},
 	{
@@ -39,167 +44,14 @@
 				"type": "arithmetic_expr",
 				"params": [
 					{
-						"type": "integer",
-						"value": 2
+						"type": "identifier",
+						"name": "a"
 					},
 					"+",
 					{
-						"type": "integer",
-						"value": 1
+						"type": "identifier",
+						"name": "b"
 					}
-				]
-			},
-			[]
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "arithmetic_expr",
-				"params": [
-					{
-						"type": "arithmetic_expr",
-						"params": [
-							{
-								"type": "integer",
-								"value": 2
-							},
-							"*",
-							{
-								"type": "integer",
-								"value": 5
-							}
-						]
-					},
-					"-",
-					{
-						"type": "arithmetic_expr",
-						"params": [
-							{
-								"type": "integer",
-								"value": 3
-							},
-							"*",
-							{
-								"type": "integer",
-								"value": 2
-							}
-						]
-					}
-				]
-			},
-			[]
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "arithmetic_expr",
-				"params": [
-					{
-						"type": "integer",
-						"value": 4
-					},
-					"-",
-					{
-						"type": "integer",
-						"value": -1
-					}
-				]
-			},
-			[]
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "arithmetic_expr",
-				"params": [
-					{
-						"type": "integer",
-						"value": 5
-					},
-					"-",
-					{
-						"type": "integer",
-						"value": -1
-					}
-				]
-			},
-			[]
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "arithmetic_expr",
-				"params": [
-					{
-						"type": "integer",
-						"value": 21
-					},
-					"/",
-					{
-						"type": "integer",
-						"value": 3
-					}
-				]
-			},
-			[]
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "arithmetic_expr",
-				"params": [
-					[
-						"(",
-						{
-							"type": "arithmetic_expr",
-							"params": [
-								{
-									"type": "integer",
-									"value": 3
-								},
-								"-",
-								{
-									"type": "integer",
-									"value": 1
-								}
-							]
-						},
-						")"
-					],
-					"*",
-					[
-						"(",
-						{
-							"type": "arithmetic_expr",
-							"params": [
-								{
-									"type": "integer",
-									"value": 3
-								},
-								"+",
-								{
-									"type": "integer",
-									"value": 1
-								}
-							]
-						},
-						")"
-					]
 				]
 			},
 			[]
