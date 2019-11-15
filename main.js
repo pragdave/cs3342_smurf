@@ -1,4 +1,5 @@
 treeNodes = require("./treeNodes");
+execution = require("./execution");
 fs = require("file-system");
 peg = require("pegjs");
 
@@ -66,10 +67,10 @@ function generateASTNodes(ast) {
 }
 
 function executeAST(rootNode) {
-	rootNode.executeStatements();
+	rootNode.children.statements.forEach(s => execution.ExecuteStatement(s));
 }
 
-const codeExample = "print(1)\nlet a = 3\nlet b = 4\n\nprint(b)";
+const codeExample = "print(1)";
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {
 	if (err) {

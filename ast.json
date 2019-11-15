@@ -9,42 +9,5 @@
 			},
 			[]
 		]
-	},
-	{
-		"type": "variable_dec",
-		"declarations": [
-			{
-				"type": "assignment",
-				"name": "a",
-				"expr": {
-					"type": "integer",
-					"value": 3
-				}
-			}
-		]
-	},
-	{
-		"type": "variable_dec",
-		"declarations": [
-			{
-				"type": "assignment",
-				"name": "b",
-				"expr": {
-					"type": "integer",
-					"value": 4
-				}
-			}
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "identifier",
-				"name": "b"
-			},
-			[]
-		]
 	}
 ]

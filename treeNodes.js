@@ -55,20 +55,6 @@ exports.RootNode = function RootNode() {
 			}
 		});
 	}
-	this.executeStatements = function() {
-		this.children.statements.forEach(node => {
-			switch(node.type) {
-				case "function":
-					node.executeBody(this.children.variables);
-					break;
-				case "variable":
-					// console.log(`variable name: ${node.getName()}, variable value: ${node.getValue()}`) // TODO: remove this
-					break;
-				default:
-					console.log(`${node.type} is an invalid node type`);
-			}
-		})
-	}
 }
 
 exports.FunctionNode = function FunctionNode(name) {
@@ -96,11 +82,6 @@ exports.FunctionNode = function FunctionNode(name) {
 	}
 	this.getBody = function() {
 		return this.children.body;
-	}
-
-	this.executeBody = function(variables) {
-		const result = this.children.params.executeParams(variables);
-		return this.children.body(result)
 	}
 }
 
@@ -198,29 +179,6 @@ exports.ParamsNode = function ParamsNode(paramsArr) {
 	
 	this.setParent = function(node) { this.parent = node; }
 	this.getParent = function() { return this.parent; }
-
-	this.executeParams = function(variables) {
-		return this.children.map(param => {
-			let returnVal = null;
-			switch(param.type) {
-				case "value":
-					returnVal = param.getValue();
-					break;
-				case "arithmetic_expr":
-					const returnNode = param.executeExpr();
-					returnVal = returnNode.getValue();
-					break;
-				case "identifier": {
-					const assignmentNode = variables[param.name];
-					returnVal = assignmentNode.getValue();
-					break;
-				}
-				default:
-					console.log(`${param.type} is an invalid param type`)
-			}
-			return returnVal;
-		})
-	}
 }
 
 exports.IdentifierNode = function IdentifierNode(name) {
