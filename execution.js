@@ -23,24 +23,49 @@ exports.ExecuteStatement = function ExecuteStatement(node) {
 }
 
 ExecuteFunction = function ExecuteFunction(node) {
-	const params = ExecuteParams(node.children.params);
-	return node.children.body(params);
+	const params = ExecuteParams(node.params);
+	return node.body(params);
 }
 
 ExecuteValue = function ExecuteValue(node) {
-	return node.getValue();
+	return node.value;
 }
 
 ExecuteIdentifier = function ExecuteIdentifier(node) {
-	return node.getValue();
+	return node.value;
 }
 
 ExecuteArithmeticExpr = function ExecuteArithmeticExpr(node) {
-	return node.executeExpr().getValue();
+	let value = 0;
+	let leftSide = node.leftSide;
+	let rightSide = node.rightSide;
+	if (leftSide.type === "arithmetic_expr") {
+		leftSide = ExecuteArithmeticExpr(leftSide);
+	}
+	if (rightSide.type === "arithmetic_expr") {
+		rightSide = ExecuteArithmeticExpr(rightSide);
+	}
+	switch(node.operator) {
+		case "+":
+			value = leftSide.value + rightSide.value;
+			break;
+		case "-":
+			value = leftSide.value - rightSide.value;
+			break;
+		case "*":
+			value = leftSide.value * rightSide.value;
+			break;
+		case "/":
+			value = leftSide.value / rightSide.value;
+			break;
+		default:
+			console.log(`${this.operator} is an invalid operator`);
+	}
+	return value; // TODO: possibly return node somewhere?
 }
 
 ExecuteParams = function ExecuteParams(node) {
-	return node.children.map(param => {
+	return node.params.map(param => {
 		return exports.ExecuteStatement(param);
 	})
 }

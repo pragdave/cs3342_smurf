@@ -18,8 +18,10 @@ function generateNode(statement) {
 			newNode = new treeNodes.FunctionNode(statement.fcn_name);
 			const params = statement.params.map(p => generateNode(p)).filter(p => !!p && !!p.type);
 			const paramsNode = new treeNodes.ParamsNode(params);
-			newNode.setParams(paramsNode);
-			newNode.setBody(body);
+			newNode.params = paramsNode;
+			paramsNode.parent = newNode;
+			newNode.body = body;
+			// body.parent = newNode;
 			break;
 		case "integer":
 			newNode = new treeNodes.ValueNode(statement.value);
@@ -35,22 +37,29 @@ function generateNode(statement) {
 				leftParams = leftParams[1];
 			}
 			const leftSide = generateNode(leftParams);
-			newNode.setLeftSide(leftSide);
+			newNode.leftSide = leftSide;
+			leftSide.parent = newNode;
 			let rightParams = statement.params[2];
 			if (!rightParams.type && rightParams.length > 1) {
 				rightParams = rightParams[1];
 			}
 			const rightSide = generateNode(rightParams);
-			newNode.setRightSide(rightSide);
+			newNode.rightSide = rightSide;
+			rightSide.parent = newNode;
 			break;
 		case "variable_dec":
 			newNode = new treeNodes.VariableDecNode();
-			const declarations = statement.declarations.map(d => generateNode(d));
-			newNode.setDeclarations(declarations)
+			statement.declarations.forEach(d => {
+				const decNode = generateNode(d);
+				newNode.declarations.push(decNode);
+				decNode.parent = newNode;
+			});
 			break;
 		case "assignment":
 			newNode = new treeNodes.AssignmentNode(statement.name);
 			const exprNode = generateNode(statement.expr);
+			newNode.expr = exprNode;
+			exprNode.parent = newNode;
 			newNode.setExpr(exprNode);
 			break;
 		default: 
@@ -67,7 +76,7 @@ function generateASTNodes(ast) {
 }
 
 function executeAST(rootNode) {
-	rootNode.children.statements.forEach(s => execution.ExecuteStatement(s));
+	rootNode.statements.forEach(s => execution.ExecuteStatement(s));
 }
 
 const codeExample = "print(1)";
