@@ -13,8 +13,7 @@ exports.RootNode = function RootNode() {
 					this.statements.push(node);
 					break;
 				case "variable_dec":
-					const declarations = node.getDeclarations();
-					declarations.forEach(assignmentNode => {
+					node.declarations.forEach(assignmentNode => {
 						this.variables[node.name] = node;
 						this.statements.push(assignmentNode);
 					})
@@ -49,7 +48,7 @@ exports.VariableDecNode = function VariableDecNode() {
 }
 
 exports.AssignmentNode = function AssignmentNode(name) {
-	this.type = "variable";
+	this.type = "assignment";
 	this.parent = null;
 	this.name = name;
 	this.expr = null;
