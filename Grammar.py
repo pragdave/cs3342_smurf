@@ -27,14 +27,15 @@ def arithmetic_expression():
 
 def print_func():
     return "print(", arithmetic_expression, ")"
-    
-def comment():
-    return RegExMatch('#.*')
 
 #######################
 #Interpreter Interface#
 #######################
 
+#Commenting format to pass into Arpeggio.ParserPython
+def comment():
+    return RegExMatch('#.*')
+
 #Top level of the grammar
-def runner():
+def code():
     return ZeroOrMore(print_func), EOF
