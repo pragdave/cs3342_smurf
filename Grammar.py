@@ -30,7 +30,7 @@ def boolean_expression():
 
 #Handles a print statement
 def print_func():
-    return "print(", [boolean_expression, arithmetic_expression], ")"
+    return "print(", [boolean_expression, arithmetic_expression], ZeroOrMore(",", [boolean_expression, arithmetic_expression]), ")"
 
 #######################
 #Interpreter Interface#
