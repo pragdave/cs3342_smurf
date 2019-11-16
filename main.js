@@ -3,8 +3,6 @@ execution = require("./execution");
 fs = require("file-system");
 peg = require("pegjs");
 
-function printFunction(valArr) { console.log(valArr[0]); }
-
 function generateNode(statement) {
 	if (!statement.type) {
 		return {};
@@ -13,7 +11,7 @@ function generateNode(statement) {
 	let newNode = {};
 	switch(statement.type) {
 		case "function":
-			const body = statement.fcn_name === "print" ? printFunction : statement.body;
+			const body = statement.body;
 				// TODO: generateNode for statement.body
 			newNode = new treeNodes.FunctionNode(statement.fcn_name);
 			const params = statement.params.map(p => generateNode(p)).filter(p => !!p && !!p.type);
@@ -105,13 +103,13 @@ const codeExample =
 "let c = a+b\n" +
 "print(c)\n\n" +		// 4
 // multiple declarations in a single let
-"let e = 99, f = 100, g = e+f\n";
-// "print(e,f,g)\n\n" +	// 99|100|199
-// // on multiple lines
-// "let h = 99,\n" +
-// "\ti = 200,\n" +
-// "\tj = h+i\n" +
-// "print(h,i,j)\n"		// 99|200|299
+"let e = 99, f = 100, g = e+f\n" +
+"print(e,f,g)\n\n" +	// 99|100|199
+// on multiple lines
+"let h = 99,\n" +
+"\ti = 200,\n" +
+"\tj = h+i\n" +
+"print(h,i,j)\n"		// 99|200|299
 
 
 

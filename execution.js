@@ -3,7 +3,19 @@ exports.ExecuteStatement = function ExecuteStatement(node) {
 }
 
 variables = {};
-functions = {};
+functions = {
+	print: (paramsArr) => {
+			let printString = "";
+			paramsArr.forEach((p,i) => {
+			
+			if (i !== 0) {
+				printString += "|";
+			}
+			printString += p;
+		});
+		console.log(printString);
+	}
+};
 
 ExecuteNode = function ExecuteNode(node) {
 	let returnVal = null;
@@ -32,9 +44,14 @@ ExecuteNode = function ExecuteNode(node) {
 	return returnVal;
 }
 
+DefineFunction = function DefineFunction(node) {
+	functions[node.name] = {params: node.params, body: node.body};
+}
+
 ExecuteFunction = function ExecuteFunction(node) {
 	const params = ExecuteParams(node.params);
-	return node.body(params);
+	const functionBody = functions[node.name];
+	return functionBody(params);
 }
 
 ExecuteValue = function ExecuteValue(node) {

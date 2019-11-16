@@ -55,7 +55,9 @@ relop   =   '=='
 function_call  = fcn_name:"print" "(" params:call_arguments ")" { return {type: "function", fcn_name, params}; }
                   / fcn_name:variable_reference "(" params:call_arguments ")" { return {type: "function", fcn_name, params}; }
 
-call_arguments = (expr ("," expr)*)?
+call_arguments = arg:((expr repeat_arg)?) { const args = arg[1].length ? [arg[0], ...arg[1]] : [arg[0]]; return args; }
+
+repeat_arg = arg:(("," expr)*) { const finalArg = arg.length ? arg.map(a => a[1]) : []; return finalArg; }
 
 function_definition = param_list brace_block
 
