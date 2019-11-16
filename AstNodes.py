@@ -29,13 +29,22 @@ class Arithmetic_Expression:
     def accept(self, visitor):
         return visitor.evaluate_arithmetic_expression(self)
 
+class Boolean_Expression:
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+        
+    def accept(self, visitor):
+        return visitor.evaluate_boolean_expression(self)
+
 class Print:
-    def __init__(self, arithmeticExpression):
-        self.arithmeticExpression = arithmeticExpression
+    def __init__(self, expression):
+        self.expression = expression
         
     def accept(self, visitor):
         return visitor.evaluate_print(self)
-        
+
 class Code:
     def __init__(self, list):
         self.list = list

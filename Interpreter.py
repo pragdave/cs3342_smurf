@@ -26,9 +26,26 @@ class Interpreter(PTNodeVisitor):
             else:
                 expr += node.plusAndTermList[i].accept(self)
         return expr
+    
+    def evaluate_boolean_expression(self, node):
+        left = node.left.accept(self)
+        right = node.right.accept(self)
         
+        if node.op == "==":
+            return left == right
+        elif node.op == "!=":
+            return left != right
+        elif node.op == ">=":
+            return left >= right
+        elif node.op == ">":
+            return left > right
+        elif node.op == "<=":
+            return left <= right
+        else:
+            return left < right
+    
     def evaluate_print(self, node):
-        print(node.arithmeticExpression.accept(self))
+        print(node.expression.accept(self))
         
     def evaluate_code(self, node):
         for expr in node.list:
