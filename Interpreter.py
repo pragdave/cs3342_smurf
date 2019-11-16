@@ -1,17 +1,37 @@
-from arpeggio import ParserPython, visit_parse_tree
-import Visitor as visitor
-import Grammar as grammar
+from arpeggio import PTNodeVisitor
 
-def main(debug=True):
-    parser = ParserPython(grammar.runner, debug=debug)
+class Interpreter(PTNodeVisitor):
+    def evaluate_number(self, node):
+        return float(node.value)
     
-    f = open("code.smu", "r")
-    contents = f.read()
-    
-    parse_tree = parser.parse(contents)
-    
-    result = visit_parse_tree(parse_tree, visitor.Visitor(debug=debug))
-    
-if __name__ == "__main__":
-    #main(debug=False)
-    main()
+    def evaluate_factor(self, node):
+        if node.sign == "-":
+            return -1 * node.value.accept(self)
+        return node.value.accept(self)
+        
+    def evaluate_term(self, node):
+        term = node.factor.accept(self)
+        for i in range(1, len(node.multAndFactList), 2):
+            if node.multAndFactList[i-1] == "*":
+                term *= node.multAndFactList[i].accept(self)
+            else:
+                term /= node.multAndFactList[i].accept(self)
+        return term
+        
+    def evaluate_arithmetic_expression(self, node):
+        expr = node.term.accept(self)
+        for i in range(1, len(node.plusAndTermList), 2):
+            if i and node.plusAndTermList[i-1] == "-":
+                expr -= node.plusAndTermList[i].accept(self)
+            else:
+                expr += node.plusAndTermList[i].accept(self)
+        return expr
+        
+    def evaluate_print(self, node):
+        print(node.arithmeticExpression.accept(self))
+        
+    def evaluate_code(self, node):
+        for expr in node.list:
+            value = expr.accept(self)
+        
+        return value;
