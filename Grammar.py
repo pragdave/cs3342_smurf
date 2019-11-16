@@ -7,7 +7,7 @@ from arpeggio import RegExMatch, Optional, ZeroOrMore, OneOrMore, EOF
 
 #Int or float or nothing
 def number():
-    return RegExMatch('\d*\.\d*|\d+')
+    return [RegExMatch('\d*\.\d*|\d+'), RegExMatch('\w+')]
 
 #An optional plus/minus followed by a number or an arithmetic expression
 def factor():
