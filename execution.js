@@ -27,7 +27,7 @@ ExecuteNode = function ExecuteNode(node) {
 			returnVal = ExecuteAssignment(node);
 			break;
 		default:
-			console.log(`${node.type} is an invalid node type`);
+			console.log(`${node.type} is an invalid node type --execution`);
 	}
 	return returnVal;
 }
@@ -66,10 +66,10 @@ ExecuteArithmeticExpr = function ExecuteArithmeticExpr(node) {
 			value = leftSide * rightSide;
 			break;
 		case "/":
-			value = leftSide / rightSide;
+			value = Math.floor(leftSide / rightSide);
 			break;
 		default:
-			console.log(`${this.operator} is an invalid operator`);
+			console.log(`${this.operator} is an invalid operator --execution`);
 	}
 	return value;
 }

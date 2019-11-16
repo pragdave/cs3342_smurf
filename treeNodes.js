@@ -1,7 +1,5 @@
 exports.RootNode = function RootNode() {
 	this.type = "root";
-	this.variables = {};
-	this.functions = {};
 	this.statements = [];
 
 	// TODO: possibly remove this and track in execution
@@ -9,17 +7,18 @@ exports.RootNode = function RootNode() {
 		statementArr.forEach(node => {
 			switch(node.type) {
 				case "function":
-					this.functions[node.name] = node;
 					this.statements.push(node);
 					break;
 				case "variable_dec":
 					node.declarations.forEach(assignmentNode => {
-						this.variables[node.name] = node;
 						this.statements.push(assignmentNode);
 					})
 					break;
+				case "assignment":
+					this.statements.push(node);
+					break;
 				default:
-					console.log(`${node.type} is an invalid node type`);
+					console.log(`${node.type} is an invalid node type --treeNodes`);
 			}
 		});
 	}

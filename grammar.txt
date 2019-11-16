@@ -8,7 +8,7 @@ statement = "let" _ variable_dec:variable_declaration { return variable_dec; }
 
 variable_declaration  = dec:(decl ("," decl)*) { return {type: "variable_dec", declarations: dec.filter(d => !!d.type)} }
 
-decl = name:identifier _ "=" expr:expr { return {type: "assignment", name, expr: expr}; }
+decl = name:identifier _ "=" expr:expr { return {type: "assignment", name, expr}; }
       / name:identifier { return {type: "assignment", name}; }
 
 identifier = pattern:([a-z][a-zA-Z0-9]*) { return text(pattern); }
@@ -17,7 +17,7 @@ variable_reference = name:identifier { return {type: "identifier", name}; }
 
 if_expression = expr brace_block ( "else" brace_block )?
 
-assignment  = identifier "=" expr
+assignment  = _ name:identifier _ "=" expr:expr { return {type: "assignment", name, expr}; }
 
 expr  = "fn" function_definition
       / "if" if_expression
@@ -33,14 +33,14 @@ mult_term  = pattern:(primary mulop mult_term) { return {type: "arithmetic_expr"
            / primary
 
 primary  = _ value:integer _ { return {type: "integer", value: value} }
-         / function_call
-         / variable_reference
+         / _ fcn:function_call { return fcn; }
+         / _ ref:variable_reference { return ref; }
          / "(" arithmetic_expression ")"
 
 integer = sign:"-"? num:[0-9]+ { return sign ? Number((sign+num).replace(',','')) : Number(num.toString().replace(',',''));}
 
-addop   =   '+' 
-          / '-' 
+addop   =   _ op:'+' {return op;}
+          / _ op:'-' {return op;}
 mulop   =   '*' 
           / '/' 
 relop   =   '=='

@@ -78,7 +78,34 @@ function executeAST(rootNode) {
 	rootNode.statements.forEach(s => execution.ExecuteStatement(s));
 }
 
-const codeExample = "let a = 1\nprint(1)\nlet b = 4\nprint(a+b)";
+// const codeExample = "let a = 1\nprint(1)\nlet b = 4\nprint(a+b)";
+
+// const codeExample = 
+// "let a = 3\n" +
+// "let b = 4\n\n" +
+// "a = a + b\n" +
+// "b = b-a\n" +
+// "print(a)\n" +
+// "print(b)\n";
+
+
+const codeExample =
+"let a = 3\n" +
+"let b = 4\n\n" +
+"print(b-a)\n" +		// 1
+"print(a-1)\n" +		// 2
+"print(2+b/a)\n" +		// 3
+"print(b)\n\n" +		// 4
+"a = a + b\n" +
+"b = b-a\n\n" +
+"print(a)\n" +			// 7
+"print(b)\n\n" +		// -3
+"let c = a\n" +
+"a = b\n" +
+"b = c\n\n" +
+"print(a)\n" +			// -3
+"print(b)\n"			// 7
+
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {
 	if (err) {
