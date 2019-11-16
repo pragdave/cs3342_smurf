@@ -25,8 +25,12 @@ def arithmetic_expression():
 #Built in Functions#
 ####################
 
+def boolean_expression():
+    return arithmetic_expression, ["==", "!=", ">=", ">", "<=", "<"], arithmetic_expression
+
+#Handles a print statement
 def print_func():
-    return "print(", arithmetic_expression, ")"
+    return "print(", [boolean_expression, arithmetic_expression], ")"
 
 #######################
 #Interpreter Interface#
@@ -38,4 +42,4 @@ def comment():
 
 #Top level of the grammar
 def code():
-    return ZeroOrMore(print_func), EOF
+    return ZeroOrMore([print_func]), EOF
