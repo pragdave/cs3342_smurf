@@ -90,9 +90,6 @@ def brace_block(): return           (ZeroOrMore('\n'), "{", ZeroOrMore('\n'), co
 
 
 '''-------------------------------------------------------------------------'''
-
-'''Begin semantic analysis rules'''
-
         
         
 
@@ -103,18 +100,20 @@ parser = ParserPython(program, comment, debug=False, ws='\t\r ')
                               # using graphviz and dot
                               # add debug=True for thorough print and .dot file
                               # dot -Tpng -O .\program_parse_tree.dot to turn dot to png
+
+
+#Read input from file
 fileName = sys.argv[1]
 file = open(fileName, "r")
 toEval = ""
-for i in file:
-    toEval = toEval + str(i)
+for line in file:
+    toEval = toEval + str(line)
 
-# toEval = sys.argv[0]  
-# toEval = '''
-# let add_n = fn (n) { fn (x) { x + n }}
-# let add_2 = add_n(2)
-# print(add_2(3))
-# '''
+'''toEval = 
+let add_n = fn (n) { fn (x) { x + n }}
+let add_2 = add_n(2)
+print(add_2(3))
+'''
             
 '''let x = 1
             let y = 2
@@ -132,30 +131,15 @@ for i in file:
             yTimex(5, 2)
 
          ''' 
+
+#Create parse tree
 parse_tree = parser.parse(toEval)
-PTDOTExporter().exportFile(parse_tree, "parse_tree.dot")
-# print("parse_tree:" + str(parse_tree))                         
 
-result = visit_parse_tree(parse_tree, AstVisitor(debug=False))
+#print parse tree as .dot file for viewing
+# PTDOTExporter().exportFile(parse_tree, "parse_tree.dot")
 
-binding = Binding()
-# print('--------------------execution-----------------')
+#Create AST
+ast = visit_parse_tree(parse_tree, AstVisitor(debug=False))
 
-
-res = result.accept(Interpreter(), binding)
-# print('--------------------execution-----------------')
-
-# print("---------------result----------------")
-# print(result)
-# try:
-#     res.print()
-#     binding.print()
-# except:
-#     binding.print()
-    
-# print(toEval + " = " + str(res))
-# print("---------------result----------------")
-
-
-# '''python test_runner.py "C:\Users\green\AppData\Local\Programs\Python\Python38\python C:\Users\green\'OneDrive - Southern Methodist University'\'Fall 2019'\'Programming Languages'\cs3342_smurf\test.py"'''
-# '''python test_runner.py "C:\Users\green\AppData\Local\Programs\Python\Python38\python C:\Users\green\OneDrive - Southern Methodist University\Fall 2019\Programming Languages\cs3342_smurf\test.py"'''
+#Execute and store final result into result using interpreter
+result = ast.accept(Interpreter(), Binding())

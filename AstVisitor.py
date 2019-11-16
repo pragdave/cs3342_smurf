@@ -103,116 +103,8 @@ class AstVisitor(PTNodeVisitor):
         for l in children:
             i = i + l
         return i
+
     
-             
-def printState(node, children, funcName):
-    pass
-    # print("-----------------" + funcName + "-----------------")
-    # for i, n in enumerate(node):
-    #     print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
-    # for i, c in enumerate(children):
-    #     print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
-
-def binop_list(nodes):
-    left = nodes[0]
-    size = len(nodes)
-    offset = 1
-    while (offset < size):
-        op = nodes[offset]
-        right = nodes[offset+1]
-        left = binOp(left, op, right)
-        offset+=2
-    return left
-          
-class Int:
-    value = 0
-    
-    def __init__(self, value, sign='+'):
-        self.sign = sign
-        self.value = value
-        
-    def evaluate(self, binding):
-        if self.sign == '-':
-            return -1*int(self.value, 10)
-        else:
-            return int(self.value, 10)
-        
-    def accept(self, visitor, binding):
-        return visitor.evaluate_Int(self, binding)
-    
-    def print(self):
-        print("Int value: " + str(self.value))
-
-class binOp:
-    def __init__(self, l, op, r):
-        self.left = l
-        self.op = op
-        self.right = r
-        
-    def evaluate(self, binding):
-        lval = self.left.evaluate(binding)
-        rval = self.right.evaluate(binding)
-        if self.op == '+':
-            return lval + rval
-        elif self.op == '-':
-            return lval - rval
-        elif self.op == '*':
-            return lval * rval
-        elif self.op == '/':
-            return math.trunc(lval/rval)
-        
-    def accept(self, visitor, binding):
-        return visitor.evaluate_binOp(self, binding)
-        
-    def print(self):
-        print("BinOp")
-        print("lval: -------------") 
-        self.left.print()
-        print("op:" + self.op)
-        print("rval ----")
-        self.right.print()
-
-class RelOp:
-    def __init__(self, l, op, r):
-        self.left = l
-        self.op = op
-        self.right = r
-        
-    def evaluate(self, binding):
-        lval = self.left.evaluate(binding)
-        rval = self.right.evaluate(binding)
-        
-        if self.op == '==' and lval == rval:
-            return 1
-        elif self.op == '!=' and lval != rval:
-            return 1
-        elif self.op == '>=' and lval >= rval:
-            return 1
-        elif self.op == '>' and lval > rval:
-            return 1
-        elif self.op == '<=' and lval <= rval:
-            return 1
-        elif self.op == '<' and lval < rval:
-            return 1  
-        else:
-            return 0
-        
-    def accept(self, visitor, binding):
-        return visitor.evaluate_RelOp(self, binding)
-
-class Assignment:
-    def __init__(self, name, expression):
-        self.name = name
-        self.expression = expression
-        
-    def evaluate(self, binding):
-        val = self.expression.evaluate(binding)
-        binding.set_var_val(self.name, val)   
-        return val     
-    
-    def accept(self, visitor, binding):
-        return visitor.evaluate_Assignment(self, binding)
-
 class Binding:
     def __init__(self, outer={}):
         self.bindings={}
@@ -244,17 +136,78 @@ class Binding:
     def print(self):
         print(str(self.outer))
         print(str(self.bindings))
+             
+def printState(node, children, funcName):
+    pass
+    # print("-----------------" + funcName + "-----------------")
+    # for i, n in enumerate(node):
+    #     print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
+    # for i, c in enumerate(children):
+    #     print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
+
+def binop_list(nodes):
+    left = nodes[0]
+    size = len(nodes)
+    offset = 1
+    while (offset < size):
+        op = nodes[offset]
+        right = nodes[offset+1]
+        left = binOp(left, op, right)
+        offset+=2
+    return left
+          
+class Int:
+    value = 0
+    
+    def __init__(self, value, sign='+'):
+        self.sign = sign
+        self.value = value
+        
+    def accept(self, visitor, binding):
+        return visitor.evaluate_Int(self, binding)
+    
+    def print(self):
+        print("Int value: " + str(self.value))
+
+class binOp:
+    def __init__(self, l, op, r):
+        self.left = l
+        self.op = op
+        self.right = r
+        
+    def accept(self, visitor, binding):
+        return visitor.evaluate_binOp(self, binding)
+        
+    def print(self):
+        print("BinOp")
+        print("lval: -------------") 
+        self.left.print()
+        print("op:" + self.op)
+        print("rval ----")
+        self.right.print()
+
+class RelOp:
+    def __init__(self, l, op, r):
+        self.left = l
+        self.op = op
+        self.right = r
+        
+
+    def accept(self, visitor, binding):
+        return visitor.evaluate_RelOp(self, binding)
+
+class Assignment:
+    def __init__(self, name, expression):
+        self.name = name
+        self.expression = expression
+        
+    def accept(self, visitor, binding):
+        return visitor.evaluate_Assignment(self, binding)
 
 class Code:
     def __init__(self, expressions):
         self.expressions = expressions
         
-    def evaluate(self, binding):
-        value = ''
-        for ex in self.expressions:
-            value = ex.evaluate(binding)
-        return value
-    
     def accept(self, visitor, binding):
         return visitor.evaluate_Code(self, binding)
 
@@ -263,11 +216,6 @@ class VarDec:
         self.name = name
         self.value = value
 
-    def evaluate(self, binding):
-        val = self.value.evaluate(binding)
-        binding.set_var(self.name, val)
-        return val
-    
     def accept(self, visitor, binding):
         return visitor.evaluate_VarDec(self, binding)
 
@@ -279,12 +227,6 @@ class DecList:
         self.decls.append(decl)
         print(str("declarations pushed: " + str(self.decls)))
         
-    def evaluate(self, binding):
-        last = ''
-        for i in self.decls:
-            last = i.evaluate(binding)
-        return last
-    
     def accept(self, visitor, binding):
         return visitor.evaluate_DecList(self, binding)
 
@@ -294,10 +236,7 @@ class VarRef:
         for l in name:
             n = n + l         
         self.name = n
-        
-    def evaluate(self, binding):
-        return binding.get_var(self.name)
-    
+          
     def accept(self, visitor, binding):
         return visitor.evaluate_VarRef(self, binding)
     
@@ -308,18 +247,7 @@ class Printer:
     def __init__(self, expressions):
         # print("-------------------------------------got print expr of " + str(expression))
         self.expressions = expressions
-        
-    def evaluate(self, binding):
-        val = 0
-        print("Print: ", end='')
-        for i, x in enumerate(self.expressions):
-            val = x.evaluate(binding)
-            if i < len(self.expressions) - 1:
-                print(str(val), end='|')
-            else:
-                print(str(val), end='\n')      
-        return val
-    
+  
     def accept(self, visitor, binding):
         return visitor.evaluate_Printer(self, binding)
 
@@ -327,13 +255,7 @@ class If:
     def __init__(self, expr, code):
         self.expr = expr
         self.code = code
-    
-    def evaluate(self, binding):
-        if self.expr.evaluate(binding) == 1:
-            return self.code.evaluate(binding)
-        else:
-            return False
-        
+                
     def accept(self, visitor, binding):
         return visitor.evaluate_If(self, binding)
         
@@ -342,13 +264,7 @@ class IfElse:
         self.expr = expr
         self.ifCode = ifCode
         self.elseCode = elseCode
-        
-    def evaluate(self, binding):
-        if self.expr.evaluate(binding) == 1:
-            return self.ifCode.evaluate(binding)
-        else:
-            return self.elseCode.evaluate(binding)
-        
+          
     def accept(self, visitor, binding):
         return visitor.evaluate_IfElse(self, binding)
 
@@ -358,11 +274,7 @@ class FnDef:
         # print("body: " + str(body))
         self.params = params
         self.body = body
-        
-    def evaluate(self, binding):
-        thun = Thunk(self.params, self.body, binding)
-        return thun
-    
+
     def accept(self, visitor, binding):
         return visitor.evaluate_FnDef(self, binding)
     
@@ -370,16 +282,7 @@ class FnCall:
     def __init__(self, name, args):
         self.name = name
         self.args = args
-        
-    def evaluate(self, binding):
-        params = []
-
-        for i in self.args:
-            params.append(i.evaluate(binding))
-        
-        thun = self.name.evaluate(binding)
-        return thun.evaluate(binding, params)
-    
+ 
     def accept(self, visitor, binding):
         return visitor.evaluate_FnCall(self, binding)
             
@@ -388,23 +291,6 @@ class Thunk:
         self.params = params
         self.block = block
         self.binding = binding
-    
-    def evaluate(self, binding, args):
-        outer = self.binding.push()
-        # print("evaluating thunk")
-        # print("self bind:" + str(self.binding.print()) + " outer:" + str(outer.print()))
-        # print("params:" + str(self.params) + "args:" + str(args))
-        
-        if len(args) < len(self.params):
-            raise Exception('Not enough arguments for function')
-        elif len(args) > len(self.params):
-            raise Exception('Too many arguments for function')
-        for key, val in zip(self.params, args):
-            outer.set_var(key, val)
-            
-        result = self.block.evaluate(outer)
-        outer.pop()
-        return result
-    
-    def accept(self, visitor, binding):
-        return visitor.evaluate_Thunk(self, binding)
+ 
+    def accept(self, visitor, binding, params):
+        return visitor.evaluate_Thunk(self, binding, params)

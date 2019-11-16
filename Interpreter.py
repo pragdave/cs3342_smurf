@@ -101,7 +101,7 @@ class Interpreter:
             params.append(i.accept(self, binding))
         
         thun = node.name.accept(self, binding)
-        return thun.evaluate(self, binding, params)
+        return thun.accept(self, binding, params)
     
     def evaluate_Thunk(self, node, binding, args):
         outer = self.binding.push()
@@ -116,6 +116,6 @@ class Interpreter:
         for key, val in zip(node.params, args):
             outer.set_var(key, val)
             
-        result = node.block.evaluate(outer)
+        result = node.block.accept(self, outer)
         outer.pop()
         return result
