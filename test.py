@@ -416,6 +416,8 @@ class IfElse:
 
 class FnDef:
     def __init__(self, params, body):
+        # print("params: " + str(params))
+        # print("body: " + str(body))
         self.params = params
         self.body = body
         
@@ -444,12 +446,15 @@ class Thunk:
         self.binding = binding
     
     def evaluate(self, binding, args):
-        outer = binding.push()
+        outer = self.binding.push()
         # print("evaluating thunk")
         # print("self bind:" + str(self.binding.print()) + " outer:" + str(outer.print()))
         # print("params:" + str(self.params) + "args:" + str(args))
+        
         if len(args) < len(self.params):
             raise Exception('Not enough arguments for function')
+        elif len(args) > len(self.params):
+            raise Exception('Too many arguments for function')
         for key, val in zip(self.params, args):
             outer.set_var(key, val)
             
@@ -472,11 +477,11 @@ toEval = ""
 for i in file:
     toEval = toEval + str(i)
 
-         
+# toEval = sys.argv[0]  
 # toEval = '''
-# let a = fn(){2}
-# print(a())
-# let a = fn(x){x}
+# let add_n = fn (n) { fn (x) { x + n }}
+# let add_2 = add_n(2)
+# print(add_2(3))
 # '''
             
 '''let x = 1
