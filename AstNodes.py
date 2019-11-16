@@ -39,8 +39,9 @@ class Boolean_Expression:
         return visitor.evaluate_boolean_expression(self)
 
 class Print:
-    def __init__(self, expression):
+    def __init__(self, expression, list):
         self.expression = expression
+        self.list = list
         
     def accept(self, visitor):
         return visitor.evaluate_print(self)

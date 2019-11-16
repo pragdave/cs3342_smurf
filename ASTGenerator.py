@@ -23,7 +23,7 @@ class ASTGenerator(PTNodeVisitor):
         return nodes.Boolean_Expression(children[0], children[1], children[2])
     
     def visit_print_func(self, node, children):
-        return nodes.Print(children[0])
+        return nodes.Print(children[0], children[1:])
         
     def visit_code(self, node, children):
         return nodes.Code(children)
