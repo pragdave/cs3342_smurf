@@ -20,7 +20,6 @@ def compare(stdout, expected):
     print("\n")
 
 
-
 interpreter = shlex.split(sys.argv[1])
 
 test_files  = [
