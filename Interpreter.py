@@ -104,7 +104,7 @@ class Interpreter:
         return thun.accept(self, binding, params)
     
     def evaluate_Thunk(self, node, binding, args):
-        outer = self.binding.push()
+        outer = node.binding.push()
         # print("evaluating thunk")
         # print("self bind:" + str(self.binding.print()) + " outer:" + str(outer.print()))
         # print("params:" + str(self.params) + "args:" + str(args))

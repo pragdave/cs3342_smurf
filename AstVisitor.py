@@ -4,8 +4,6 @@ import math
 class AstVisitor(PTNodeVisitor):
 
     def visit_integer(self, node, children):
-        printState(node, children, 'integer')
-         #print("self:" + str(self))
         if children[0] == "-":            
             val = ''
             for i in range(1, len(children)):
@@ -18,18 +16,12 @@ class AstVisitor(PTNodeVisitor):
             return Int(val)
         
     def visit_primary(self, node, children):
-        printState(node, children, 'primary')
-         #print("self:" + str(self))
         return children[0]
     
     def visit_mult_term(self, node, children):
-        printState(node, children, 'mult_term')
-         #print("self:" + str(self))
         return binop_list(children)
     
     def visit_arithmetic_expression(self, node, children):
-        printState(node, children, 'arithmetic_expression')
-         #print("self:" + str(self))
         return binop_list(children)
     
     def visit_assignment(self, node, children):
@@ -39,8 +31,6 @@ class AstVisitor(PTNodeVisitor):
         return Code(children)
     
     def visit_decl(self, node, children):
-        printState(node, children, 'decl')
-         #print("self:" + str(self))
         return VarDec(children[0], children[1])
     
     def visit_variable_declaration(self, node, children):
@@ -54,8 +44,6 @@ class AstVisitor(PTNodeVisitor):
             return children[0]
         
     def visit_variable_reference(self, node, children):
-        printState(node, children, 'var_ref')
-         #print("self:" + str(self))
         return VarRef(children)
     
     def visit_boolean_expression(self, node, children):
@@ -65,20 +53,15 @@ class AstVisitor(PTNodeVisitor):
         return children[0]
         
     def visit_if_expression(self, node, children):
-        printState(node, children, 'if_expr' )
         if len(children) < 3:
             return If(children[0], children[1])
         else:
             return IfElse(children[0], children[1], children[2])
        
     def visit_function_definition(self, node, children):
-        printState(node, children, 'func_def')
         return FnDef(children[0], children[1])
     
     def visit_function_call(self, node, children):
-        printState(node, children, 'function_call')
-         #print("self:" + str(self))
-        # print("Calling function " + children[0].getName())
         if children[0].getName() == 'print':
             return Printer(children[1])
         elif len(children) > 1:
@@ -136,14 +119,6 @@ class Binding:
     def print(self):
         print(str(self.outer))
         print(str(self.bindings))
-             
-def printState(node, children, funcName):
-    pass
-    # print("-----------------" + funcName + "-----------------")
-    # for i, n in enumerate(node):
-    #     print(str(type(n)) + "node[" + str(i) + "]:" + str(n))
-    # for i, c in enumerate(children):
-    #     print(str(type(c)) + "children[" + str(i) + "]:" + str(c))
 
 def binop_list(nodes):
     left = nodes[0]
