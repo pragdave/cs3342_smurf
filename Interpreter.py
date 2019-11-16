@@ -52,6 +52,14 @@ class Interpreter(PTNodeVisitor):
             else:
                 decl.accept(self)
     
+    def evaluate_var_decl(self, node):
+        self.binding[node.name] = node.expr.accept(self)
+        print("bindings: ", self.binding)
+    
+    def evaluate_let(self, node):
+        for decl in node.list:
+            decl.accept(self)
+    
     def evaluate_boolean_expression(self, node):
         left = node.left.accept(self)
         right = node.right.accept(self)
