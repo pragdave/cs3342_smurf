@@ -136,6 +136,9 @@ class Int:
             return -1*int(self.value, 10)
         else:
             return int(self.value, 10)
+        
+    def accept(self, visitor, binding):
+        return visitor.evaluate_Int(self, binding)
     
     def print(self):
         print("Int value: " + str(self.value))
@@ -157,6 +160,9 @@ class binOp:
             return lval * rval
         elif self.op == '/':
             return math.trunc(lval/rval)
+        
+    def accept(self, visitor, binding):
+        return visitor.evaluate_binOp(self, binding)
         
     def print(self):
         print("BinOp")
@@ -190,6 +196,9 @@ class RelOp:
             return 1  
         else:
             return 0
+        
+    def accept(self, visitor, binding):
+        return visitor.evaluate_RelOp(self, binding)
 
 class Assignment:
     def __init__(self, name, expression):
@@ -200,6 +209,9 @@ class Assignment:
         val = self.expression.evaluate(binding)
         binding.set_var_val(self.name, val)   
         return val     
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_Assignment(self, binding)
 
 class Binding:
     def __init__(self, outer={}):
@@ -242,6 +254,9 @@ class Code:
         for ex in self.expressions:
             value = ex.evaluate(binding)
         return value
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_Code(self, binding)
 
 class VarDec:
     def __init__(self, name, value):
@@ -252,6 +267,9 @@ class VarDec:
         val = self.value.evaluate(binding)
         binding.set_var(self.name, val)
         return val
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_VarDec(self, binding)
 
 class DecList:
     def __init__(self, decls=[]):
@@ -266,6 +284,9 @@ class DecList:
         for i in self.decls:
             last = i.evaluate(binding)
         return last
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_DecList(self, binding)
 
 class VarRef:
     def __init__(self, name):
@@ -277,6 +298,9 @@ class VarRef:
     def evaluate(self, binding):
         return binding.get_var(self.name)
     
+    def accept(self, visitor, binding):
+        return visitor.evaluate_VarRef(self, binding)
+    
     def getName(self):
         return self.name
 
@@ -286,8 +310,6 @@ class Printer:
         self.expressions = expressions
         
     def evaluate(self, binding):
-        # newBind = Binding()
-        # newBind.copy(binding)
         val = 0
         print("Print: ", end='')
         for i, x in enumerate(self.expressions):
@@ -297,6 +319,9 @@ class Printer:
             else:
                 print(str(val), end='\n')      
         return val
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_Printer(self, binding)
 
 class If:
     def __init__(self, expr, code):
@@ -309,6 +334,9 @@ class If:
         else:
             return False
         
+    def accept(self, visitor, binding):
+        return visitor.evaluate_If(self, binding)
+        
 class IfElse:
     def __init__(self, expr, ifCode, elseCode):
         self.expr = expr
@@ -320,6 +348,9 @@ class IfElse:
             return self.ifCode.evaluate(binding)
         else:
             return self.elseCode.evaluate(binding)
+        
+    def accept(self, visitor, binding):
+        return visitor.evaluate_IfElse(self, binding)
 
 class FnDef:
     def __init__(self, params, body):
@@ -331,6 +362,9 @@ class FnDef:
     def evaluate(self, binding):
         thun = Thunk(self.params, self.body, binding)
         return thun
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_FnDef(self, binding)
     
 class FnCall:
     def __init__(self, name, args):
@@ -345,6 +379,9 @@ class FnCall:
         
         thun = self.name.evaluate(binding)
         return thun.evaluate(binding, params)
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_FnCall(self, binding)
             
 class Thunk:
     def __init__(self, params, block, binding):
@@ -368,3 +405,6 @@ class Thunk:
         result = self.block.evaluate(outer)
         outer.pop()
         return result
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_Thunk(self, binding)

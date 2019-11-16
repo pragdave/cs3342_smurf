@@ -8,6 +8,7 @@ from arpeggio import Sequence
 from arpeggio.export import PMDOTExporter
 from arpeggio.export import PTDOTExporter
 from AstVisitor import AstVisitor, Binding
+from Interpreter import Interpreter
 import sys
 import string
 
@@ -139,7 +140,9 @@ result = visit_parse_tree(parse_tree, AstVisitor(debug=False))
 
 binding = Binding()
 # print('--------------------execution-----------------')
-res = result.evaluate(binding)
+
+
+res = result.accept(Interpreter(), binding)
 # print('--------------------execution-----------------')
 
 # print("---------------result----------------")
