@@ -4,7 +4,10 @@ class Interpreter(PTNodeVisitor):
     binding = {}
     
     def evaluate_number(self, node):
-        return float(node.value)
+        try:
+            return float(node.value)
+        except ValueError:
+            return self.binding[node.value]
     
     def evaluate_factor(self, node):
         if node.sign == "-":
