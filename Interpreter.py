@@ -45,7 +45,11 @@ class Interpreter(PTNodeVisitor):
             return left < right
     
     def evaluate_print(self, node):
-        print(node.expression.accept(self))
+        printLine = str(node.expression.accept(self))
+        for expr in node.list:
+            printLine += "|"
+            printLine += str(expr.accept(self))
+        print(printLine)
         
     def evaluate_code(self, node):
         for expr in node.list:
