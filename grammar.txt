@@ -67,7 +67,6 @@ param_list =  "(" pattern:(identifier ("," identifier)*) ")" { return pattern; }
 brace_block = "{" code "}"
 
 whitespace = [ \t\r\n]+
-comment_chars = [. \t]*
-comment = "#" comment_chars [\r\n]
+comment = "#" [a-zA-Z0-9!@#$%^&*()-_=+{};:,.<>/?~| \t]* [\r\n]
 
 _ = ( whitespace / comment )*
