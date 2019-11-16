@@ -110,14 +110,10 @@ let b = a+2\n
 print(b)          #=> 3\n
 let c = a+b\n
 print(c)          #=> 4\n\n
-
 # multiple declarations in a single let\n\n
-
 let e = 99, f = 100, g = e+f\n
 print(e,f,g)   #=> 99|100|199\n\n
-
 # on multiple lines\n\n
-
 let h = 99,\n
     i = 200,\n
     j = h+i\n
