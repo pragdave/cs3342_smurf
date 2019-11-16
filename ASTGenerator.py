@@ -18,6 +18,12 @@ class ASTGenerator(PTNodeVisitor):
         
     def visit_arithmetic_expression(self, node, children):
         return nodes.Arithmetic_Expression(children[0], children[1:])
+         
+    def visit_var_decl(self, node, children):
+        return nodes.Var_Decl(children[0], children[1])
+        
+    def visit_let(self, node, children):
+        return nodes.Let(children)
         
     def visit_boolean_expression(self, node, children):
         return nodes.Boolean_Expression(children[0], children[1], children[2])

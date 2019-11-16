@@ -14,17 +14,26 @@ def factor():
     return Optional(["+", "-"]), [number, ("(", arithmetic_expression, ")")]
 
 #One or more factors multiplied/divided together
-def term():
+def mult_term():
     return factor, ZeroOrMore(["*", "/"], factor)
     
 #One or more terms added/subtracted together
 def arithmetic_expression():
-    return term, ZeroOrMore(["+", "-"], term)
+    return mult_term, ZeroOrMore(["+", "-"], mult_term)
 
 ####################
 #Built in Functions#
 ####################
 
+#Handles varaible assignment
+def var_decl():
+    return RegExMatch('\w+'), "=", arithmetic_expression
+
+#Handles variable declaration
+def let():
+    return "let", var_decl, ZeroOrMore(",", var_decl)
+
+#Handles boolean expressions ==, !=, >=, >, <=, <
 def boolean_expression():
     return arithmetic_expression, ["==", "!=", ">=", ">", "<=", "<"], arithmetic_expression
 
@@ -42,4 +51,4 @@ def comment():
 
 #Top level of the grammar
 def code():
-    return ZeroOrMore([print_func]), EOF
+    return ZeroOrMore([print_func, let, var_decl]), EOF
