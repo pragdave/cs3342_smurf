@@ -2,11 +2,13 @@ program = code
 
 code = statement*
 
-statement = "let" _ variable_dec:variable_declaration { return variable_dec; }
+statement = "let" _ variable_dec:variable_declaration _ { return variable_dec; }
           / assignment
           / expr:expr _ { return expr; }
 
-variable_declaration  = dec:(decl ("," decl)*) { return {type: "variable_dec", declarations: dec.filter(d => !!d.type)} }
+variable_declaration  = dec:(decl repeat_declaration) { const declarations = dec[1].length ? [dec[0], ...dec[1]] : [dec[0]]; return {type: "variable_dec", declarations }; }
+
+repeat_declaration = dec:(("," _ decl)*) { const finalDec = dec.length ? dec.map(d => {return d[2]}) : []; return finalDec; }
 
 decl = name:identifier _ "=" expr:expr { return {type: "assignment", name, expr}; }
       / name:identifier { return {type: "assignment", name}; }
@@ -37,7 +39,7 @@ primary  = _ value:integer _ { return {type: "integer", value: value} }
          / _ ref:variable_reference { return ref; }
          / "(" arithmetic_expression ")"
 
-integer = sign:"-"? num:[0-9]+ { return sign ? Number((sign+num).replace(',','')) : Number(num.toString().replace(',',''));}
+integer = sign:"-"? num:[0-9]+ { return sign ? Number((sign+num).replace(/,/g, '')) : Number(num.toString().replace(/,/g, ''));}
 
 addop   =   _ op:'+' {return op;}
           / _ op:'-' {return op;}
