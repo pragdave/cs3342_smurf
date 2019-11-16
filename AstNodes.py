@@ -23,7 +23,7 @@ class Mult_Term:
 
 class Arithmetic_Expression:
     def __init__(self, multTerm, plusAndTermList):
-        self.multTerm = multTerm
+        self.multTerm = multTermfile with all the data classes
         self.plusAndTermList = plusAndTermList
     
     def accept(self, visitor):
