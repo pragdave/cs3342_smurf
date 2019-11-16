@@ -73,7 +73,7 @@ def evaluatable():
     return [fn_call, if_statement, code_block, arithmetic_expression, boolean_expression, RegExMatch('[a-z][a-zA-Z_0-9]*')]
     
 def func_parameters():
-    return "(", Optional(evaluatable), ZeroOrMore(",", evaluatable), ")"
+    return "(", Optional(evaluatable), ZeroOrMore(",", evaluatable), ")"s
 
 #######################
 #Interpreter Interface#
