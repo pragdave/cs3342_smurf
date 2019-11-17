@@ -17,14 +17,14 @@ identifier = pattern:([a-z][a-zA-Z0-9]*) { return text(pattern); }
 
 variable_reference = name:identifier { return {type: "identifier", name}; }
 
-if_expression = _ bool:expr _ statements:brace_block _ else_statements:else_expression? { return { bool, statements, else_statements }; }
+if_expression = _ evaluation:expr _ statements:brace_block _ else_statements:else_expression? { return { evaluation, statements, else_statements }; }
 
 else_expression = "else" _ statements:brace_block { return statements; }
 
 assignment  = _ name:identifier _ "=" expr:expr { return {type: "assignment", name, expr}; }
 
 expr  = "fn" function_definition
-      / _ "if" _ expr:if_expression { return {type: "if", bool: expr.bool, statements: expr.statements, else_statements: expr.else_statements}; }
+      / _ "if" _ expr:if_expression { return {type: "if", evaluation: expr.evaluation, statements: expr.statements, else_statements: expr.else_statements}; }
       / arithmetic_expression
       / boolean_expression
 

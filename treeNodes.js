@@ -6,9 +6,6 @@ exports.RootNode = function RootNode() {
 	this.addStatements = function(statementArr) {
 		statementArr.forEach(node => {
 			switch(node.type) {
-				case "function":
-					this.statements.push(node);
-					break;
 				case "variable_dec":
 					node.declarations.forEach(assignmentNode => {
 						this.statements.push(assignmentNode);
@@ -17,11 +14,25 @@ exports.RootNode = function RootNode() {
 				case "assignment":
 					this.statements.push(node);
 					break;
+				case "function":
+					this.statements.push(node);
+					break;
+				case "if":
+					this.statements.push(node);
+					break;
 				default:
 					console.log(`${node.type} is an invalid node type --treeNodes`);
 			}
 		});
 	}
+}
+
+exports.IfNode = function IfNode() {
+	this.type = "if";
+	this.parent = null;
+	this.evaluation = null;
+	this.statements = [];
+	this.elseStatements = [];
 }
 
 exports.FunctionNode = function FunctionNode(name) {

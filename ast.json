@@ -1,7 +1,7 @@
 [
 	{
 		"type": "if",
-		"bool": {
+		"evaluation": {
 			"type": "integer",
 			"value": 1
 		},

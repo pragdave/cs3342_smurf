@@ -59,6 +59,20 @@ function generateNode(statement) {
 			newNode.expr = exprNode;
 			exprNode.parent = newNode;
 			break;
+		case "if":
+			newNode = new treeNodes.IfNode();
+			newNode.evaluation = generateNode(statement.evaluation);
+			newNode.statements = statement.statements.map(s => {
+				statementNode = generateNode(s);
+				statementNode.parent = newNode;
+				return statementNode;
+			});
+			newNode.elseStatements = statement.else_statements.map(s => {
+				statementNode = generateNode(s);
+				statementNode.parent = newNode;
+				return statementNode;
+			});
+			break;
 		default: 
 			console.log(`${statement.type} is an invalid statement type`);
 	}
@@ -136,7 +150,6 @@ fs.readFile("grammar.txt", "utf8", function (err, data) {
 	const grammar = data;
 	const parser = peg.generate(grammar);
 	const ast = parser.parse(codeExample);
-	console.log(ast)
 	fs.writeFile("ast.json", JSON.stringify(ast, null, "\t"), function(err) {
 		if (err) { console.log(err); }
 	})
