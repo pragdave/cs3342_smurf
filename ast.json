@@ -1,204 +1,32 @@
 [
 	{
-		"type": "variable_dec",
-		"declarations": [
+		"type": "if",
+		"bool": {
+			"type": "integer",
+			"value": 1
+		},
+		"statements": [
 			{
-				"type": "assignment",
-				"name": "a",
-				"expr": {
-					"type": "integer",
-					"value": 1
-				}
+				"type": "function",
+				"fcn_name": "print",
+				"params": [
+					{
+						"type": "integer",
+						"value": 99
+					}
+				]
 			}
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
+		],
+		"else_statements": [
 			{
-				"type": "identifier",
-				"name": "a"
-			}
-		]
-	},
-	{
-		"type": "variable_dec",
-		"declarations": [
-			{
-				"type": "assignment",
-				"name": "b",
-				"expr": {
-					"type": "arithmetic_expr",
-					"params": [
-						{
-							"type": "identifier",
-							"name": "a"
-						},
-						"+",
-						{
-							"type": "integer",
-							"value": 2
-						}
-					]
-				}
-			}
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "identifier",
-				"name": "b"
-			}
-		]
-	},
-	{
-		"type": "variable_dec",
-		"declarations": [
-			{
-				"type": "assignment",
-				"name": "c",
-				"expr": {
-					"type": "arithmetic_expr",
-					"params": [
-						{
-							"type": "identifier",
-							"name": "a"
-						},
-						"+",
-						{
-							"type": "identifier",
-							"name": "b"
-						}
-					]
-				}
-			}
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "identifier",
-				"name": "c"
-			}
-		]
-	},
-	{
-		"type": "variable_dec",
-		"declarations": [
-			{
-				"type": "assignment",
-				"name": "e",
-				"expr": {
-					"type": "integer",
-					"value": 99
-				}
-			},
-			{
-				"type": "assignment",
-				"name": "f",
-				"expr": {
-					"type": "integer",
-					"value": 100
-				}
-			},
-			{
-				"type": "assignment",
-				"name": "g",
-				"expr": {
-					"type": "arithmetic_expr",
-					"params": [
-						{
-							"type": "identifier",
-							"name": "e"
-						},
-						"+",
-						{
-							"type": "identifier",
-							"name": "f"
-						}
-					]
-				}
-			}
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "identifier",
-				"name": "e"
-			},
-			{
-				"type": "identifier",
-				"name": "f"
-			},
-			{
-				"type": "identifier",
-				"name": "g"
-			}
-		]
-	},
-	{
-		"type": "variable_dec",
-		"declarations": [
-			{
-				"type": "assignment",
-				"name": "h",
-				"expr": {
-					"type": "integer",
-					"value": 99
-				}
-			},
-			{
-				"type": "assignment",
-				"name": "i",
-				"expr": {
-					"type": "integer",
-					"value": 200
-				}
-			},
-			{
-				"type": "assignment",
-				"name": "j",
-				"expr": {
-					"type": "arithmetic_expr",
-					"params": [
-						{
-							"type": "identifier",
-							"name": "h"
-						},
-						"+",
-						{
-							"type": "identifier",
-							"name": "i"
-						}
-					]
-				}
-			}
-		]
-	},
-	{
-		"type": "function",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "identifier",
-				"name": "h"
-			},
-			{
-				"type": "identifier",
-				"name": "i"
-			},
-			{
-				"type": "identifier",
-				"name": "j"
+				"type": "function",
+				"fcn_name": "print",
+				"params": [
+					{
+						"type": "integer",
+						"value": 100
+					}
+				]
 			}
 		]
 	}

@@ -103,21 +103,29 @@ function executeAST(rootNode) {
 // print(a)            #=> -3\n
 // print(b)            #=> 7\n`;
 
+// const codeExample = 
+// `let a = 1\n
+// print(a)          #=> 1\n
+// let b = a+2\n
+// print(b)          #=> 3\n
+// let c = a+b\n
+// print(c)          #=> 4\n\n
+// # multiple declarations in a single let\n\n
+// let e = 99, f = 100, g = e+f\n
+// print(e,f,g)   #=> 99|100|199\n\n
+// # on multiple lines\n\n
+// let h = 99,\n
+//     i = 200,\n
+//     j = h+i\n
+// print(h,i,j)   #=> 99|200|299\n`;
+
 const codeExample = 
-`let a = 1\n
-print(a)          #=> 1\n
-let b = a+2\n
-print(b)          #=> 3\n
-let c = a+b\n
-print(c)          #=> 4\n\n
-# multiple declarations in a single let\n\n
-let e = 99, f = 100, g = e+f\n
-print(e,f,g)   #=> 99|100|199\n\n
-# on multiple lines\n\n
-let h = 99,\n
-    i = 200,\n
-    j = h+i\n
-print(h,i,j)   #=> 99|200|299\n`;
+`if 1 {\n
+  print(99)\n
+}\n
+else {\n
+  print(100)\n
+}                                        #=> 99\n`;
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {
 	if (err) {
@@ -128,6 +136,7 @@ fs.readFile("grammar.txt", "utf8", function (err, data) {
 	const grammar = data;
 	const parser = peg.generate(grammar);
 	const ast = parser.parse(codeExample);
+	console.log(ast)
 	fs.writeFile("ast.json", JSON.stringify(ast, null, "\t"), function(err) {
 		if (err) { console.log(err); }
 	})

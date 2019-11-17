@@ -17,12 +17,14 @@ identifier = pattern:([a-z][a-zA-Z0-9]*) { return text(pattern); }
 
 variable_reference = name:identifier { return {type: "identifier", name}; }
 
-if_expression = expr brace_block ( "else" brace_block )?
+if_expression = _ bool:expr _ statements:brace_block _ else_statements:else_expression? { return { bool, statements, else_statements }; }
+
+else_expression = "else" _ statements:brace_block { return statements; }
 
 assignment  = _ name:identifier _ "=" expr:expr { return {type: "assignment", name, expr}; }
 
 expr  = "fn" function_definition
-      / "if" if_expression
+      / _ "if" _ expr:if_expression { return {type: "if", bool: expr.bool, statements: expr.statements, else_statements: expr.else_statements}; }
       / arithmetic_expression
       / boolean_expression
 
@@ -64,7 +66,7 @@ function_definition = param_list brace_block
 param_list =  "(" pattern:(identifier ("," identifier)*) ")" { return pattern; }
            /  "()"
 
-brace_block = "{" code "}"
+brace_block = "{" _ code:code _ "}" { return code; }
 
 whitespace = [ \t\r\n]+
 line_terminator = [\r\n]
