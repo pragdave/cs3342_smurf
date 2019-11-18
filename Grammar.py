@@ -27,7 +27,7 @@ def arithmetic_expression():
 
 #Handles varaible assignment
 def var_decl():
-    return RegExMatch('\w+'), "=", arithmetic_expression
+    return RegExMatch('\w+'), "=", [arithmetic_expression, boolean_expression]
 
 #Handles variable declaration
 def let():
@@ -39,7 +39,17 @@ def boolean_expression():
 
 #Handles a print statement
 def print_func():
-    return "print(", [boolean_expression, arithmetic_expression, RegExMatch('\w+')], ZeroOrMore(",", [boolean_expression, arithmetic_expression, RegExMatch('\w+')]), ")"
+    return "print(", [evaluatable], ZeroOrMore(",", [evaluatable]), ")"
+
+#Handles if statements
+def code_block():
+    return "{", ZeroOrMore(valid_line), "}"
+    
+def valid_line():
+    return [print_func, let, var_decl]
+    
+def evaluatable():
+    return [boolean_expression, arithmetic_expression, RegExMatch('\w+')]
 
 #######################
 #Interpreter Interface#
@@ -51,4 +61,4 @@ def comment():
 
 #Top level of the grammar
 def code():
-    return ZeroOrMore([print_func, let, var_decl]), EOF
+    return ZeroOrMore(valid_line), EOF
