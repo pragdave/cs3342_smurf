@@ -14,7 +14,7 @@ void ast::createBinop(node *l, string op, node *r) {
     right = r;
 }
 
-void ast::createIntAST(string x) {
+void ast::createIntAST(char x) {
     int y = stoi(x);
     intNode.createInt(y);
 }

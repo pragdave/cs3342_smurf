@@ -9,6 +9,8 @@
 #include "peglib.h"
 #include <assert.h>
 #include <iostream>
+#include "ast.hpp"
+#include "node.hpp"
 
 using namespace peg;
 using namespace std;
@@ -17,14 +19,16 @@ int main(int argc, const char * argv[]) {
 
     auto grammar = R"(
 # Grammar for Calculator...
-    Additive    <- Multitive '+' Additive / Multitive
+/*    Additive    <- Multitive '+' Additive / Multitive
     Multitive   <- Primary '*' Multitive / Primary
-    Primary     <- '(' Additive ')' / Number
+    Primary     <- '(' Additive ')' / Number */
     Number      <- < [0-9]+ >
     %whitespace <- [ \t]*
     )";
     
     parser parser;
+    ast tree;
+    node intNode;
     
     parser.log = [](size_t line, size_t col, const string& msg) {
         cerr << line << ":" << col << ": " << msg << "\n";
@@ -33,6 +37,7 @@ int main(int argc, const char * argv[]) {
     auto ok = parser.load_grammar(grammar);
     assert(ok);
     
+    /*
     // Setup actions
     parser["Additive"] = [](const SemanticValues& sv) {
         switch (sv.choice()) {
@@ -50,10 +55,11 @@ int main(int argc, const char * argv[]) {
             default: // "Primary"
                 return sv[0].get<int>();
         }
-    };
+    }; */
     
     parser["Number"] = [](const SemanticValues& sv) {
-        return stoi(sv.token(), nullptr, 10);
+        //HOW TO CONVERT sv INTO INT or STRING
+        //return intNode.createInt(x);
     };
     
     // Parse

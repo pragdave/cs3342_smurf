@@ -21,7 +21,7 @@ public:
     string operation;
     
     void createBinop(node*, string, node*);
-    void createIntAST(string);
+    void createIntAST(char);
     
 };
 
