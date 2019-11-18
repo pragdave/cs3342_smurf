@@ -1,4 +1,4 @@
-from smurf import *
+from smurfGrammar import *
 from smurfInterpreter import *
 
 class SmurfVisitor(PTNodeVisitor):
