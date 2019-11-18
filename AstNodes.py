@@ -23,12 +23,7 @@ class Mult_Term:
 
 class Arithmetic_Expression:
     def __init__(self, multTerm, plusAndTermList):
-<<<<<<< HEAD
-        self.multTerm = multTermfile with all the data classes
-=======
         self.multTerm = multTerm
->>>>>>> Added variable assignments
-        self.plusAndTermList = plusAndTermList
     
     def accept(self, visitor):
         return visitor.evaluate_arithmetic_expression(self)

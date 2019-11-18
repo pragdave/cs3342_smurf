@@ -50,7 +50,7 @@ class Interpreter(PTNodeVisitor):
             if isinstance(decl, str):
                 self.varBinding[decl] = 0
             else:
-                decl.accept(self)
+                decl.accept(self) let all work
     
     def evaluate_var_decl(self, node):
         self.binding[node.name] = node.expr.accept(self)
