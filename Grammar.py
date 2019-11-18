@@ -29,7 +29,7 @@ def var_decl():
     return RegExMatch('\w+'), "=", evaluatable
 
 #Handles variable declaration
-def let():
+def var_let():
     return "let", [var_decl, RegExMatch('\w+')], ZeroOrMore(",", [var_decl, RegExMatch('\w+')])
 
 #Handles boolean expressions ==, !=, >=, >, <=, <
@@ -38,7 +38,7 @@ def boolean_expression():
 
 #Handles a print statement
 def print_func():
-    return "print(", func_parameters, ")"
+    return "print", func_parameters
 
 #Handles code blocks statements
 def code_block():
@@ -47,6 +47,14 @@ def code_block():
 #Handles if statements
 def if_statement():
     return "if", boolean_expression, code_block, "else", code_block
+    
+#Handles function assignment
+def fn_decl():
+    return RegExMatch('\w+'), "=", "fn", "(", Optional(RegExMatch('\w+')), ZeroOrMore(",", RegExMatch('\w+')), ")", code_block
+    
+#Handles function declaration
+def fn_let():
+    return "let", [fn_decl, RegExMatch('\w+')], ZeroOrMore(",", [fn_decl, RegExMatch('\w+')])
 
 #########################
 #Non-Interpretable types#
@@ -54,15 +62,14 @@ def if_statement():
 
 #Declares what types can be their own line
 def valid_line():
-    return [if_statement, print_func, let, var_decl, arithmetic_expression]
+    return [if_statement, print_func, var_let, var_decl, arithmetic_expression]
 
 #Declares what types can be evaluated to a value
 def evaluatable():
-    return [if_statement, code_block, boolean_expression, arithmetic_expression, RegExMatch('\w+')]
+    return [if_statement, code_block, arithmetic_expression, boolean_expression, RegExMatch('\w+')]
     
-#Declares format of function parameters
 def func_parameters():
-    return Optional(evaluatable), ZeroOrMore(",", [evaluatable])
+    return "(", Optional(evaluatable), ZeroOrMore(",", evaluatable), ")"
 
 #######################
 #Interpreter Interface#
