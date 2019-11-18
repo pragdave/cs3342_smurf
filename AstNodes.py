@@ -61,6 +61,22 @@ class Print_Func:
     def accept(self, visitor):
         return visitor.evaluate_print_func(self)
         
+class Code_Block:
+    def __init__(self, list):
+        self.list = list
+        
+    def accept(self, visitor):
+        return visitor.evaluate_code_block(self)
+        
+class If_Statement:
+    def __init__(self, boolExpr, ifBlock, elseBlock):
+        self.boolExpr = boolExpr
+        self.ifBlock = ifBlock
+        self.elseBlock = elseBlock
+        
+    def accept(self, visitor):
+        return visitor.evaluate_if_statement(self)
+        
 class Code:
     def __init__(self, list):
         self.list = list

@@ -68,8 +68,19 @@ class Interpreter(PTNodeVisitor):
         print(printLine)
         return printLine
         
+    def evaluate_code_block(self, node):
+        lastLine = node.list.pop()
+        for line in node.list:
+            line.accept(self)
+        return lastLine.accept(self)
+        
     def evaluate_code(self, node):
         for expr in node.list:
             value = expr.accept(self)
-        
         return value;
+        
+    def evaluate_if_statement(self, node):
+        boolVal = node.boolExpr.accept(self)
+        if boolVal == 1:
+            return node.ifBlock.accept(self)
+        return node.elseBlock.accept(self)

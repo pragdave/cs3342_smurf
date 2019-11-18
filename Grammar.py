@@ -27,7 +27,7 @@ def arithmetic_expression():
 
 #Handles varaible assignment
 def var_decl():
-    return RegExMatch('\w+'), "=", [arithmetic_expression, boolean_expression]
+    return RegExMatch('\w+'), "=", evaluatable
 
 #Handles variable declaration
 def let():
@@ -35,21 +35,27 @@ def let():
 
 #Handles boolean expressions ==, !=, >=, >, <=, <
 def boolean_expression():
-    return arithmetic_expression, ["==", "!=", ">=", ">", "<=", "<"], arithmetic_expression
+    return [(arithmetic_expression, ["==", "!=", ">=", ">", "<=", "<"], arithmetic_expression), "0", "1"]
 
 #Handles a print statement
 def print_func():
     return "print(", [evaluatable], ZeroOrMore(",", [evaluatable]), ")"
 
-#Handles if statements
+#Handles code blocks statements
 def code_block():
     return "{", ZeroOrMore(valid_line), "}"
     
+#Handles if statements
+def if_statement():
+    return "if", boolean_expression, code_block, "else", code_block
+
+#Declares what types can be their own line
 def valid_line():
-    return [print_func, let, var_decl]
-    
+    return [if_statement, print_func, let, var_decl, arithmetic_expression]
+
+#Declares what types can be evaluated to a value
 def evaluatable():
-    return [boolean_expression, arithmetic_expression, RegExMatch('\w+')]
+    return [if_statement, code_block, boolean_expression, arithmetic_expression, RegExMatch('\w+')]
 
 #######################
 #Interpreter Interface#
