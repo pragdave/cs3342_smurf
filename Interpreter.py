@@ -21,7 +21,7 @@ class Interpreter(PTNodeVisitor):
                 multTerm *= node.multAndFactList[i].accept(self)
             else:
                 multTerm /= node.multAndFactList[i].accept(self)
-        return multTerm
+        return int(multTerm)
         
     def evaluate_arithmetic_expression(self, node):
         expr = node.multTerm.accept(self)
@@ -30,7 +30,7 @@ class Interpreter(PTNodeVisitor):
                 expr -= node.plusAndTermList[i].accept(self)
             else:
                 expr += node.plusAndTermList[i].accept(self)
-        return expr
+        return int(expr)
     
     def evaluate_var_decl(self, node):
         self.binding[node.name] = node.expr.accept(self)
@@ -60,18 +60,13 @@ class Interpreter(PTNodeVisitor):
         else:
             return int(left < right)
     
-    def evaluate_print(self, node):
-        if isinstance(node.expression, str):
-            printLine = self.binding[node.expression]
-        else:
-            printLine = str(node.expression.accept(self))
+    def evaluate_print_func(self, node):
+        printLine = str(node.expression.accept(self))
         for expr in node.list:
             printLine += "|"
-            if isinstance(node.expression, str):
-                printLine = self.binding[expr.expression]
-            else:
-                printLine = str(expr.expression.accept(self))
+            printLine += str(expr.accept(self))
         print(printLine)
+        return printLine
         
     def evaluate_code(self, node):
         for expr in node.list:
