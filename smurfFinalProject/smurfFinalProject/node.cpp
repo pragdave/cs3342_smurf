@@ -7,36 +7,34 @@
 //
 
 #include "node.hpp"
-/*
+
 node::node() {
-    //readInToken = parsedTokens;
-    left = NULL;
-    right = NULL;
+/*    intNode[""] = NULL;
+    charNode[""] = NULL;
+    stringNode[""] = NULL; */
 }
 
-node::createNode(char token, node *l, node *r) {
-    int num = 0; //interpreter(token);
-    if (num == 1){
-        self1 = token;
-        left = l;
-        right = r;
-        node1.insert(pair<char, char>(token, token));
-        return node1;
-    } else if (num == 2){
-        self1 = token;
-        left = l;
-        right = r;
-        node1 = <token, token>;
-        return node1;
-    }
+map<string, int> node::createInt(int x) {
+    intNode["int"] = x;
+    return intNode;
 }
 
-
-node::~node() {
-    delete left;
-    delete right;
+map<string, char> node::createChar(char x) {
+    charNode["char"] = x;
+    return charNode;
 }
-*/
+
+map<string, string> node::createString(string x) {
+    stringNode["string"] = x;
+    return stringNode;
+}
+
+/* node::~node() {
+    delete intNode;
+    delete charNode;
+    delete stringNode;
+} */
+
 
 
 

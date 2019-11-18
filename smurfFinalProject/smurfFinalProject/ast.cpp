@@ -8,7 +8,7 @@
 
 #include "ast.hpp"
 
-
+/*
 ast::ast() {
     
 }
@@ -24,3 +24,4 @@ string ast::astCreate(ast tree){
 string ast::astCreate(ast tree){
     
 }
+*/

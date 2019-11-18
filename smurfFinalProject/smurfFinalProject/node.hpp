@@ -17,7 +17,14 @@ using namespace std;
 
 class node {
 public:
+    map<string, int> intNode;
+    map<string, char> charNode;
+    map<string, string> stringNode;
     
+    node();
+    map<string,int> createInt(int);
+    map<string, char> createChar(char);
+    map<string, string> createString(string);
 };
 
 
