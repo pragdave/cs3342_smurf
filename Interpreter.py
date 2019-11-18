@@ -58,7 +58,10 @@ class Interpreter(PTNodeVisitor):
     
     def evaluate_let(self, node):
         for decl in node.list:
-            decl.accept(self)
+            if isinstance(decl, str):
+                self.binding[decl] = 0
+            else:
+                decl.accept(self)
     
     def evaluate_boolean_expression(self, node):
         left = node.left.accept(self)
