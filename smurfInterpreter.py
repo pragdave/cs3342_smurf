@@ -1,33 +1,38 @@
+import copy
+
 #########################
 # Structural classes ####
 #########################
 
 class Binding:
     def __init__(self,parent):
-        # self.parent = parent
+        self.parent = parent
         self.bindings = {}
 
     def setVariable(self,name,value):
-        if name in self.bindings:
-            self.bindings[name] = value
-            return value
-        else:
-            raise Exception("Variable " + str(name) + " does not exist")
+        self.bindings[name] = value
+        return value
 
-    def getVariable(self,name,value):
+    def getVariable(self,name):
         if name in self.bindings:
             return self.bindings[name]
+        elif self.parent:
+            return self.parent.getVariable(name)
         else:
             raise Exception("Variable " + str(name) + " does not exist")
-
-    def defineVariable(self,name):
-        self.bindings[name] = 0;
     
 #########################
-# Non-Terminals #########
+# Terminals #############
 #########################
 
 class Integer:
+    def __init__(self,value):
+        self.value = value
+    
+    def evaluate(self,binding):
+        return self.value
+
+class Identifier:
     def __init__(self,value):
         self.value = value
     
@@ -68,7 +73,7 @@ class Divide:
         self.rhs = rhs
 
     def evaluate(self,binding):
-        return self.lhs.evaluate(binding) / self.rhs.evaluate(binding)
+        return int(self.lhs.evaluate(binding) / self.rhs.evaluate(binding))
 
 #########################
 # Boolean Operations ####
@@ -150,3 +155,128 @@ class Expr:
 
     def evaluate(self,binding):
         return self.expression.evaluate(binding)
+
+class Assignment:
+    def __init__(self,name,value):
+        self.name = name
+        self.value = value
+
+    def evaluate(self,binding):
+        return binding.setVariable(self.name.evaluate(binding),self.value.evaluate(binding))
+
+class Variable_Reference:
+    def __init__(self,name):
+        self.name = name
+
+    def evaluate(self,binding):
+        return binding.getVariable(self.name)
+
+class Decl:
+    def __init__(self,name,value):
+        self.name = name
+        self.value = value
+
+    def evaluate(self,binding):
+        return binding.setVariable(self.name.evaluate(binding),self.value.evaluate(binding))
+
+class Variable_Declaration:
+    def __init__(self,declList):
+        self.declList = declList
+
+    def evaluate(self,binding):
+        for decl in self.declList:
+            value = decl.evaluate(binding)
+        return value
+
+class Statement:
+    def __init__(self,statement):
+        self.statement = statement
+
+    def evaluate(self,binding):
+        return self.statement.evaluate(binding)
+
+class Code:
+    def __init__(self,statementList):
+        self.statementList = statementList
+
+    def evaluate(self,binding):
+        for statement in self.statementList:
+            value = statement.evaluate(binding)
+        return value
+
+class Program:
+    def __init__(self,code):
+        self.code = code
+
+    def evaluate(self):
+        return self.code.evaluate(Binding({}))
+
+class Brace_Block:
+    def __init__(self,code):
+        self.code = code
+
+    def evaluate(self,binding):
+        newBinding = Binding(binding)
+        return self.code.evaluate(newBinding)
+
+class If_Expression:
+    def __init__(self,condition,then,elseThen = 0):
+        self.condition = condition
+        self.then = then
+        self.elseThen = elseThen
+
+    def evaluate(self,binding):
+        if self.condition.evaluate(binding) != 0:
+            return self.then.evaluate(binding)
+        else:
+            return self.elseThen.evaluate(binding)
+
+class Param_List:
+    def __init__(self,paramList):
+        self.paramList = paramList
+
+    def evaluate(self,binding):
+        newBinding = Binding(binding)
+        for param in self.paramList:
+            newBinding.setVariable(param.evaluate(binding),0)
+        return newBinding
+
+class Function_Definition:
+    def __init__(self,functionBinding,function):
+        self.functionBinding = functionBinding
+        self.function = function
+
+    def evaluate(self,binding):
+        newBinding = self.functionBinding.evaluate(binding)
+        return (newBinding,self.function)
+
+class Call_Arguments:
+    def __init__(self,argList):
+        self.argList = argList
+
+    def evaluate(self,binding):
+        return list(map(lambda arg: arg.evaluate(binding),self.argList))
+
+class Function_Call:
+    def __init__(self,arguments,name):
+        self.arguments = arguments
+        self.name = name
+
+    def evaluate(self,binding):
+        argList = self.arguments.evaluate(binding)
+        if self.name == "print":
+            printStr = "Print: "
+            for x in range(len(argList)):
+                if x > 0:
+                    printStr = printStr + "|"
+                printStr = printStr + str(argList[x])
+            print(printStr)
+            return 0;
+    
+        variable = self.name.evaluate(binding)
+        newBinding = Binding(variable[0].parent)
+        newBinding.bindings = variable[0].bindings.copy()
+        function = variable[1]
+        for x in range(len(argList)):
+            newBinding.setVariable(list(newBinding.bindings.keys())[x],argList[x])
+        return function.evaluate(newBinding)
