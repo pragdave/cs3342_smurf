@@ -14,17 +14,16 @@ def variable_reference():       return identifier
 def if_expression():            return expr, brace_block, Optional("else",brace_block)
 def assignment():               return identifier, "=", expr
 def expr():                     return [("fn",function_definition),("if",if_expression),boolean_expression,arithmetic_expression]
-def boolean_expression():       return arithmetic_expression, relop, arithmetic_expression
-def arithmetic_expression():    return [(mult_term,addop,arithmetic_expression),mult_term]
-def mult_term():                return [(primary,mulop,mult_term),primary]
-def primary():                  return [integer,function_call,variable_reference,("(",arithmetic_expression,")")]
-def integer():                  return _(r'-?[0-9]+')
-def addop():                    return ["+","-"]
-def mulop():                    return ["*","/"]
-def relop():                    return ["==","!=",">=",">","<=","<"]
+def boolean_expression():       return arithmetic_expression, relop, arithmetic_expression # done
+def arithmetic_expression():    return [(mult_term,addop,arithmetic_expression),mult_term] # done
+def mult_term():                return [(primary,mulop,mult_term),primary] # done
+def primary():                  return [integer,function_call,variable_reference,("(",arithmetic_expression,")")] # done
+def integer():                  return _(r'-?[0-9]+') # done
+def addop():                    return ["+","-"] # done
+def mulop():                    return ["*","/"] # done
+def relop():                    return ["==","!=",">=",">","<=","<"] # done
 def function_call():            return [("print","(",call_arguments,")"),(variable_reference,"(",call_arguments,")")]
 def call_arguments():           return Optional(expr, ZeroOrMore(",",expr))
 def function_definition():      return param_list,brace_block
 def param_list():               return [("(",identifier, ZeroOrMore(",",identifier),")"),("(",")")]
 def brace_block():              return "{",code,"}"
-
