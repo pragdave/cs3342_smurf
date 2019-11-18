@@ -51,7 +51,7 @@ class ASTGenerator(PTNodeVisitor):
         return nodes.Fn_Decl(children[0], children[1:numChildren-1], children[numChildren-1])
         
     def visit_fn_let(self, node, children):
-        return nodes.Fn_Let(children)
+        return nodes.Fn_Let(children) let all work
         
     def visit_fn_call(self, node, children):
         return nodes.Fn_Call(children[0], children[1])
