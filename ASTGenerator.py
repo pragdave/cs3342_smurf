@@ -2,6 +2,9 @@ from arpeggio import PTNodeVisitor
 import AstNodes as nodes
 
 class ASTGenerator(PTNodeVisitor):
+    ##############
+    #Math Portion#
+    ##############
     def visit_number(self, node, children):
         return nodes.Number(node.value)
     
@@ -18,7 +21,11 @@ class ASTGenerator(PTNodeVisitor):
         
     def visit_arithmetic_expression(self, node, children):
         return nodes.Arithmetic_Expression(children[0], children[1:])
-         
+    
+    ####################
+    #Built in Functions#
+    ####################
+
     def visit_var_decl(self, node, children):
         return nodes.Var_Decl(children[0], children[1])
         
@@ -38,12 +45,23 @@ class ASTGenerator(PTNodeVisitor):
         
     def visit_if_statement(self, node, children):
         return nodes.If_Statement(children[0], children[1], children[2])
-        
+    
+    #########################
+    #Non-Interpretable types#
+    #########################
+    
     def visit_valid_line(self, node, children):
         return children[0]
         
     def visit_evaluatable(self, node, children):
         return children[0]
         
+    def visit_func_parameters(self, node, children):
+        return children[0]
+    
+    ####################
+    #Top Level Function#
+    ####################
+    
     def visit_code(self, node, children):
         return nodes.Code(children)
