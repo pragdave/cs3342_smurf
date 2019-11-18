@@ -31,5 +31,11 @@ class ASTGenerator(PTNodeVisitor):
     def visit_print_func(self, node, children):
         return nodes.Print_Func(children[0], children[1:])
         
+    def visit_valid_line(self, node, children):
+        return children[0]
+        
+    def visit_evaluatable(self, node, children):
+        return children[0]
+        
     def visit_code(self, node, children):
         return nodes.Code(children)
