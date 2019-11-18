@@ -26,10 +26,18 @@ class ASTGenerator(PTNodeVisitor):
         return nodes.Let(children)
         
     def visit_boolean_expression(self, node, children):
+        if len(children) == 1:
+            return nodes.Number(children[0])
         return nodes.Boolean_Expression(children[0], children[1], children[2])
     
     def visit_print_func(self, node, children):
         return nodes.Print_Func(children[0], children[1:])
+        
+    def visit_code_block(self, node, children):
+        return nodes.Code_Block(children)
+        
+    def visit_if_statement(self, node, children):
+        return nodes.If_Statement(children[0], children[1], children[2])
         
     def visit_valid_line(self, node, children):
         return children[0]
