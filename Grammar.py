@@ -1,6 +1,5 @@
 from arpeggio import RegExMatch, Optional, ZeroOrMore, OneOrMore, EOF
 
-
 ##############
 #Math Portion#
 ##############
@@ -39,7 +38,7 @@ def boolean_expression():
 
 #Handles a print statement
 def print_func():
-    return "print(", [evaluatable], ZeroOrMore(",", [evaluatable]), ")"
+    return "print(", func_parameters, ")"
 
 #Handles code blocks statements
 def code_block():
@@ -49,6 +48,10 @@ def code_block():
 def if_statement():
     return "if", boolean_expression, code_block, "else", code_block
 
+#########################
+#Non-Interpretable types#
+#########################
+
 #Declares what types can be their own line
 def valid_line():
     return [if_statement, print_func, let, var_decl, arithmetic_expression]
@@ -56,6 +59,10 @@ def valid_line():
 #Declares what types can be evaluated to a value
 def evaluatable():
     return [if_statement, code_block, boolean_expression, arithmetic_expression, RegExMatch('\w+')]
+    
+#Declares format of function parameters
+def func_parameters():
+    return Optional(evaluatable), ZeroOrMore(",", [evaluatable])
 
 #######################
 #Interpreter Interface#
