@@ -37,12 +37,12 @@ class Var_Decl:
     def accept(self, visitor):
         return visitor.evaluate_var_decl(self)
     
-class Let:
+class Var_Let:
     def __init__(self, list):
         self.list = list
         
     def accept(self, visitor):
-        return visitor.evaluate_let(self)
+        return visitor.evaluate_var_let(self)
 
 class Boolean_Expression:
     def __init__(self, left, op, right):
@@ -54,9 +54,8 @@ class Boolean_Expression:
         return visitor.evaluate_boolean_expression(self)
 
 class Print_Func:
-    def __init__(self, expression, list):
-        self.expression = expression
-        self.list = list
+    def __init__(self, listOfList):
+        self.listOfList = listOfList
         
     def accept(self, visitor):
         return visitor.evaluate_print_func(self)
@@ -76,6 +75,22 @@ class If_Statement:
         
     def accept(self, visitor):
         return visitor.evaluate_if_statement(self)
+        
+class Fn_Decl:
+    def __init__(self, name, paramList, codeBlock):
+        self.name = name
+        self.paramList = paramList
+        self.codeBlock = codeBlock
+        
+    def accept(self, visitor):
+        return visitor.evaluate_fn_decl(self)
+        
+class Fn_Let:
+    def __init__(self, list):
+        self.list = list
+        
+    def accept(self, visitor):
+        return visitor.evaluate_fn_let(self)
         
 class Code:
     def __init__(self, list):
