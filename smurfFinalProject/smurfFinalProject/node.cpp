@@ -14,19 +14,16 @@ node::node() {
     stringNode[""] = NULL; */
 }
 
-map<string, int> node::createInt(int x) {
-    intNode["int"] = x;
-    return intNode;
+void node::createInt(int x) {
+    intNode[x] = "int";
 }
 
-map<string, char> node::createChar(char x) {
-    charNode["char"] = x;
-    return charNode;
+void node::createChar(char x) {
+    charNode[x] = "char";
 }
 
-map<string, string> node::createString(string x) {
-    stringNode["string"] = x;
-    return stringNode;
+void node::createString(string x) {
+    stringNode[x] = "string";
 }
 
 /* node::~node() {

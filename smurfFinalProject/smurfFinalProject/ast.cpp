@@ -8,20 +8,14 @@
 
 #include "ast.hpp"
 
-/*
-ast::ast() {
-    
+void ast::createBinop(node *l, string op, node *r) {
+    left = l;
+    operation = op;
+    right = r;
 }
 
-ast::~ast(){
-    
+void ast::createIntAST(string x) {
+    int y = stoi(x);
+    intNode.createInt(y);
 }
 
-string ast::astCreate(ast tree){
-    
-}
-
-string ast::astCreate(ast tree){
-    
-}
-*/

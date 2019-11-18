@@ -11,9 +11,17 @@
 
 #include <stdio.h>
 #include "node.hpp"
+#include <map>
 
 class ast {
 public:
+    node intNode;
+    node *left;
+    node *right;
+    string operation;
+    
+    void createBinop(node*, string, node*);
+    void createIntAST(string);
     
 };
 
