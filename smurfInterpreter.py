@@ -1,9 +1,5 @@
 import copy
 
-#########################
-# Structural classes ####
-#########################
-
 class Binding:
     def __init__(self,parent):
         self.parent = parent
@@ -20,180 +16,18 @@ class Binding:
             return self.parent.getVariable(name)
         else:
             raise Exception("Variable " + str(name) + " does not exist")
-    
-#########################
-# Terminals #############
-#########################
-
-class Integer:
-    def __init__(self,value):
-        self.value = value
-    
-    def evaluate(self,binding):
-        return self.value
-
-class Identifier:
-    def __init__(self,value):
-        self.value = value
-    
-    def evaluate(self,binding):
-        return self.value
 
 #########################
-# Arithmetic operations #
+# Top-Level Structures ##
 #########################
 
-class Plus:
-    def __init__(self,lhs,rhs):
-        self.lhs = lhs
-        self.rhs = rhs
+class Program:
+    def __init__(self,code):
+        self.code = code
 
-    def evaluate(self,binding):
-        return self.lhs.evaluate(binding) + self.rhs.evaluate(binding)
+    def evaluate(self):
+        return self.code.evaluate(Binding({}))
 
-class Minus:
-    def __init__(self,lhs,rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-
-    def evaluate(self,binding):
-        return self.lhs.evaluate(binding) - self.rhs.evaluate(binding)
-
-class Times:
-    def __init__(self,lhs,rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-
-    def evaluate(self,binding):
-        return self.lhs.evaluate(binding) * self.rhs.evaluate(binding)
-
-class Divide:
-    def __init__(self,lhs,rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-
-    def evaluate(self,binding):
-        return int(self.lhs.evaluate(binding) / self.rhs.evaluate(binding))
-
-#########################
-# Boolean Operations ####
-#########################
-
-class Equal:
-    def __init__(self,lhs,rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-
-    def evaluate(self,binding):
-        if(self.lhs.evaluate(binding) == self.rhs.evaluate(binding)):
-            return 1
-        else:
-            return 0
-
-class NotEqual:
-    def __init__(self,lhs,rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-
-    def evaluate(self,binding):
-        if(self.lhs.evaluate(binding) != self.rhs.evaluate(binding)):
-            return 1
-        else:
-            return 0
-
-class GreaterEqual:
-    def __init__(self,lhs,rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-
-    def evaluate(self,binding):
-        if(self.lhs.evaluate(binding) >= self.rhs.evaluate(binding)):
-            return 1
-        else:
-            return 0
-
-class Greater:
-    def __init__(self,lhs,rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-
-    def evaluate(self,binding):
-        if(self.lhs.evaluate(binding) > self.rhs.evaluate(binding)):
-            return 1
-        else:
-            return 0
-
-class LessEqual:
-    def __init__(self,lhs,rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-
-    def evaluate(self,binding):
-        if(self.lhs.evaluate(binding) <= self.rhs.evaluate(binding)):
-            return 1
-        else:
-            return 0
-
-class Less:
-    def __init__(self,lhs,rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-
-    def evaluate(self,binding):
-        if(self.lhs.evaluate(binding) < self.rhs.evaluate(binding)):
-            return 1
-        else:
-            return 0
-
-#########################
-#########################
-#########################
-
-class Expr:
-    def __init__(self,expression):
-        self.expression = expression
-
-    def evaluate(self,binding):
-        return self.expression.evaluate(binding)
-
-class Assignment:
-    def __init__(self,name,value):
-        self.name = name
-        self.value = value
-
-    def evaluate(self,binding):
-        return binding.setVariable(self.name.evaluate(binding),self.value.evaluate(binding))
-
-class Variable_Reference:
-    def __init__(self,name):
-        self.name = name
-
-    def evaluate(self,binding):
-        return binding.getVariable(self.name)
-
-class Decl:
-    def __init__(self,name,value):
-        self.name = name
-        self.value = value
-
-    def evaluate(self,binding):
-        return binding.setVariable(self.name.evaluate(binding),self.value.evaluate(binding))
-
-class Variable_Declaration:
-    def __init__(self,declList):
-        self.declList = declList
-
-    def evaluate(self,binding):
-        for decl in self.declList:
-            value = decl.evaluate(binding)
-        return value
-
-class Statement:
-    def __init__(self,statement):
-        self.statement = statement
-
-    def evaluate(self,binding):
-        return self.statement.evaluate(binding)
 
 class Code:
     def __init__(self,statementList):
@@ -204,20 +38,43 @@ class Code:
             value = statement.evaluate(binding)
         return value
 
-class Program:
-    def __init__(self,code):
-        self.code = code
 
-    def evaluate(self):
-        return self.code.evaluate(Binding({}))
-
-class Brace_Block:
-    def __init__(self,code):
-        self.code = code
+class Statement:
+    def __init__(self,statement):
+        self.statement = statement
 
     def evaluate(self,binding):
-        newBinding = Binding(binding)
-        return self.code.evaluate(newBinding)
+        return self.statement.evaluate(binding)
+
+
+class Variable_Declaration:
+    def __init__(self,declList):
+        self.declList = declList
+
+    def evaluate(self,binding):
+        for decl in self.declList:
+            value = decl.evaluate(binding)
+        return value
+
+
+class Decl:
+    def __init__(self,name,value):
+        self.name = name
+        self.value = value
+
+    def evaluate(self,binding):
+        lhs = self.name.evaluate(binding);
+        rhs = self.value.evaluate(binding)
+        return binding.setVariable(lhs,rhs)
+
+
+class Variable_Reference:
+    def __init__(self,name):
+        self.name = name
+
+    def evaluate(self,binding):
+        return binding.getVariable(self.name)
+
 
 class If_Expression:
     def __init__(self,condition,then,elseThen = 0):
@@ -231,31 +88,25 @@ class If_Expression:
         else:
             return self.elseThen.evaluate(binding)
 
-class Param_List:
-    def __init__(self,paramList):
-        self.paramList = paramList
+
+class Assignment:
+    def __init__(self,name,value):
+        self.name = name
+        self.value = value
 
     def evaluate(self,binding):
-        newBinding = Binding(binding)
-        for param in self.paramList:
-            newBinding.setVariable(param.evaluate(binding),0)
-        return newBinding
+        lhs = self.name.evaluate(binding);
+        rhs = self.value.evaluate(binding)
+        return binding.setVariable(lhs,rhs)
 
-class Function_Definition:
-    def __init__(self,functionBinding,function):
-        self.functionBinding = functionBinding
-        self.function = function
 
-    def evaluate(self,binding):
-        newBinding = self.functionBinding.evaluate(binding)
-        return (newBinding,self.function)
-
-class Call_Arguments:
-    def __init__(self,argList):
-        self.argList = argList
+class Expr:
+    def __init__(self,expression):
+        self.expression = expression
 
     def evaluate(self,binding):
-        return list(map(lambda arg: arg.evaluate(binding),self.argList))
+        return self.expression.evaluate(binding)
+
 
 class Function_Call:
     def __init__(self,arguments,name):
@@ -280,3 +131,178 @@ class Function_Call:
         for x in range(len(argList)):
             newBinding.setVariable(list(newBinding.bindings.keys())[x],argList[x])
         return function.evaluate(newBinding)
+
+
+class Call_Arguments:
+    def __init__(self,argList):
+        self.argList = argList
+
+    def evaluate(self,binding):
+        return list(map(lambda arg: arg.evaluate(binding),self.argList))
+
+
+class Function_Definition:
+    def __init__(self,functionBinding,function):
+        self.functionBinding = functionBinding
+        self.function = function
+
+    def evaluate(self,binding):
+        newBinding = self.functionBinding.evaluate(binding)
+        return (newBinding,self.function)
+
+
+class Param_List:
+    def __init__(self,paramList):
+        self.paramList = paramList
+
+    def evaluate(self,binding):
+        newBinding = Binding(binding)
+        for param in self.paramList:
+            newBinding.setVariable(param.evaluate(binding),0)
+        return newBinding
+
+
+class Brace_Block:
+    def __init__(self,code):
+        self.code = code
+
+    def evaluate(self,binding):
+        newBinding = Binding(binding)
+        return self.code.evaluate(newBinding)
+        
+#########################
+# Terminals #############
+#########################
+
+class Integer:
+    def __init__(self,value):
+        self.value = value
+    
+    def evaluate(self,binding):
+        return self.value
+
+
+class Identifier:
+    def __init__(self,value):
+        self.value = value
+    
+    def evaluate(self,binding):
+        return self.value
+
+#########################
+# Arithmetic operations #
+#########################
+
+class Plus:
+    def __init__(self,lhs,rhs):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def evaluate(self,binding):
+        result = self.lhs.evaluate(binding) + self.rhs.evaluate(binding)
+        return result
+
+
+class Minus:
+    def __init__(self,lhs,rhs):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def evaluate(self,binding):
+        result = self.lhs.evaluate(binding) - self.rhs.evaluate(binding)
+        return result
+
+
+class Times:
+    def __init__(self,lhs,rhs):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def evaluate(self,binding):
+        result = self.lhs.evaluate(binding) * self.rhs.evaluate(binding)
+        return result
+
+
+class Divide:
+    def __init__(self,lhs,rhs):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def evaluate(self,binding):
+        result = self.lhs.evaluate(binding) / self.rhs.evaluate(binding)
+        return int(result)
+
+#########################
+# Boolean Operations ####
+#########################
+
+class Equal:
+    def __init__(self,lhs,rhs):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def evaluate(self,binding):
+        if(self.lhs.evaluate(binding) == self.rhs.evaluate(binding)):
+            return 1
+        else:
+            return 0
+
+
+class NotEqual:
+    def __init__(self,lhs,rhs):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def evaluate(self,binding):
+        if(self.lhs.evaluate(binding) != self.rhs.evaluate(binding)):
+            return 1
+        else:
+            return 0
+
+
+class GreaterEqual:
+    def __init__(self,lhs,rhs):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def evaluate(self,binding):
+        if(self.lhs.evaluate(binding) >= self.rhs.evaluate(binding)):
+            return 1
+        else:
+            return 0
+
+
+class Greater:
+    def __init__(self,lhs,rhs):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def evaluate(self,binding):
+        if(self.lhs.evaluate(binding) > self.rhs.evaluate(binding)):
+            return 1
+        else:
+            return 0
+
+
+class LessEqual:
+    def __init__(self,lhs,rhs):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def evaluate(self,binding):
+        if(self.lhs.evaluate(binding) <= self.rhs.evaluate(binding)):
+            return 1
+        else:
+            return 0
+
+
+class Less:
+    def __init__(self,lhs,rhs):
+        self.lhs = lhs
+        self.rhs = rhs
+
+    def evaluate(self,binding):
+        if(self.lhs.evaluate(binding) < self.rhs.evaluate(binding)):
+            return 1
+        else:
+            return 0
