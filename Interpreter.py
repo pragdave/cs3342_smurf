@@ -44,7 +44,7 @@ class Interpreter(PTNodeVisitor):
         self.binding[node.name] = node.expr.accept(self)
         print("bindings: ", self.binding)
     
-    def evaluate_let(self, node):
+    def evaluate_var_let(self, node):
         for decl in node.list:
             if isinstance(decl, str):
                 self.binding[decl] = 0
@@ -69,10 +69,12 @@ class Interpreter(PTNodeVisitor):
             return int(left < right)
     
     def evaluate_print_func(self, node):
-        printLine = str(node.expression.accept(self))
-        for expr in node.list:
-            printLine += "|"
+        list = node.listOfList[0]
+        printLine = ""
+        for expr in list:
             printLine += str(expr.accept(self))
+            printLine += "|"
+        printLine = printLine[:-1]
         print(printLine)
         return printLine
         
