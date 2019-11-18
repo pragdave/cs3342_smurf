@@ -56,7 +56,7 @@ class Interpreter(PTNodeVisitor):
         self.binding[node.name] = node.expr.accept(self)
         print("bindings: ", self.binding)
     
-    def evaluate_let(self, node):
+    def evaluate_var_let(self, node):
         for decl in node.list:
             if isinstance(decl, str):
                 self.binding[decl] = 0
