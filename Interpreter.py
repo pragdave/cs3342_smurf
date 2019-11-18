@@ -5,7 +5,7 @@ class Interpreter(PTNodeVisitor):
     
     def evaluate_number(self, node):
         try:
-            return float(node.value)
+            return int(node.value)
         except ValueError:
             return self.binding[node.value]
     
@@ -38,24 +38,27 @@ class Interpreter(PTNodeVisitor):
     
     def evaluate_let(self, node):
         for decl in node.list:
-            decl.accept(self)
+            if isinstance(decl, str):
+                self.binding[decl] = 0
+            else:
+                decl.accept(self)
     
     def evaluate_boolean_expression(self, node):
         left = node.left.accept(self)
         right = node.right.accept(self)
         
         if node.op == "==":
-            return left == right
+            return int(left == right)
         elif node.op == "!=":
-            return left != right
+            return int(left != right)
         elif node.op == ">=":
-            return left >= right
+            return int(left >= right)
         elif node.op == ">":
-            return left > right
+            return int(left > right)
         elif node.op == "<=":
-            return left <= right
+            return int(left <= right)
         else:
-            return left < right
+            return int(left < right)
     
     def evaluate_print(self, node):
         if isinstance(node.expression, str):
