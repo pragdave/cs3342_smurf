@@ -13,8 +13,8 @@ class ASTGenerator(PTNodeVisitor):
         else:
             return nodes.Factor(children[1], "+")
         
-    def visit_term(self, node, children):
-        return nodes.Term(children[0], children[1:])
+    def visit_mult_term(self, node, children):
+        return nodes.Mult_Term(children[0], children[1:])
         
     def visit_arithmetic_expression(self, node, children):
         return nodes.Arithmetic_Expression(children[0], children[1:])
@@ -29,7 +29,7 @@ class ASTGenerator(PTNodeVisitor):
         return nodes.Boolean_Expression(children[0], children[1], children[2])
     
     def visit_print_func(self, node, children):
-        return nodes.Print(children[0], children[1:])
+        return nodes.Print_Func(children[0], children[1:])
         
     def visit_code(self, node, children):
         return nodes.Code(children)

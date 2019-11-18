@@ -19,7 +19,7 @@ class Mult_Term:
         self.multAndFactList = multAndFactList
         
     def accept(self, visitor):
-        return visitor.evaluate_term(self)
+        return visitor.evaluate_mult_term(self)
 
 class Arithmetic_Expression:
     def __init__(self, multTerm, plusAndTermList):
@@ -53,13 +53,13 @@ class Boolean_Expression:
     def accept(self, visitor):
         return visitor.evaluate_boolean_expression(self)
 
-class Print:
+class Print_Func:
     def __init__(self, expression, list):
         self.expression = expression
         self.list = list
         
     def accept(self, visitor):
-        return visitor.evaluate_print(self)
+        return visitor.evaluate_print_func(self)
         
 class Code:
     def __init__(self, list):
