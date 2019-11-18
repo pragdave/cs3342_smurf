@@ -29,8 +29,8 @@ class ASTGenerator(PTNodeVisitor):
     def visit_var_decl(self, node, children):
         return nodes.Var_Decl(children[0], children[1])
         
-    def visit_let(self, node, children):
-        return nodes.Let(children)
+    def visit_var_let(self, node, children):
+        return nodes.Var_Let(children)
         
     def visit_boolean_expression(self, node, children):
         if len(children) == 1:
@@ -38,7 +38,7 @@ class ASTGenerator(PTNodeVisitor):
         return nodes.Boolean_Expression(children[0], children[1], children[2])
     
     def visit_print_func(self, node, children):
-        return nodes.Print_Func(children[0], children[1:])
+        return nodes.Print_Func(children)
         
     def visit_code_block(self, node, children):
         return nodes.Code_Block(children)
@@ -57,7 +57,7 @@ class ASTGenerator(PTNodeVisitor):
         return children[0]
         
     def visit_func_parameters(self, node, children):
-        return children[0]
+        return children
     
     ####################
     #Top Level Function#
