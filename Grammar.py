@@ -31,7 +31,7 @@ def var_decl():
 
 #Handles variable declaration
 def let():
-    return "let", var_decl, ZeroOrMore(",", var_decl)
+    return "let", [var_decl, RegExMatch('\w+')], ZeroOrMore(",", [var_decl, RegExMatch('\w+')])
 
 #Handles boolean expressions ==, !=, >=, >, <=, <
 def boolean_expression():
