@@ -12,16 +12,25 @@ GenerateNode = function GenerateNode(statement) {
 
 	let newNode = {};
 	switch(statement.type) {
-		case "function":
-			const body = statement.body;
-				// TODO: GenerateNode for statement.body
-			newNode = new FunctionNode(statement.fcn_name);
+		case "function_call":
+			newNode = new FunctionCallNode(statement.fcn_name);
 			const params = statement.params.map(p => GenerateNode(p)).filter(p => !!p && !!p.type);
 			const paramsNode = new ParamsNode(params);
 			newNode.params = paramsNode;
 			paramsNode.parent = newNode;
+			break;
+		case "function_def":
+			newNode = new FunctionDefNode();
+			const defParams = statement.params.map(p => GenerateNode(p));
+			const defParamsNode = new ParamsNode(defParams);
+			newNode.params = defParamsNode;
+			defParamsNode.parent = newNode;
+			const body = statement.body.map(statement => {
+				const statementNode = GenerateNode(statement);
+				statementNode.parent = newNode;
+				return statementNode;
+			});
 			newNode.body = body;
-			// body.parent = newNode;
 			break;
 		case "integer":
 			newNode = new ValueNode(statement.value);
@@ -106,7 +115,7 @@ RootNode = function RootNode() {
 				case "assignment":
 					this.statements.push(node);
 					break;
-				case "function":
+				case "function_call":
 					this.statements.push(node);
 					break;
 				case "if":
@@ -127,12 +136,18 @@ IfNode = function IfNode() {
 	this.elseStatements = [];
 }
 
-FunctionNode = function FunctionNode(name) {
-	this.type = "function";
+FunctionCallNode = function FunctionCallNode(name) {
+	this.type = "function_call";
 	this.name = name;
 	this.parent = null;
-	this.params = null;
-	this.body = null;
+	this.params = [];
+}
+
+FunctionDefNode = function FunctionDefNode() {
+	this.type = "function_def";
+	this.parent = null;
+	this.params = [];
+	this.body = [];
 }
 
 ArithmeticExprNode = function ArithmeticExprNode(operator) {

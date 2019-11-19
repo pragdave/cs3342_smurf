@@ -2,7 +2,7 @@ program = code
 
 code = statement*
 
-statement = "let" _ variable_dec:variable_declaration _ { return variable_dec; }
+statement = _ "let" _ variable_dec:variable_declaration _ { return variable_dec; }
           / assignment
           / expr:expr _ { return expr; }
 
@@ -23,7 +23,7 @@ else_expression = "else" _ statements:brace_block { return statements; }
 
 assignment  = _ name:identifier _ "=" expr:expr { return {type: "assignment", name, expr}; }
 
-expr  = "fn" function_definition
+expr  = _ "fn" _ def:function_definition { return def; }
       / _ "if" _ expr:if_expression { return {type: "if", evaluation: expr.evaluation, statements: expr.statements, else_statements: expr.else_statements}; }
       / boolean_expression
       / arithmetic_expression
@@ -54,17 +54,17 @@ relop   =   '=='
           / '<='
           / '<' 
 
-function_call  = fcn_name:"print" "(" params:call_arguments ")" { return {type: "function", fcn_name, params}; }
-                  / fcn_name:variable_reference "(" params:call_arguments ")" { return {type: "function", fcn_name, params}; }
+function_call  = fcn_name:"print" "(" params:call_arguments ")" { return {type: "function_call", fcn_name, params}; }
+                  / fcn_name:variable_reference "(" params:call_arguments ")" { return {type: "function_call", fcn_name, params}; }
 
-call_arguments = arg:((expr repeat_arg)?) { const args = arg[1].length ? [arg[0], ...arg[1]] : [arg[0]]; return args; }
+call_arguments = arg:((expr repeat_arg)?) { if (!arg) { return []; } const args = arg[1].length ? [arg[0], ...arg[1]] : [arg[0]]; return args; }
 
 repeat_arg = arg:(("," expr)*) { const finalArg = arg.length ? arg.map(a => a[1]) : []; return finalArg; }
 
-function_definition = param_list brace_block
+function_definition = params:param_list _ body:brace_block { return {type: "function_def", params, body}; }
 
-param_list =  "(" pattern:(identifier ("," identifier)*) ")" { return pattern; }
-           /  "()"
+param_list = "(" pattern:(identifier ("," identifier)*) ")" { return pattern; }
+           / "()" { return []; }
 
 brace_block = "{" _ code:code _ "}" { return code; }
 

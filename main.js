@@ -46,33 +46,39 @@ peg = require("pegjs");
 //     j = h+i\n
 // print(h,i,j)   #=> 99|200|299\n`;
 
+// const codeExample = 
+// `if 1 {\n
+//   print(99)\n
+// }\n
+// else {\n
+//   print(100)\n
+// }                                        #=> 99\n
+// # 'if' as an expression\n
+// print(if 1 { 99 } else { 100 })          #=> 99\n
+// print(if 0 { 99 } else { 100 })          #=> 100\n\n
+// # try relops\n\n
+// print(if 9 < 10 { 1  } else { -1 })      #=> 1\n
+// print(if 10 < 9 { -1 } else {  1 })      #=> 1\n
+// print(if 9 < 9  { -1 } else {  1 })      #=> 1\n
+// print(if  9 <= 10 {  1 } else { -1 })    #=> 1\n
+// print(if 10 <=  9 { -1 } else {  1 })    #=> 1\n
+// print(if  9 <=  9 {  1 } else { -1 })    #=> 1\n\n
+// print(if  9 >= 10 { -1 } else {  1 })    #=> 1\n
+// print(if 10 >=  9 {  1 } else { -1 })    #=> 1\n
+// print(if  9 >=  9 {  1 } else { -1 })    #=> 1\n\n
+// print(if  9 > 10 { -1 } else {  1 })     #=> 1\n
+// print(if 10 >  9 {  1 } else { -1 })     #=> 1\n
+// print(if  9 >  9 { -1 } else {  1 })     #=> 1\n\n
+// print(if  9 ==  9 {  1 } else { -1 })    #=> 1\n
+// print(if  9 == 10 { -1 } else {  1 })    #=> 1\n
+// print(if  9 !=  9 { -1 } else {  1 })    #=> 1\n
+// print(if  9 != 10 {  1 } else { -1 })    #=> 1\n
+// `;
+
 const codeExample = 
-`if 1 {\n
-  print(99)\n
-}\n
-else {\n
-  print(100)\n
-}                                        #=> 99\n
-# 'if' as an expression\n
-print(if 1 { 99 } else { 100 })          #=> 99\n
-print(if 0 { 99 } else { 100 })          #=> 100\n\n
-# try relops\n\n
-print(if 9 < 10 { 1  } else { -1 })      #=> 1\n
-print(if 10 < 9 { -1 } else {  1 })      #=> 1\n
-print(if 9 < 9  { -1 } else {  1 })      #=> 1\n
-print(if  9 <= 10 {  1 } else { -1 })    #=> 1\n
-print(if 10 <=  9 { -1 } else {  1 })    #=> 1\n
-print(if  9 <=  9 {  1 } else { -1 })    #=> 1\n\n
-print(if  9 >= 10 { -1 } else {  1 })    #=> 1\n
-print(if 10 >=  9 {  1 } else { -1 })    #=> 1\n
-print(if  9 >=  9 {  1 } else { -1 })    #=> 1\n\n
-print(if  9 > 10 { -1 } else {  1 })     #=> 1\n
-print(if 10 >  9 {  1 } else { -1 })     #=> 1\n
-print(if  9 >  9 { -1 } else {  1 })     #=> 1\n\n
-print(if  9 ==  9 {  1 } else { -1 })    #=> 1\n
-print(if  9 == 10 { -1 } else {  1 })    #=> 1\n
-print(if  9 !=  9 { -1 } else {  1 })    #=> 1\n
-print(if  9 != 10 {  1 } else { -1 })    #=> 1\n
+`# no parameters\n\n
+let f = fn () { 99 }\n
+print(f())             #=> 99\n\n
 `;
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {

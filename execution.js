@@ -2,26 +2,27 @@ exports.ExecuteStatement = function ExecuteStatement(node) {
 	return ExecuteNode(node);
 }
 
-variables = {};
-functions = {
-	print: (paramsArr) => {
+variables = {
+	print: {
+		execute: (paramsArr) => {
 			let printString = "";
 			paramsArr.forEach((p,i) => {
-			
-			if (i !== 0) {
-				printString += "|";
-			}
-			printString += p;
-		});
-		console.log(printString);
+				if (i !== 0) {
+					printString += "|";
+				}
+				printString += p;
+			});
+			console.log(printString);
+		}
 	}
+	 
 };
 
 ExecuteNode = function ExecuteNode(node) {
 	let returnVal = null;
 	switch(node.type) {
-		case "function":
-			returnVal = ExecuteFunction(node);
+		case "function_call":
+			returnVal = ExecuteFunctionCall(node);
 			break;
 		case "value":
 			returnVal = ExecuteValue(node);
@@ -44,20 +45,37 @@ ExecuteNode = function ExecuteNode(node) {
 		case "boolean_expr":
 			returnVal = ExecuteBooleanExpr(node);
 			break;
+		case "function_def":
+			returnVal = ExecuteFunctionDef(node);
+			break;
 		default:
-			console.log(`${node.type} is an invalid node type --execution`);
+			console.log(`\n******\t${node.type} is an invalid node type --execution\t******\n`);
 	}
 	return returnVal;
 }
 
-DefineFunction = function DefineFunction(node) {
-	functions[node.name] = {params: node.params, body: node.body};
+ExecuteFunctionDef = function ExecuteFunctionDef(node) {
+	const parentNode = node.parent;
+	const functionName = parentNode.name;
+	const params = ExecuteParams(node.params);
+	variables[functionName] = new ExecuteFunction(params, node.body);
+	return variables[functionName];
 }
 
-ExecuteFunction = function ExecuteFunction(node) {
+ExecuteFunction = function ExecuteFunction(params, body) {
+	this.params = params;
+	this.body = body;
+
+	this.execute = function(localParams) {
+		const executed = this.body.map(statement => ExecuteNode(statement));
+		return executed[executed.length - 1]
+	}
+}
+
+ExecuteFunctionCall = function ExecuteFunctionCall(node) {
 	const params = ExecuteParams(node.params);
-	const functionBody = functions[node.name];
-	return functionBody(params);
+	const functionBody = node.name.type ? ExecuteNode(node.name) : variables[node.name];
+	return functionBody.execute(params);
 }
 
 ExecuteValue = function ExecuteValue(node) {
