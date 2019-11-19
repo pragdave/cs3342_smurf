@@ -139,7 +139,15 @@ const codeExample =
 }\n
 else {\n
   print(100)\n
-}                                        #=> 99\n`;
+}                                        #=> 99\n
+# 'if' as an expression\n
+print(if 1 { 99 } else { 100 })          #=> 99\n
+print(if 0 { 99 } else { 100 })          #=> 100\n\n
+# try relops\n\n
+print(if 9 < 10 { 1  } else { -1 })      #=> 1\n`;
+// print(if 10 < 9 { -1 } else {  1 })      #=> 1\n
+// print(if 9 < 9  { -1 } else {  1 })      #=> 1\n
+
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {
 	if (err) {

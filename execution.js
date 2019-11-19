@@ -38,6 +38,9 @@ ExecuteNode = function ExecuteNode(node) {
 		case "assignment":
 			returnVal = ExecuteAssignment(node);
 			break;
+		case "if":
+			returnVal = ExecuteIf(node);
+			break;
 		default:
 			console.log(`${node.type} is an invalid node type --execution`);
 	}
@@ -101,4 +104,13 @@ ExecuteAssignment = function ExecuteAssignment(node) {
 	const value = ExecuteNode(node.expr);
 	variables[node.name] = value;
 	return value;
+}
+
+ExecuteIf = function ExecuteIf(node) {
+	const evaluation = ExecuteNode(node.evaluation);
+	if (evaluation) {
+		return node.statements.map(statement => ExecuteNode(statement));
+	} else {
+		return node.elseStatements.map(statement => ExecuteNode(statement));
+	}
 }

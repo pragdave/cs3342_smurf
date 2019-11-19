@@ -29,5 +29,55 @@
 				]
 			}
 		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "integer",
+					"value": 1
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": 99
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": 100
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "integer",
+					"value": 0
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": 99
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": 100
+					}
+				]
+			}
+		]
 	}
 ]
