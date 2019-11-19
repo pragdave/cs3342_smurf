@@ -1,33 +1,89 @@
 from grammar import *
+from interpreter import *
 
 class SmurfVisitor(PTNodeVisitor):
 
-    def visit_integer(self,node,children):
-        return int(node.value)
+    def visit_program(self,node,children):
+        return Program(children[0])
 
 
-    def visit_mult_term(self,node,children):
+    def visit_code(self,node,children):
+        return Code(children)
+
+
+    def visit_statement(self,node,children):
+        return Statement(children[0])
+
+
+    def visit_variable_declaration(self,node,children):
+            return VariableDeclaration(children)
+
+    
+    def visit_decl(self,node,children):
+        if len(children) == 1:
+            return Decl(children[0],0)
+        else:
+            return Decl(children[0],children[1])
+
+
+    def visit_identifier(self,node,children):
+        return Identifier(node.value)
+
+
+    def visit_variable_reference(self,node,children):
+        return VariableReference(children[0])
+
+
+    def visit_assignment(self,node,children):
+        return Assignment(children[0],children[1])
+
+
+    def visit_expr(self,node,children):
+        if len(children) == 1:
+            return Expr(children[0])
+        else:
+            return Expr(children[1])
+
+
+    def visit_boolean_expression(self,node,children):
         if(len(children) == 1):
             return children[0]
         else:
-            if children[1] == "*":
-                return (children[0] * children[2])
-            elif children[1] == "/":
-                return (children[0] / children[2])
+            if children[1] == "==":
+                return (IsEqualTo(children[0],children[2]))
+            elif children[1] == "!=":
+                return (IsNotEqualTo(children[0],children[2]))
+            elif children[1] == ">=":
+                return (IsGreaterThanOrEqualTo(children[0],children[2]))
+            elif children[1] == ">":
+                return (IsGreaterThan(children[0],children[2]))
+            elif children[1] == "<=":
+                return (IsLessThanOrEqualTo(children[0],children[2]))
+            elif children[1] == "<":
+                return (IsLessThan(children[0],children[2]))
+
 
     def visit_arithmetic_expression(self,node,children):
         if(len(children) == 1):
             return children[0]
         else:
             if children[1] == "+":
-                return (children[0] + children[2])
+                return (Plus(children[0],children[2]))
             elif children[1] == "-":
-                return (children[0] - children[2])
+                return (Minus(children[0],children[2]))
+
+    def visit_mult_term(self,node,children):
+        if(len(children) == 1):
+            return children[0]
+        else:
+            if children[1] == "*":
+                return (Multiply(children[0],children[2]))
+            elif children[1] == "/":
+                return (Divide(children[0],children[2]))
 
 
-    def visit_print(self,node,children):
-        print(node.value)
-        return (node)
+    def visit_integer(self,node,children):
+        return Integer(int(node.value))
 
 
         
