@@ -1,7 +1,8 @@
 from arpeggio import PTNodeVisitor
 
 class Interpreter(PTNodeVisitor):
-    binding = {}
+    varBinding = {}
+    funcBinding = {}
     
     ##############
     #Math Portion#
@@ -11,7 +12,7 @@ class Interpreter(PTNodeVisitor):
         try:
             return int(node.value)
         except ValueError:
-            return self.binding[node.value]
+            return self.varBinding[node.value]
     
     def evaluate_factor(self, node):
         if node.sign == "-":
@@ -41,13 +42,13 @@ class Interpreter(PTNodeVisitor):
     ####################
     
     def evaluate_var_decl(self, node):
-        self.binding[node.name] = node.expr.accept(self)
-        print("bindings: ", self.binding)
+        self.varBinding[node.name] = node.expr.accept(self)
+        print("variable bindings: ", self.varBinding)
     
     def evaluate_var_let(self, node):
         for decl in node.list:
             if isinstance(decl, str):
-                self.binding[decl] = 0
+                self.varBinding[decl] = 0
             else:
                 decl.accept(self)
     
@@ -84,13 +85,34 @@ class Interpreter(PTNodeVisitor):
             line.accept(self)
         return lastLine.accept(self)
         
-        
     def evaluate_if_statement(self, node):
         boolVal = node.boolExpr.accept(self)
         if boolVal == 1:
             return node.ifBlock.accept(self)
         return node.elseBlock.accept(self)
+    
+    def evaluate_fn_decl(self, node):
+        self.funcBinding[node.name] = [node.paramList, node.codeBlock]
+        print("function bindings: ", self.funcBinding)
         
+    def evaluate_fn_let(self, node):
+        for decl in node.list:
+            decl.accept(self)
+            
+    def evaluate_fn_call(self, node):
+        function = self.funcBinding[node.name]
+        parameters = function[0]
+        code = function[1]
+        tempBinding = self.varBinding.copy()
+        
+        index = 0
+        for param in parameters:
+            tempBinding[param] = node.paramList[index].accept(self)
+            index += 1
+        print(self.varBinding)
+        print(tempBinding)
+        return code.accept(self)
+    
     ####################
     #Top Level Function#
     ####################

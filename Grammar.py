@@ -54,7 +54,11 @@ def fn_decl():
     
 #Handles function declaration
 def fn_let():
-    return "let", [fn_decl, RegExMatch('\w+')], ZeroOrMore(",", [fn_decl, RegExMatch('\w+')])
+    return "let", fn_decl, ZeroOrMore(",", fn_decl)
+    
+#Handles function call
+def fn_call():
+    return RegExMatch('\w+'), func_parameters
 
 #########################
 #Non-Interpretable types#
@@ -62,11 +66,11 @@ def fn_let():
 
 #Declares what types can be their own line
 def valid_line():
-    return [if_statement, print_func, var_let, var_decl, arithmetic_expression]
+    return [if_statement, print_func, fn_let, fn_decl, fn_call, var_let, var_decl, arithmetic_expression]
 
 #Declares what types can be evaluated to a value
 def evaluatable():
-    return [if_statement, code_block, arithmetic_expression, boolean_expression, RegExMatch('\w+')]
+    return [fn_call, if_statement, code_block, arithmetic_expression, boolean_expression, RegExMatch('\w+')]
     
 def func_parameters():
     return "(", Optional(evaluatable), ZeroOrMore(",", evaluatable), ")"

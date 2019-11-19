@@ -92,6 +92,14 @@ class Fn_Let:
     def accept(self, visitor):
         return visitor.evaluate_fn_let(self)
         
+class Fn_Call:
+    def __init__(self, name, paramList):
+        self.name = name
+        self.paramList = paramList
+        
+    def accept(self, visitor):
+        return visitor.evaluate_fn_call(self)
+        
 class Code:
     def __init__(self, list):
         self.list = list
