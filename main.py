@@ -3,7 +3,7 @@ from visitor import *
 
 
 parser = ParserPython(program,comment)
-parse_tree = parser.parse("let a = 4, b = 5, c = 6")
+parse_tree = parser.parse("if 0 {\nprint(99) \n} \nelse { \nprint(100) \n}")
 
 print(parse_tree)
 

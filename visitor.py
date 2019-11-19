@@ -34,6 +34,10 @@ class SmurfVisitor(PTNodeVisitor):
         return VariableReference(children[0])
 
 
+    def visit_if_expression(self,node,children):
+        return IfExpression(children)
+
+
     def visit_assignment(self,node,children):
         return Assignment(children[0],children[1])
 
@@ -86,5 +90,6 @@ class SmurfVisitor(PTNodeVisitor):
         return Integer(int(node.value))
 
 
-        
+    def visit_brace_block(self,node,children):
+        return BraceBlock(children[0])
     

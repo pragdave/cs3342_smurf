@@ -63,6 +63,30 @@ class VariableReference:
         return binding.get(self.value)
 
 
+# class IfExpression:
+#     def __init__(self,expression,ifblock,elseblock):
+#         self.expression = expression
+#         self.ifblock = ifblock
+#         self.elseblock = elseblock
+
+#     def evaluate(self,binding):
+#         if(self.expression.evaluate(binding) == 1):
+#             return self.ifblock.evaluate(binding)
+#         else:
+#             return self.elseblock.evaluate(binding)
+
+class IfExpression:
+    def __init__(self,children):
+        self.children = children
+
+    def evaluate(self,binding):
+        if(self.children[0].evaluate(binding) == 1):
+            return self.children[1].evaluate(binding)
+        else:
+            if(len(self.children) == 3):
+                return self.children[2].evaluate(binding)
+
+
 class Assignment:
     def __init__(self,name,value):
         self.name = name
@@ -193,6 +217,13 @@ class IsLessThan:
         else:
             return 0
 
+class BraceBlock:
+    def __init__(self,code):
+        self.code = code
+    
+    def evaluate(self,binding):
+        return self.code.evaluate(binding)
+
 
 class Binding:
     def __init__(self,parent):
@@ -204,7 +235,11 @@ class Binding:
         return value
     
     def get(self,name):
-        return self.binding[name]
+        if name in self.binding:
+            return self.binding[name]
+        else:
+            return self.parent.binding[name]
+
 
     def doesExist(self,name):
         if name in self.binding:
