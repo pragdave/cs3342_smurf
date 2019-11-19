@@ -25,10 +25,10 @@ assignment  = _ name:identifier _ "=" expr:expr { return {type: "assignment", na
 
 expr  = "fn" function_definition
       / _ "if" _ expr:if_expression { return {type: "if", evaluation: expr.evaluation, statements: expr.statements, else_statements: expr.else_statements}; }
-      / arithmetic_expression
       / boolean_expression
-
-boolean_expression  = arithmetic_expression relop arithmetic_expression
+      / arithmetic_expression
+      
+boolean_expression  = params:(arithmetic_expression relop arithmetic_expression) { return {type: "boolean_expr", params}; }
 
 arithmetic_expression  = pattern:(mult_term addop arithmetic_expression) { return {type: "arithmetic_expr", params: pattern} }
                        / mult_term

@@ -51,6 +51,14 @@ exports.ArithmeticExprNode = function ArithmeticExprNode(operator) {
 	this.rightSide = null;
 }
 
+exports.BooleanExprNode = function BooleanExprNode(operator) {
+	this.type = "boolean_expr";
+	this.parent = null;
+	this.operator = operator;
+	this.leftSide = null;
+	this.rightSide = null;
+}
+
 exports.VariableDecNode = function VariableDecNode() {
 	this.type = "variable_dec";
 	this.parent = null;

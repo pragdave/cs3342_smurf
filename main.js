@@ -3,6 +3,23 @@ execution = require("./execution");
 fs = require("file-system");
 peg = require("pegjs");
 
+function generateExprNodeChildren(node, params) {
+	let leftParams = params[0];
+	if (!leftParams.type && leftParams.length > 1) {
+		leftParams = leftParams[1];
+	}
+	const leftSide = generateNode(leftParams);
+	node.leftSide = leftSide;
+	leftSide.parent = node;
+	let rightParams = params[2];
+	if (!rightParams.type && rightParams.length > 1) {
+		rightParams = rightParams[1];
+	}
+	const rightSide = generateNode(rightParams);
+	node.rightSide = rightSide;
+	rightSide.parent = node;
+}
+
 function generateNode(statement) {
 	if (!statement.type) {
 		return {};
@@ -30,20 +47,12 @@ function generateNode(statement) {
 		case "arithmetic_expr":
 			const operator = statement.params[1];
 			newNode = new treeNodes.ArithmeticExprNode(operator);
-			let leftParams = statement.params[0];
-			if (!leftParams.type && leftParams.length > 1) {
-				leftParams = leftParams[1];
-			}
-			const leftSide = generateNode(leftParams);
-			newNode.leftSide = leftSide;
-			leftSide.parent = newNode;
-			let rightParams = statement.params[2];
-			if (!rightParams.type && rightParams.length > 1) {
-				rightParams = rightParams[1];
-			}
-			const rightSide = generateNode(rightParams);
-			newNode.rightSide = rightSide;
-			rightSide.parent = newNode;
+			generateExprNodeChildren(newNode, statement.params);
+			break;
+		case "boolean_expr":
+			const op = statement.params[1];
+			newNode = new treeNodes.BooleanExprNode(op);
+			generateExprNodeChildren(newNode, statement.params);
 			break;
 		case "variable_dec":
 			newNode = new treeNodes.VariableDecNode();
@@ -144,10 +153,23 @@ else {\n
 print(if 1 { 99 } else { 100 })          #=> 99\n
 print(if 0 { 99 } else { 100 })          #=> 100\n\n
 # try relops\n\n
-print(if 9 < 10 { 1  } else { -1 })      #=> 1\n`;
-// print(if 10 < 9 { -1 } else {  1 })      #=> 1\n
-// print(if 9 < 9  { -1 } else {  1 })      #=> 1\n
-
+print(if 9 < 10 { 1  } else { -1 })      #=> 1\n
+print(if 10 < 9 { -1 } else {  1 })      #=> 1\n
+print(if 9 < 9  { -1 } else {  1 })      #=> 1\n
+print(if  9 <= 10 {  1 } else { -1 })    #=> 1\n
+print(if 10 <=  9 { -1 } else {  1 })    #=> 1\n
+print(if  9 <=  9 {  1 } else { -1 })    #=> 1\n\n
+print(if  9 >= 10 { -1 } else {  1 })    #=> 1\n
+print(if 10 >=  9 {  1 } else { -1 })    #=> 1\n
+print(if  9 >=  9 {  1 } else { -1 })    #=> 1\n\n
+print(if  9 > 10 { -1 } else {  1 })     #=> 1\n
+print(if 10 >  9 {  1 } else { -1 })     #=> 1\n
+print(if  9 >  9 { -1 } else {  1 })     #=> 1\n\n
+print(if  9 ==  9 {  1 } else { -1 })    #=> 1\n
+print(if  9 == 10 { -1 } else {  1 })    #=> 1\n
+print(if  9 !=  9 { -1 } else {  1 })    #=> 1\n
+print(if  9 != 10 {  1 } else { -1 })    #=> 1\n
+`;
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {
 	if (err) {

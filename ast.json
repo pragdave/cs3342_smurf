@@ -79,5 +79,565 @@
 				]
 			}
 		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						"<",
+						{
+							"type": "integer",
+							"value": 10
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 10
+						},
+						"<",
+						{
+							"type": "integer",
+							"value": 9
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						"<",
+						{
+							"type": "integer",
+							"value": 9
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						"<=",
+						{
+							"type": "integer",
+							"value": 10
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 10
+						},
+						"<=",
+						{
+							"type": "integer",
+							"value": 9
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						"<=",
+						{
+							"type": "integer",
+							"value": 9
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						">=",
+						{
+							"type": "integer",
+							"value": 10
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 10
+						},
+						">=",
+						{
+							"type": "integer",
+							"value": 9
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						">=",
+						{
+							"type": "integer",
+							"value": 9
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						">",
+						{
+							"type": "integer",
+							"value": 10
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 10
+						},
+						">",
+						{
+							"type": "integer",
+							"value": 9
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						">",
+						{
+							"type": "integer",
+							"value": 9
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						"==",
+						{
+							"type": "integer",
+							"value": 9
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						"==",
+						{
+							"type": "integer",
+							"value": 10
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						"!=",
+						{
+							"type": "integer",
+							"value": 9
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "if",
+				"evaluation": {
+					"type": "boolean_expr",
+					"params": [
+						{
+							"type": "integer",
+							"value": 9
+						},
+						"!=",
+						{
+							"type": "integer",
+							"value": 10
+						}
+					]
+				},
+				"statements": [
+					{
+						"type": "integer",
+						"value": 1
+					}
+				],
+				"else_statements": [
+					{
+						"type": "integer",
+						"value": -1
+					}
+				]
+			}
+		]
 	}
 ]

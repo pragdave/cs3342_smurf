@@ -41,6 +41,9 @@ ExecuteNode = function ExecuteNode(node) {
 		case "if":
 			returnVal = ExecuteIf(node);
 			break;
+		case "boolean_expr":
+			returnVal = ExecuteBooleanExpr(node);
+			break;
 		default:
 			console.log(`${node.type} is an invalid node type --execution`);
 	}
@@ -87,6 +90,41 @@ ExecuteArithmeticExpr = function ExecuteArithmeticExpr(node) {
 			break;
 		case "/":
 			value = Math.floor(leftSide / rightSide);
+			break;
+		default:
+			console.log(`${this.operator} is an invalid operator --execution`);
+	}
+	return value;
+}
+
+ExecuteBooleanExpr = function ExecuteBooleanExpr(node) {
+	let evaluation = null;
+	let leftSide = node.leftSide;
+	let rightSide = node.rightSide;
+	if (leftSide.type) {
+		leftSide = ExecuteNode(leftSide);
+	}
+	if (rightSide.type) {
+		rightSide = ExecuteNode(rightSide);
+	}
+	switch(node.operator) {
+		case "==":
+			value = leftSide === rightSide;
+			break;
+		case "!=":
+			value = leftSide !== rightSide;
+			break;
+		case ">=":
+			value = leftSide >= rightSide;
+			break;
+		case ">":
+			value = leftSide > rightSide;
+			break;
+		case "<=":
+			value = leftSide <= rightSide;
+			break;
+		case "<":
+			value = leftSide < rightSide;
 			break;
 		default:
 			console.log(`${this.operator} is an invalid operator --execution`);
