@@ -1,5 +1,8 @@
 from arpeggio.cleanpeg import ParserPEG
-import sys
+from arpeggio import ParserPython, PTNodeVisitor, visit_parse_tree
+from sys import argv
+from Interpreter import Interpreter
+from AstConstructor import NodeVisitor
 
 grammar="""
 program
@@ -23,7 +26,7 @@ decl
     = identifier ("=" expr)?
 
 identifier
-    = [a-z][a-zA-Z_0-9]*
+    = r'[a-z][a-zA-Z_0-9]*'
 
 variable_reference
     = identifier
@@ -35,7 +38,7 @@ assignment
     = identifier "=" expr
 
 expr
-    = "fn" function_declaration 
+    = "fn" function_definition 
     / "if" if_expression 
     / boolean_expression 
     / arithmetic_expression
@@ -58,7 +61,7 @@ primary
     / "(" arithmetic_expression ")"
 
 integer
-    = "-"? [0-9]+
+    = "-"? r'[0-9]+'
 
 addop
     = '+' / '-'
@@ -67,7 +70,7 @@ mulop
     = '*' / '/'
 
 relop
-    = '==' / '!=" / '>=' / '>' / '<=' / '<'
+    = '==' / '!=' / '>=' / '>' / '<=' / '<'
 
 function_call
     = variable_reference "(" call_arguments ")" 
@@ -87,4 +90,11 @@ brace_block
     = "{" code "}"
 """
 
-parser = ParserPEG(grammar, "program", debug = True)
+# f = open("code.smu", "r")
+# contents = f.read()
+
+parser = ParserPEG(grammar, "program", "comment", debug = False)
+parse_tree = parser.parse(argv[1])
+ast = visit_parse_tree(parse_tree, NodeVisitor(debug = False))
+result = ast.accept(Interpreter())
+print(argv[1], "=", result)
