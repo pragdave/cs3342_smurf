@@ -34,7 +34,7 @@ int main(int argc, const char * argv[]) {
     assert(ok);
     
     parser["Number"] = [nodeInteger](const SemanticValues& sv) {
-        nodeInteger.createInt(stoi(sv.str()));
+        nodeInteger_node.createInt(stoi(sv.str()));
     };
     
     // Parse

@@ -10,6 +10,7 @@
 		FB5BCC1A237B685B00439CEF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5BCC19237B685B00439CEF /* main.cpp */; };
 		FB5BCC2F237B70F500439CEF /* ast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5BCC2D237B70F500439CEF /* ast.cpp */; };
 		FB6E0C6D2384D17600CD285C /* intNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB6E0C6B2384D17600CD285C /* intNode.cpp */; };
+		FB6E0C702384D8ED00CD285C /* binopNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB6E0C6E2384D8ED00CD285C /* binopNode.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,8 @@
 		FB5BCC3C237C64B600439CEF /* test_cases */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test_cases; sourceTree = SOURCE_ROOT; };
 		FB6E0C6B2384D17600CD285C /* intNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = intNode.cpp; sourceTree = "<group>"; };
 		FB6E0C6C2384D17600CD285C /* intNode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = intNode.hpp; sourceTree = "<group>"; };
+		FB6E0C6E2384D8ED00CD285C /* binopNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = binopNode.cpp; sourceTree = "<group>"; };
+		FB6E0C6F2384D8ED00CD285C /* binopNode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = binopNode.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +75,8 @@
 				FB5BCC2E237B70F500439CEF /* ast.hpp */,
 				FB6E0C6B2384D17600CD285C /* intNode.cpp */,
 				FB6E0C6C2384D17600CD285C /* intNode.hpp */,
+				FB6E0C6E2384D8ED00CD285C /* binopNode.cpp */,
+				FB6E0C6F2384D8ED00CD285C /* binopNode.hpp */,
 				FB5BCC29237B68E400439CEF /* peglib.h */,
 				FB5BCC21237B68E300439CEF /* README.md */,
 			);
@@ -134,6 +139,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB6E0C702384D8ED00CD285C /* binopNode.cpp in Sources */,
 				FB5BCC2F237B70F500439CEF /* ast.cpp in Sources */,
 				FB6E0C6D2384D17600CD285C /* intNode.cpp in Sources */,
 				FB5BCC1A237B685B00439CEF /* main.cpp in Sources */,
