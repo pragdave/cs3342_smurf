@@ -18,11 +18,13 @@ it would be blue).
 **Fill this in before submitting your final pull request**
 
 Name:
+
 SMU ID:
 
-Grading criteria (see [Grading](#grading) below):
+##### Grading criteria (see [Grading](#grading) below):
 
 [ ] test-based
+
 [ ] feature based
 
 If feature based, put an X in the cell that represents the combination of syntax and implementation depth you want me to assess. (Just one X in the table.)
