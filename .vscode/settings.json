@@ -25,5 +25,6 @@
     "activityBar.background": "#452238",
     "titleBar.activeBackground": "#60304E",
     "titleBar.activeForeground": "#FCF9FB"
-  }
+  },
+  "python.pythonPath": "venv\\Scripts\\python.exe"
 }

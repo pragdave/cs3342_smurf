@@ -10,7 +10,7 @@ def get_expected(path):
   return [ v for _,v in re.findall(r'(#=>\s*)(.+)', content, re.M) ]
 
 def normalize(output):
-  return [ v for _,v in re.findall(r'(Print:\s*)(.+)\n', output, re.M) ]
+  return [ v for _,v in re.findall(r'(Print:\s*)(.+)\r\n', output, re.M) ]
 
 def compare(stdout, expected):
   output = normalize(stdout)
@@ -18,22 +18,22 @@ def compare(stdout, expected):
     print("Expected:", expected)
     print("Actual:  ", output)
     print("\n")
-
+  else:
+    print('Test passed')
 
 
 interpreter = shlex.split(sys.argv[1])
 
 test_files  = [
-  path
-  for path in os.listdir(".")
-  if os.path.isfile(path) and re.search(r'\.smu$', path)
+  "test_cases/" + path
+  for path in os.listdir("./test_cases")
+  if os.path.isfile("test_cases/" + path) and re.search(r'\.smu$', path)
 ]
 
 for program in test_files:
   expected = get_expected(program)
   process = Popen(interpreter + [ program], stdout=PIPE, stderr=PIPE)
   stdout, stderr = process.communicate()
-  print(program)
   if len(stderr) > 0:
     print(stderr.decode("ASCII"))
     print("\n")
