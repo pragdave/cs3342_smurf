@@ -12,6 +12,7 @@ binopNode::binopNode(){
     left = NULL;
     right = NULL;
     op = operation;
+    
 }
 
 void binopNode::createBinop(node *l, char binop, node *r){

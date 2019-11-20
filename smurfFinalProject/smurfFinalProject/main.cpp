@@ -11,6 +11,7 @@
 #include <iostream>
 //#include "ast.hpp"
 #include "intNode.hpp"
+#include "binopNode.hpp"
 
 using namespace peg;
 using namespace std;
@@ -25,6 +26,7 @@ int main(int argc, const char * argv[]) {
     parser parser;
     //ast tree;
     intNode nodeInteger;
+    binopNode nodeBinop;
     
     parser.log = [](size_t line, size_t col, const string& msg) {
         cerr << line << ":" << col << ": " << msg << "\n";
@@ -33,8 +35,17 @@ int main(int argc, const char * argv[]) {
     auto ok = parser.load_grammar(grammar);
     assert(ok);
     
-    parser["Number"] = [nodeInteger](const SemanticValues& sv) {
-        nodeInteger_node.createInt(stoi(sv.str()));
+    parser["Number"] = [](const SemanticValues& sv) {
+        nodeInteger.createInt(stoi(sv.str()));
+    };
+    
+    parser["Binop"] = [](const SemanticValues& sv) {
+        switch (binopNode) {
+            case 0:
+                return binopNode(sv[0], binopNode.operation, sv[2]);
+            default:
+                return sv[0];
+        }
     };
     
     // Parse

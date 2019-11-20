@@ -10,7 +10,6 @@
 
 intNode::intNode() {
     val = value;
-    createInt(value);
 }
 
 void intNode::createInt (int x) {
