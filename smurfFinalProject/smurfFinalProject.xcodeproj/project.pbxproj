@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		FB5BCC1A237B685B00439CEF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5BCC19237B685B00439CEF /* main.cpp */; };
 		FB5BCC2F237B70F500439CEF /* ast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5BCC2D237B70F500439CEF /* ast.cpp */; };
-		FB5BCC32237B719900439CEF /* node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5BCC30237B719900439CEF /* node.cpp */; };
+		FB6E0C6D2384D17600CD285C /* intNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB6E0C6B2384D17600CD285C /* intNode.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,9 +31,9 @@
 		FB5BCC29237B68E400439CEF /* peglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = peglib.h; sourceTree = SOURCE_ROOT; };
 		FB5BCC2D237B70F500439CEF /* ast.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ast.cpp; sourceTree = "<group>"; };
 		FB5BCC2E237B70F500439CEF /* ast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ast.hpp; sourceTree = "<group>"; };
-		FB5BCC30237B719900439CEF /* node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = node.cpp; sourceTree = "<group>"; };
-		FB5BCC31237B719900439CEF /* node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = node.hpp; sourceTree = "<group>"; };
 		FB5BCC3C237C64B600439CEF /* test_cases */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test_cases; sourceTree = SOURCE_ROOT; };
+		FB6E0C6B2384D17600CD285C /* intNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = intNode.cpp; sourceTree = "<group>"; };
+		FB6E0C6C2384D17600CD285C /* intNode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = intNode.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +70,8 @@
 				FB5BCC19237B685B00439CEF /* main.cpp */,
 				FB5BCC2D237B70F500439CEF /* ast.cpp */,
 				FB5BCC2E237B70F500439CEF /* ast.hpp */,
-				FB5BCC30237B719900439CEF /* node.cpp */,
-				FB5BCC31237B719900439CEF /* node.hpp */,
+				FB6E0C6B2384D17600CD285C /* intNode.cpp */,
+				FB6E0C6C2384D17600CD285C /* intNode.hpp */,
 				FB5BCC29237B68E400439CEF /* peglib.h */,
 				FB5BCC21237B68E300439CEF /* README.md */,
 			);
@@ -135,8 +135,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB5BCC2F237B70F500439CEF /* ast.cpp in Sources */,
+				FB6E0C6D2384D17600CD285C /* intNode.cpp in Sources */,
 				FB5BCC1A237B685B00439CEF /* main.cpp in Sources */,
-				FB5BCC32237B719900439CEF /* node.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

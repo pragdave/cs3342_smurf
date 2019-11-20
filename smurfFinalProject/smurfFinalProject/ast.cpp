@@ -7,15 +7,21 @@
 //
 
 #include "ast.hpp"
-
+/*
 void ast::createBinop(node *l, string op, node *r) {
     left = l;
     operation = op;
     right = r;
 }
 
-void ast::createIntAST(char x) {
+void ast::createIntAST(string x) {
     int y = stoi(x);
     intNode.createInt(y);
 }
+*/
+/*
+string ast::printASTNode() {
+    
+}
+*/
 
