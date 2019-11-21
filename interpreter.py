@@ -94,11 +94,11 @@ class Assignment:
 
     def evaluate(self,binding):
         return binding.add(self.name.evaluate(binding),self.value.evaluate(binding))
-        #if(binding.doesExist(self.name)):
-            #return binding.add(self.name,self.value)
-        #else:
-            #print("Must declare new variables using 'let'")
-            #return self.value
+        # if(binding.doesExist(self.name)):
+        #     return binding.add(self.name,self.value)
+        # else:
+        #     print("Must declare new variables using 'let'")
+        #     return self.value
 
 
 class Expr:
@@ -217,7 +217,29 @@ class IsLessThan:
         else:
             return 0
 
+#NOT YET TESTED
+class FunctionCall:
+    def __init__(self,name,call_arguments):
+        self.name = name
+        self.call_arguments = call_arguments
+    
+    def evaluate(self,binding):
+        arguments = self.call_arguments.evaluate(binding)
 
+        if self.name == "print":
+            output = "Print: "
+            for args in arguments:
+                output = output + str(args)
+            print(output)
+            return
+        else:
+            variableRef = self.name.evaluate(binding)
+            newBinding = Binding(variableRef[0].parent)
+            newBinding.binding = variableRef[0].binding.copy()
+            for i in range(len(arguments)):
+                newBinding.add(list(newBinding.binding.keys())[i],arguments[i])
+            functionBody = variableRef[1]
+            return functionBody.evaluate(newBinding)
 
 
 #NOT YET TESTED
@@ -226,10 +248,11 @@ class CallArguments:
         self.arguments = arguments
 
     def evaluate(self,binding):
-        i = 0
-        for name in binding.binding:
-            binding[name] = self.arguments[i].evalutate(binding)
-        return self.arguments[i].evaluate(binding)
+        # i = 0
+        # for name in binding.binding:
+        #     binding[name] = self.arguments[i].evalutate(binding)
+        # return self.arguments[i].evaluate(binding)
+        return list(map(lambda arg: arg.evaluate(binding),self.arguments))
 
 
 #NOT YET TESTED
@@ -239,7 +262,8 @@ class FunctionDefinition:
         self.codeBlock = codeBlock
     
     def evaluate(self,binding):
-        funcDef = (self.newBinding,self.codeBlock)
+        evaluatedBinding = self.newBinding.evaluate(binding)
+        funcDef = (evaluatedBinding,self.codeBlock)
         return funcDef
 
 
@@ -284,6 +308,8 @@ class Binding:
     def doesExist(self,name):
         if name in self.binding:
             return True
+        elif self.parent:
+            return self.parent.doesExist(name)
         else:
             return False
 

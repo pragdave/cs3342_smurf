@@ -31,7 +31,7 @@ class SmurfVisitor(PTNodeVisitor):
 
 
     def visit_variable_reference(self,node,children):
-        return VariableReference(children[0])
+        return VariableReference(node.value)
 
 
     def visit_if_expression(self,node,children):
@@ -90,7 +90,13 @@ class SmurfVisitor(PTNodeVisitor):
         return Integer(int(node.value))
 
     #NOT YET TESTED
-    # def visit_function_call(self,node,children):
+    def visit_function_call(self,node,children):
+        if(len(children) == 1 and node[0] == "print"):
+            return FunctionCall("print",children[0])
+        elif(len(children) == 1):
+            return FunctionCall(children[0],CallArguments([]))
+        else:
+            return FunctionCall(children[0],children[1])
 
 
     #NOT YET TESTED
