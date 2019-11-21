@@ -1,5 +1,6 @@
 from smurfGrammar import *
 from smurfVisitor import *
+import sys
 
 fileList = [
     "test_cases/00_expr.smu",
@@ -12,13 +13,13 @@ fileList = [
     "test_cases/99_fib.smu"
 ]
 
-parser = ParserPython(program,comment,reduce_tree=False)
+parser = ParserPython(program,comment)
 
-for f in fileList:
-    print()
-    file = open(f,"r")
-    contents = file.read()
+f = sys.argv[1]
+print()
+file = open(f,"r")
+contents = file.read()
 
-    parseTree = parser.parse(contents)
-    myAST = visit_parse_tree(parseTree,SmurfVisitor(debug=False))
-    myAST.evaluate()
+parseTree = parser.parse(contents)
+myAST = visit_parse_tree(parseTree,SmurfVisitor(debug=False))
+myAST.evaluate()
