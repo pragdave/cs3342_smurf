@@ -21,7 +21,7 @@ GenerateNode = function GenerateNode(statement) {
 			break;
 		case "function_def":
 			newNode = new FunctionDefNode();
-			const defParams = statement.params.map(p => GenerateNode(p));
+			const defParams = statement.params.map(p => GenerateNode(p)).filter(p => !!p && !!p.type);
 			const defParamsNode = new ParamsNode(defParams);
 			newNode.params = defParamsNode;
 			defParamsNode.parent = newNode;

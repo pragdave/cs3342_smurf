@@ -15,8 +15,9 @@ variables = {
 			console.log(printString);
 		}
 	}
-	 
 };
+
+functionVariables = {};
 
 ExecuteNode = function ExecuteNode(node) {
 	let returnVal = null;
@@ -28,7 +29,17 @@ ExecuteNode = function ExecuteNode(node) {
 			returnVal = ExecuteValue(node);
 			break;
 		case "identifier":
-			returnVal = ExecuteIdentifier(node);
+			// let parentNode = node.parent;
+			// if (parentNode && parentNode.type !== "function_def") {
+			// 	parentNode = parentNode.parent;
+			// }
+
+			// if (parentNode && parentNode.type === "function_def") {
+			// 	returnVal = ExecuteFunctionIdentifier(node, parentNode.params);
+			// } else {
+				returnVal = ExecuteIdentifier(node);
+			// }
+			
 			break;
 		case "arithmetic_expr":
 			returnVal = ExecuteArithmeticExpr(node);
@@ -57,16 +68,26 @@ ExecuteNode = function ExecuteNode(node) {
 ExecuteFunctionDef = function ExecuteFunctionDef(node) {
 	const parentNode = node.parent;
 	const functionName = parentNode.name;
-	const params = ExecuteParams(node.params);
-	variables[functionName] = new ExecuteFunction(params, node.body);
+	const functionNode = new ExecuteFunction(node.body);
+	node.params.params.forEach(p => {
+		functionNode.params[p.name] = null;
+		functionNode.paramsOrder.push(p.name);
+	})
+	variables[functionName] = functionNode;
 	return variables[functionName];
 }
 
-ExecuteFunction = function ExecuteFunction(params, body) {
-	this.params = params;
+ExecuteFunction = function ExecuteFunction(body) {
+	this.params = {};
+	this.paramsOrder = [];
 	this.body = body;
 
 	this.execute = function(localParams) {
+		// set params
+		localParams.forEach((p,i) => {
+			const paramName = this.paramsOrder[i];
+			variables[paramName] = p;
+		})
 		const executed = this.body.map(statement => ExecuteNode(statement));
 		return executed[executed.length - 1]
 	}
@@ -81,6 +102,10 @@ ExecuteFunctionCall = function ExecuteFunctionCall(node) {
 ExecuteValue = function ExecuteValue(node) {
 	return node.value;
 }
+
+// ExecuteFunctionIdentifier = function ExecuteFunctionIdentifier(node, functionParams){
+// 	console.log(variables);
+// }
 
 ExecuteIdentifier = function ExecuteIdentifier(node) {
 	return variables[node.name];
@@ -151,9 +176,10 @@ ExecuteBooleanExpr = function ExecuteBooleanExpr(node) {
 }
 
 ExecuteParams = function ExecuteParams(node) {
-	return node.params.map(param => {
+	arr = node.params.map(param => {
 		return ExecuteNode(param);
 	})
+	return arr;
 }
 
 ExecuteAssignment = function ExecuteAssignment(node) {

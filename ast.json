@@ -31,5 +31,58 @@
 				"params": []
 			}
 		]
+	},
+	{
+		"type": "variable_dec",
+		"declarations": [
+			{
+				"type": "assignment",
+				"name": "f",
+				"expr": {
+					"type": "function_def",
+					"params": [
+						{
+							"type": "identifier",
+							"name": "x"
+						}
+					],
+					"body": [
+						{
+							"type": "arithmetic_expr",
+							"params": [
+								{
+									"type": "identifier",
+									"name": "x"
+								},
+								"+",
+								{
+									"type": "integer",
+									"value": 1
+								}
+							]
+						}
+					]
+				}
+			}
+		]
+	},
+	{
+		"type": "function_call",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "function_call",
+				"fcn_name": {
+					"type": "identifier",
+					"name": "f"
+				},
+				"params": [
+					{
+						"type": "integer",
+						"value": 99
+					}
+				]
+			}
+		]
 	}
 ]

@@ -79,6 +79,9 @@ const codeExample =
 `# no parameters\n\n
 let f = fn () { 99 }\n
 print(f())             #=> 99\n\n
+# one parameter\n\n
+let f = fn(x) { x + 1 }\n
+print(f(99))          #=> 100\n
 `;
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {

@@ -63,8 +63,10 @@ repeat_arg = arg:(("," expr)*) { const finalArg = arg.length ? arg.map(a => a[1]
 
 function_definition = params:param_list _ body:brace_block { return {type: "function_def", params, body}; }
 
-param_list = "(" pattern:(identifier ("," identifier)*) ")" { return pattern; }
+param_list = "(" first:identifier rest:repeat_param ")" { const firstParam = { type:"identifier", name:first }; const params = rest.length ? [firstParam, ...rest] : [firstParam]; return params; }
            / "()" { return []; }
+
+repeat_param = param:(("," identifier)*) { const finalParam = param.length ? param.map(p => ({ type:"identifier", name:p[1] })) : []; return finalParam; }
 
 brace_block = "{" _ code:code _ "}" { return code; }
 
