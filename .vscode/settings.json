@@ -25,5 +25,8 @@
     "activityBar.background": "#452238",
     "titleBar.activeBackground": "#60304E",
     "titleBar.activeForeground": "#FCF9FB"
-  }
+  },
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.pythonPath": "C:\\Users\\mailt\\Anaconda3\\python.exe"
 }
