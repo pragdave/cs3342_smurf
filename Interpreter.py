@@ -13,7 +13,7 @@ class Interpreter(PTNodeVisitor):
             return int(node.value)
         except ValueError:
             return self.varBinding[node.value]
-
+            
     def evaluate_factor(self, node):
         if node.sign == "-":
             return -1 * node.value.accept(self)
@@ -49,17 +49,6 @@ class Interpreter(PTNodeVisitor):
         for decl in node.list:
             if isinstance(decl, str):
                 self.varBinding[decl] = 0
-            else:
-                decl.accept(self) let all work
-    
-    def evaluate_var_decl(self, node):
-        self.binding[node.name] = node.expr.accept(self)
-        print("bindings: ", self.binding)
-    
-    def evaluate_var_let(self, node):
-        for decl in node.list:
-            if isinstance(decl, str):
-                self.binding[decl] = 0
             else:
                 decl.accept(self)
     
