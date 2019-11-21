@@ -468,4 +468,8 @@ If you're submitting in the _Interprets_ column, then your program should both o
 $ myparser "a = 3  1+2*a"
 (+ 1 (* 2 (rval a)))
 7
+<<<<<<< HEAD
 ~~~
+=======
+~~~
+>>>>>>> 9f94fd2eecb1d85f7b1952d66a64c667657074f2
