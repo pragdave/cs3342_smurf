@@ -43,14 +43,6 @@ class Code:
         return value
 
 
-class Statement:
-    def __init__(self,statement):
-        self.statement = statement
-
-    def evaluate(self,binding):
-        return self.statement.evaluate(binding)
-
-
 class Variable_Declaration:
     def __init__(self,declList):
         self.declList = declList
@@ -102,14 +94,6 @@ class Assignment:
         lhs = self.name.evaluate(binding);
         rhs = self.value.evaluate(binding)
         return binding.setVariable(lhs,rhs)
-
-
-class Expr:
-    def __init__(self,expression):
-        self.expression = expression
-
-    def evaluate(self,binding):
-        return self.expression.evaluate(binding)
 
 
 class Function_Call:
@@ -164,15 +148,6 @@ class Param_List:
         for param in self.paramList:
             newBinding.defineVariable(param.evaluate(binding))
         return newBinding
-
-
-class Brace_Block:
-    def __init__(self,code):
-        self.code = code
-
-    def evaluate(self,binding):
-        newBinding = Binding(binding)
-        return self.code.evaluate(newBinding)
         
 #########################
 # Terminals #############

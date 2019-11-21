@@ -9,13 +9,6 @@ class SmurfVisitor(PTNodeVisitor):
 
     def visit_code(self,node,children):
         return (Code(children))
-        
-
-    def visit_statement(self,node,children):
-        if len(children) == 1:
-            return (Statement(children[0]))
-        else:
-            return (Statement(children[1]))
 
 
     def visit_variable_declaration(self,node,children):
@@ -46,13 +39,6 @@ class SmurfVisitor(PTNodeVisitor):
 
     def visit_assignment(self,node,children):
         return (Assignment(children[0],children[1]))
-
-
-    def visit_expr(self,node,children):
-        if len(children) == 1:
-            return (Expr(children[0]))
-        else:
-            return (Expr(children[0]))
 
 
     def visit_boolean_expression(self,node,children):
@@ -90,15 +76,9 @@ class SmurfVisitor(PTNodeVisitor):
                 return (Divide(children[0],children[2]))
 
 
-    def visit_primary(self,node,children):
-        if len(children) == 1:
-            return children[0]
-        else:
-            return children[1]
-
-
     def visit_integer(self,node,children):
         return Integer(int(node.value))
+        
 
     def visit_function_call(self,node,children):
         if len(children) == 0:
@@ -121,7 +101,3 @@ class SmurfVisitor(PTNodeVisitor):
 
     def visit_param_list(self,node,children):
         return (Param_List(children))
-
-
-    def visit_brace_block(self,node,children):
-        return (Brace_Block(children[0]))
