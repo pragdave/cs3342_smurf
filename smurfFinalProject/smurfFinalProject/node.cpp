@@ -17,9 +17,9 @@ string intNode::str(){
     return to_string(val);
 }
 
-/* int intNode::accept(Visitor *visitor){
-    return visitor->evaluate_integer(this, val);
-} */
+int intNode::accept(visitor *visitorx){
+    return visitorx->evaluate_integer(this, val);
+}
 
 binopNode::binopNode(node* l, string op, node* r){
     left = l;
@@ -31,17 +31,17 @@ string binopNode::str(){
     return '(' + left->str()+ operation + right->str() + ')';
 }
 
-/* int binopNode::accept(Visitor *visitor){
-    return visitor->evaluate_binop(this, left, operation, right);
-} */
+int binopNode::accept(visitor *visitorx){
+    return visitorx->evaluate_binop(this, left, operation, right);
+}
 
 operationNode::operationNode(string op){
     operation = op;
 }
 
-/* int operationNode::accept(Visitor *visitor){
+int operationNode::accept(visitor *visitorx){
     return 0;
-} */
+}
 
 string operationNode::str(){
     return operation;

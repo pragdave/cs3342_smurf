@@ -10,6 +10,8 @@
 		FB5BCC1A237B685B00439CEF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5BCC19237B685B00439CEF /* main.cpp */; };
 		FB5BCC2F237B70F500439CEF /* ast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5BCC2D237B70F500439CEF /* ast.cpp */; };
 		FB6E0C732384DD7700CD285C /* node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB6E0C712384DD7700CD285C /* node.cpp */; };
+		FB6E0C762386274400CD285C /* interpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB6E0C742386274400CD285C /* interpreter.cpp */; };
+		FB6E0C7923862CE700CD285C /* visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB6E0C7723862CE700CD285C /* visitor.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +36,10 @@
 		FB5BCC3C237C64B600439CEF /* test_cases */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test_cases; sourceTree = SOURCE_ROOT; };
 		FB6E0C712384DD7700CD285C /* node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = node.cpp; sourceTree = "<group>"; };
 		FB6E0C722384DD7700CD285C /* node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = node.hpp; sourceTree = "<group>"; };
+		FB6E0C742386274400CD285C /* interpreter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = interpreter.cpp; sourceTree = "<group>"; };
+		FB6E0C752386274400CD285C /* interpreter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = interpreter.hpp; sourceTree = "<group>"; };
+		FB6E0C7723862CE700CD285C /* visitor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = visitor.cpp; sourceTree = "<group>"; };
+		FB6E0C7823862CE700CD285C /* visitor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = visitor.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +74,10 @@
 			children = (
 				FB5BCC3C237C64B600439CEF /* test_cases */,
 				FB5BCC19237B685B00439CEF /* main.cpp */,
+				FB6E0C742386274400CD285C /* interpreter.cpp */,
+				FB6E0C752386274400CD285C /* interpreter.hpp */,
+				FB6E0C7723862CE700CD285C /* visitor.cpp */,
+				FB6E0C7823862CE700CD285C /* visitor.hpp */,
 				FB5BCC2D237B70F500439CEF /* ast.cpp */,
 				FB5BCC2E237B70F500439CEF /* ast.hpp */,
 				FB6E0C712384DD7700CD285C /* node.cpp */,
@@ -134,6 +144,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB6E0C7923862CE700CD285C /* visitor.cpp in Sources */,
+				FB6E0C762386274400CD285C /* interpreter.cpp in Sources */,
 				FB5BCC2F237B70F500439CEF /* ast.cpp in Sources */,
 				FB6E0C732384DD7700CD285C /* node.cpp in Sources */,
 				FB5BCC1A237B685B00439CEF /* main.cpp in Sources */,

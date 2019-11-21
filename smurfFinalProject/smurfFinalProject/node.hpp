@@ -9,10 +9,11 @@
 
 #ifndef node_hpp
 #define node_hpp
-
+#pragma once
 #include <stdio.h>
 #include <map>
 #include <string>
+#include "visitor.hpp"
 
 using namespace std;
 
@@ -21,9 +22,9 @@ public:
     virtual string str(){
         return string("node");
     };
-    /*virtual int accept (Visitor *visitor){
+    virtual int accept(visitor *visitorx){
      return 99999;
-     }*/
+    }
 };
 
 class intNode: public node {
@@ -32,7 +33,7 @@ private:
 public:
     intNode(int);
     string str();
-    //int accept(Visitor *visitor);
+    int accept(visitor *visitorx);
 };
 
 class binopNode: public node {
@@ -43,7 +44,7 @@ private:
 public:
     binopNode(node*, string, node*);
     string str();
-    //int accept(Visitor *visitor);
+    int accept(visitor *visitorx);
 };
 
 class operationNode: public node {
@@ -52,7 +53,7 @@ private:
 public:
     operationNode(string);
     string str();
-    //int accept(Visitor *visitor);
+    int accept(visitor *visitorx);
 };
 
 

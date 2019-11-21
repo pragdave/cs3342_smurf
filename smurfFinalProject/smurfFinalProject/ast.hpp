@@ -8,6 +8,7 @@
 
 #ifndef ast_hpp
 #define ast_hpp
+#pragma once
 
 #include <stdio.h>
 
