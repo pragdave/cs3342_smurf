@@ -56,6 +56,7 @@ mult_term
 
 primary
     = integer 
+    / print_function
     / function_call 
     / variable_reference 
     / "(" arithmetic_expression ")"
@@ -74,7 +75,9 @@ relop
 
 function_call
     = variable_reference "(" call_arguments ")" 
-    / "print" "(" call_arguments ")"
+
+print_function
+    = "print" "(" call_arguments ")"
 
 call_arguments
     = (expr ("," expr)*)?
@@ -90,11 +93,12 @@ brace_block
     = "{" code "}"
 """
 
-# f = open("code.smu", "r")
-# contents = f.read()
+def runSmurf(program):
+    parser = ParserPEG(grammar, "program", "comment", debug = False)
+    parse_tree = parser.parse(program)
+    ast = visit_parse_tree(parse_tree, NodeVisitor(debug = False))
+    result = ast.accept(Interpreter())
 
-parser = ParserPEG(grammar, "program", "comment", debug = False)
-parse_tree = parser.parse(argv[1])
-ast = visit_parse_tree(parse_tree, NodeVisitor(debug = False))
-result = ast.accept(Interpreter())
-print(argv[1], "=", result)
+# runSmurf("""
+# let a = 5, b = 4 print(a+b)
+# """)

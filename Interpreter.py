@@ -1,5 +1,6 @@
 import math
 from typing import List
+from AstNodes import *
 
 bin_ops = {
     "+": lambda l, r: l + r,
@@ -18,29 +19,27 @@ rel_ops = {
 }
 
 class Binding:
-    def __init__(self):
-        self.bindings = [{}]
+    def __init__(self, outer=None):
+        self.bindings = {}
+        self.outer = outer
 
     def push(self):
-        return self.bindings.append({})
-
+        return Binding(self)
+    
     def pop(self):
-        return self.bindings.pop()
+        return self.outer
 
     def set_variable(self, name, value):
-        print(f"Set {name} to {value}")
-        self.bindings[-1][name] = value
+        self.bindings[name] = value
 
     def get_variable_value(self, name):
-        for e in reversed(self.bindings):
-            if name in e:
-                return e[name]
-            
+        if name in self.bindings:
+            return self.bindings[name]
 
-        if self.bindings[-1]:
-            return self.bindings[-1].get_variable_value(name)
+        if self.outer:
+            return self.outer.get_variable_value(name)
 
-        raise Exception(f"Variable '{name}' is not defined")  
+        raise Exception(f"Variable '{name}' is not defined")
 
 class Interpreter:
     def __init__(self):
@@ -76,12 +75,10 @@ class Interpreter:
         return self.varBinding.get_variable_value(node.name)
 
     def evaluate_declaration(self, node):
-        self.varBinding.push()
         self.varBinding.set_variable(node.name, node.expression.accept(self))
         print("variable bindings: ", self.varBinding.bindings)
 
     def evaluate_simple_declaration(self, node):
-        self.varBinding.push()
         self.varBinding.set_variable(node.name, None)
         print("variable bindings: ", self.varBinding.bindings)
 
@@ -95,47 +92,51 @@ class Interpreter:
         else:
             return node.else_branch.accept(self)
 
-    # def evaluate_assignment(self, node):
-    #     value = node.expression.accept(self.binding)
-    #     self.binding.set_variable(node.name, value)
-    #     return value
+    def evaluate_assignment(self, node):
+        value = node.expression.accept(self)
+        self.varBinding.set_variable(node.name, value)
+        return value
 
-    # def evaluate_print_func(self, node):
-    #     list = node.listOfLists[0]
-    #     printLine = ""
-    #     for expr in list:
-    #         printLine += str(expr.accept(self))
-    #         printLine += "|"
-    #     printLine = printLine[:-1]
-    #     print(printLine)
-    #     return printLine
+    def evaluate_print_func(self, node):
+        lists = node.listOfLists[0]
+        printLine = "Print: "
+        for expr in lists:
+            printLine += str(expr.accept(self))
+            printLine += "|"
+        printLine = printLine[:-1]
+        print(printLine)
+        return printLine
 
     def evaluate_function_decl(self, node):
-        self.funcBinding.push()
-        self.funcBinding.set_variable(node.name, [node.paramList, node.CodeBlock])
-        print("function bindings: ", self.funcBinding.bindings)
+        return Thunk(node.params, node.body, self.varBinding)
 
     def evaluate_function_call(self, node):
-        function = self.funcBinding.get_variable_value(node.name)
-        parameters = function[0]
-        code = function[1]
-        tempBinding = self.varBinding.bindings.copy()
+        print(node.args)
+        arg_values = [
+            arg.accept(self) for arg in node.args
+        ]
+        thunk = self.varBinding.get_variable_value(node.name)
+        return thunk.accept(self, arg_values)
+
+    def evaluate_thunk(self, node, args):
         
-        index = 0
-        for params in parameters:
-            tempBinding[params] = node.args[index].accept(self)
-            index += 1
-        print(self.varBinding.bindings)
-        print(tempBinding)
-        return code.accept(self)
+        temp = self.varBinding
+        self.varBinding = node.defining_binding
+        self.varBinding = self.varBinding.push()
+       
+        for formal, actual in zip(node.formal_params, args):
+            self.varBinding.set_variable(formal.name, actual)
+        print(f"hoooo {node.defining_binding.bindings}")
+        
+        result = node.body.accept(self)
+        
+        self.varBinding = temp
+        return result
 
-    # def evaluate_statement(self, node):
-    #     for decl in node.list:
-    #         decl.accept(self)
 
-# @dataclass
-# class Thunk():
-#     formal_params: List[str]
-#     body: "Code"
-#     defining_binding: Binding
+    def evaluate_variable_declaration(self, node):
+        value = 0
+        for var in node.vars:
+            value = var.accept(self)
+        return value
 

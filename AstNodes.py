@@ -106,54 +106,53 @@ class SimpleDeclaration():
     def accept(self, visitor):
         return visitor.evaluate_simple_declaration(self)
 
-# @dataclass
-# class Assignment():
-#     name: str
-#     expression: 'Expr'
+@dataclass
+class Assignment():
+    name: str
+    expression: 'Expr'
 
-#     def accept(self, visitor):
-#         return visitor.evaluate_assignment(self)
+    def accept(self, visitor):
+        return visitor.evaluate_assignment(self)
 
+@dataclass
 class FunctionDecl():
-    def __init__(self, name, paramList, codeBlock):
-        self.name = name
-        self.paramList = paramList
-        self.codeBlock = codeBlock
+    params: List[str]
+    body: 'Code'
 
     def accept(self, visitor):
         return visitor.evaluate_function_decl(self)
 
-@dataclass
 class FunctionCall():
-    name: str
-    args: List[int]
+    def __init__(self, name, args = []):
+        self.name = name
+        if type(args) != list:
+            self.args = [args]
+        else:
+            self.args= args
 
     def accept(self, visitor):
         return visitor.evaluate_function_call(self)
 
-# class Statement():
-#     def __init__(self, lists):
-#         self.list = lists
+class PrintFunc():
+    def __init__(self, listOfLists):
+        self.listOfLists = listOfLists
 
-#     def accept(self, visitor):
-#         return visitor.evaluate_statement(self)
+    def accept(self, visitor):
+        return visitor.evaluate_print_func(self)
 
-# class PrintFunc():
-#     def __init__(self, listOfLists):
-#         self.listOfLists = listOfLists
+class Thunk():
+    def __init__(self, params, body, binding):
+        self.formal_params = params
+        self.body = body
+        self.defining_binding = binding
 
-#     def accept(self, visitor):
-#         return visitor.evaluate_print_func(self)
+    def accept(self, visitor, args):
+        return visitor.evaluate_thunk(self, args)
 
+class VariableDeclaration():
+    def __init__(self, vars):
+        self.vars = vars
 
+    def accept(self, visitor):
+        return visitor.evaluate_variable_declaration(self)
 
-
-
-
-
-
-
-
-
-
-        

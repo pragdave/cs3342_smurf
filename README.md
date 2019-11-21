@@ -1,4 +1,4 @@
-# Programming Languages: Final Project
+﻿# Programming Languages: Final Project
 
 This note describes the final project for the Programming Languages class.
 
@@ -11,14 +11,14 @@ it would be blue).
 
 # Submission Checklist
 
-[ ] everything I'll need to build a running version of your submission (source,
+[X] everything I'll need to build a running version of your submission (source,
     dependency loading, etc)
 
-[ ] a build file that will create an executable (if required)
+[X] a build file that will create an executable (if required)
 
-[ ] a script that will run the tests.
+[X] a script that will run the tests.
 
-[ ] packaged into a PR that MUST INCLUDE your SMU ID and name.
+[X] packaged into a PR that MUST INCLUDE your SMU ID and name.
 
 (see [Deliverables](#deliverables) for more details)
 
