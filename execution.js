@@ -29,17 +29,7 @@ ExecuteNode = function ExecuteNode(node) {
 			returnVal = ExecuteValue(node);
 			break;
 		case "identifier":
-			// let parentNode = node.parent;
-			// if (parentNode && parentNode.type !== "function_def") {
-			// 	parentNode = parentNode.parent;
-			// }
-
-			// if (parentNode && parentNode.type === "function_def") {
-			// 	returnVal = ExecuteFunctionIdentifier(node, parentNode.params);
-			// } else {
-				returnVal = ExecuteIdentifier(node);
-			// }
-			
+			returnVal = ExecuteIdentifier(node);
 			break;
 		case "arithmetic_expr":
 			returnVal = ExecuteArithmeticExpr(node);
@@ -83,7 +73,6 @@ ExecuteFunction = function ExecuteFunction(body) {
 	this.body = body;
 
 	this.execute = function(localParams) {
-		// set params
 		localParams.forEach((p,i) => {
 			const paramName = this.paramsOrder[i];
 			variables[paramName] = p;
@@ -102,10 +91,6 @@ ExecuteFunctionCall = function ExecuteFunctionCall(node) {
 ExecuteValue = function ExecuteValue(node) {
 	return node.value;
 }
-
-// ExecuteFunctionIdentifier = function ExecuteFunctionIdentifier(node, functionParams){
-// 	console.log(variables);
-// }
 
 ExecuteIdentifier = function ExecuteIdentifier(node) {
 	return variables[node.name];
