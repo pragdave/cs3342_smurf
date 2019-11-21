@@ -82,6 +82,13 @@ print(f())             #=> 99\n\n
 # one parameter\n\n
 let f = fn(x) { x + 1 }\n
 print(f(99))          #=> 100\n
+# two parameters\n\n
+let f = fn(x, y) { x + y }\n
+print(f(99, 2))       #=> 101\n\n
+# can participate in expressions\n\n
+print(f(99, 2) - 1)   #=> 100\n\n
+# can be used in calls to themselves\n\n
+print(f(99, f(1, 2)))  #=> 102\n
 `;
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {

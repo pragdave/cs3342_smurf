@@ -17,8 +17,6 @@ variables = {
 	}
 };
 
-functionVariables = {};
-
 ExecuteNode = function ExecuteNode(node) {
 	let returnVal = null;
 	switch(node.type) {
