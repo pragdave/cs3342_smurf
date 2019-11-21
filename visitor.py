@@ -89,6 +89,22 @@ class SmurfVisitor(PTNodeVisitor):
     def visit_integer(self,node,children):
         return Integer(int(node.value))
 
+    #NOT YET TESTED
+    # def visit_function_call(self,node,children):
+
+
+    #NOT YET TESTED
+    def visit_call_arguments(self,node,children):
+        return CallArguments(children)
+
+    #NOT YET TESTED
+    def visit_function_definition(self,node,children):
+        return FunctionDefinition(children[0],children[1])
+
+    #NOT YET TESTED
+    def visit_param_list(self,node,children):
+        return ParamList(children)
+
 
     def visit_brace_block(self,node,children):
         return BraceBlock(children[0])

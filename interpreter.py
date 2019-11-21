@@ -5,7 +5,7 @@ class Program:
         self.code = code
 
     def evaluate(self):
-        mainBinding = Binding({})
+        mainBinding = Binding()
         return self.code.evaluate(mainBinding)
 
 
@@ -217,6 +217,45 @@ class IsLessThan:
         else:
             return 0
 
+
+
+
+#NOT YET TESTED
+class CallArguments:
+    def __init__(self,arguments):
+        self.arguments = arguments
+
+    def evaluate(self,binding):
+        i = 0
+        for name in binding.binding:
+            binding[name] = self.arguments[i].evalutate(binding)
+        return self.arguments[i].evaluate(binding)
+
+
+#NOT YET TESTED
+class FunctionDefinition:
+    def __init__(self,newBinding,codeBlock):
+        self.newBinding = newBinding
+        self.codeBlock = codeBlock
+    
+    def evaluate(self,binding):
+        funcDef = (self.newBinding,self.codeBlock)
+        return funcDef
+
+
+#NOT YET TESTED
+class ParamList:
+    def __init__(self,parameters):
+        self.parameters = parameters
+    
+    def evaluate(self,binding):
+        newBinding = Binding(binding)
+        if(len(self.parameters) != 0):
+            for parameter in self.parameters:
+                newBinding.add(parameter,0)
+        return newBinding
+
+
 class BraceBlock:
     def __init__(self,code):
         self.code = code
@@ -226,7 +265,7 @@ class BraceBlock:
 
 
 class Binding:
-    def __init__(self,parent):
+    def __init__(self,parent=None):
         self.parent = parent
         self.binding = {}
 
@@ -237,9 +276,10 @@ class Binding:
     def get(self,name):
         if name in self.binding:
             return self.binding[name]
+        elif self.parent:
+            return self.parent.get(name)
         else:
-            return self.parent.binding[name]
-
+            print("variable " + name + " is not defined")
 
     def doesExist(self,name):
         if name in self.binding:

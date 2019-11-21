@@ -23,7 +23,7 @@ def addop():                    return ["+","-"]                                
 def mulop():                    return ["*","/"]                                                                                        #done
 def relop():                    return ["==","!=",">=",">","<=","<"]                                                                    #done
 def function_call():            return [("print","(",call_arguments,")"),(variable_reference,"(",call_arguments,")")]
-def call_arguments():           return Optional(expr, ZeroOrMore(expr))
-def function_definition():      return param_list, brace_block
+def call_arguments():           return Optional(expr, ZeroOrMore(expr))                                                                 #returns list of ints
+def function_definition():      return param_list, brace_block          
 def param_list():               return [("(",identifier,ZeroOrMore(identifier),")"),("(",")")]
 def brace_block():              return "{",code,"}"                                                                                     #done

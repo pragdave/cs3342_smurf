@@ -3,7 +3,7 @@ from visitor import *
 
 
 parser = ParserPython(program,comment)
-parse_tree = parser.parse("if 0 {\nprint(99) \n} \nelse { \nprint(100) \n}")
+parse_tree = parser.parse("if 3 > 1 {\nprint(99) \n}")
 
 print(parse_tree)
 
