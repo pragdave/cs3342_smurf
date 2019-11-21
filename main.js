@@ -75,21 +75,36 @@ peg = require("pegjs");
 // print(if  9 != 10 {  1 } else { -1 })    #=> 1\n
 // `;
 
+// const codeExample = 
+// `# no parameters\n\n
+// let f = fn () { 99 }\n
+// print(f())             #=> 99\n\n
+// # one parameter\n\n
+// let f = fn(x) { x + 1 }\n
+// print(f(99))          #=> 100\n
+// # two parameters\n\n
+// let f = fn(x, y) { x + y }\n
+// print(f(99, 2))       #=> 101\n\n
+// # can participate in expressions\n\n
+// print(f(99, 2) - 1)   #=> 100\n\n
+// # can be used in calls to themselves\n\n
+// print(f(99, f(1, 2)))  #=> 102\n
+// `;
+
 const codeExample = 
-`# no parameters\n\n
-let f = fn () { 99 }\n
-print(f())             #=> 99\n\n
-# one parameter\n\n
-let f = fn(x) { x + 1 }\n
-print(f(99))          #=> 100\n
-# two parameters\n\n
-let f = fn(x, y) { x + y }\n
-print(f(99, 2))       #=> 101\n\n
-# can participate in expressions\n\n
-print(f(99, 2) - 1)   #=> 100\n\n
-# can be used in calls to themselves\n\n
-print(f(99, f(1, 2)))  #=> 102\n
-`;
+`let sum_up_to = fn(n) {\n
+  if n < 1 {\n
+    0\n
+  }\n
+  else {\n
+    n + sum_up_to(n-1)\n
+  }\n
+}\n\n
+print(sum_up_to(0))     #=> 0\n
+print(sum_up_to(1))     #=> 1\n
+print(sum_up_to(2))     #=> 3\n
+print(sum_up_to(3))     #=> 6\n
+`
 
 fs.readFile("grammar.txt", "utf8", function (err, data) {
 	if (err) {

@@ -13,7 +13,7 @@ repeat_declaration = dec:(("," _ decl)*) { const finalDec = dec.length ? dec.map
 decl = name:identifier _ "=" expr:expr { return {type: "assignment", name, expr}; }
       / name:identifier { return {type: "assignment", name}; }
 
-identifier = pattern:([a-z][a-zA-Z0-9]*) { return text(pattern); }
+identifier = pattern:([a-z][a-zA-Z_0-9]*) { return text(pattern); }
 
 variable_reference = name:identifier { return {type: "identifier", name}; }
 
@@ -52,7 +52,7 @@ relop   =   '=='
           / '>='
           / '>' 
           / '<='
-          / '<' 
+          / _ op:'<'  {return op;}
 
 function_call  = fcn_name:"print" "(" params:call_arguments ")" { return {type: "function_call", fcn_name, params}; }
                   / fcn_name:variable_reference "(" params:call_arguments ")" { return {type: "function_call", fcn_name, params}; }

@@ -4,60 +4,71 @@
 		"declarations": [
 			{
 				"type": "assignment",
-				"name": "f",
-				"expr": {
-					"type": "function_def",
-					"params": [],
-					"body": [
-						{
-							"type": "integer",
-							"value": 99
-						}
-					]
-				}
-			}
-		]
-	},
-	{
-		"type": "function_call",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "function_call",
-				"fcn_name": {
-					"type": "identifier",
-					"name": "f"
-				},
-				"params": []
-			}
-		]
-	},
-	{
-		"type": "variable_dec",
-		"declarations": [
-			{
-				"type": "assignment",
-				"name": "f",
+				"name": "sum_up_to",
 				"expr": {
 					"type": "function_def",
 					"params": [
 						{
 							"type": "identifier",
-							"name": "x"
+							"name": "n"
 						}
 					],
 					"body": [
 						{
-							"type": "arithmetic_expr",
-							"params": [
-								{
-									"type": "identifier",
-									"name": "x"
-								},
-								"+",
+							"type": "if",
+							"evaluation": {
+								"type": "boolean_expr",
+								"params": [
+									{
+										"type": "identifier",
+										"name": "n"
+									},
+									"<",
+									{
+										"type": "integer",
+										"value": 1
+									}
+								]
+							},
+							"statements": [
 								{
 									"type": "integer",
-									"value": 1
+									"value": 0
+								}
+							],
+							"else_statements": [
+								{
+									"type": "arithmetic_expr",
+									"params": [
+										{
+											"type": "identifier",
+											"name": "n"
+										},
+										"+",
+										{
+											"type": "function_call",
+											"fcn_name": {
+												"type": "identifier",
+												"name": "sum_up_to"
+											},
+											"params": [
+												{
+													"type": "arithmetic_expr",
+													"params": [
+														{
+															"type": "identifier",
+															"name": "n"
+														},
+														"-",
+														{
+															"type": "integer",
+															"value": 1
+														}
+													]
+												}
+											]
+										}
+									]
 								}
 							]
 						}
@@ -74,52 +85,14 @@
 				"type": "function_call",
 				"fcn_name": {
 					"type": "identifier",
-					"name": "f"
+					"name": "sum_up_to"
 				},
 				"params": [
 					{
 						"type": "integer",
-						"value": 99
+						"value": 0
 					}
 				]
-			}
-		]
-	},
-	{
-		"type": "variable_dec",
-		"declarations": [
-			{
-				"type": "assignment",
-				"name": "f",
-				"expr": {
-					"type": "function_def",
-					"params": [
-						{
-							"type": "identifier",
-							"name": "x"
-						},
-						{
-							"type": "identifier",
-							"name": "y"
-						}
-					],
-					"body": [
-						{
-							"type": "arithmetic_expr",
-							"params": [
-								{
-									"type": "identifier",
-									"name": "x"
-								},
-								"+",
-								{
-									"type": "identifier",
-									"name": "y"
-								}
-							]
-						}
-					]
-				}
 			}
 		]
 	},
@@ -131,46 +104,9 @@
 				"type": "function_call",
 				"fcn_name": {
 					"type": "identifier",
-					"name": "f"
+					"name": "sum_up_to"
 				},
 				"params": [
-					{
-						"type": "integer",
-						"value": 99
-					},
-					{
-						"type": "integer",
-						"value": 2
-					}
-				]
-			}
-		]
-	},
-	{
-		"type": "function_call",
-		"fcn_name": "print",
-		"params": [
-			{
-				"type": "arithmetic_expr",
-				"params": [
-					{
-						"type": "function_call",
-						"fcn_name": {
-							"type": "identifier",
-							"name": "f"
-						},
-						"params": [
-							{
-								"type": "integer",
-								"value": 99
-							},
-							{
-								"type": "integer",
-								"value": 2
-							}
-						]
-					},
-					"-",
 					{
 						"type": "integer",
 						"value": 1
@@ -187,29 +123,31 @@
 				"type": "function_call",
 				"fcn_name": {
 					"type": "identifier",
-					"name": "f"
+					"name": "sum_up_to"
 				},
 				"params": [
 					{
 						"type": "integer",
-						"value": 99
-					},
+						"value": 2
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "function_call",
+		"fcn_name": "print",
+		"params": [
+			{
+				"type": "function_call",
+				"fcn_name": {
+					"type": "identifier",
+					"name": "sum_up_to"
+				},
+				"params": [
 					{
-						"type": "function_call",
-						"fcn_name": {
-							"type": "identifier",
-							"name": "f"
-						},
-						"params": [
-							{
-								"type": "integer",
-								"value": 1
-							},
-							{
-								"type": "integer",
-								"value": 2
-							}
-						]
+						"type": "integer",
+						"value": 3
 					}
 				]
 			}

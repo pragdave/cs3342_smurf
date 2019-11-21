@@ -60,7 +60,7 @@ ExecuteFunctionDef = function ExecuteFunctionDef(node) {
 	node.params.params.forEach(p => {
 		functionNode.params[p.name] = null;
 		functionNode.paramsOrder.push(p.name);
-	})
+	});
 	variables[functionName] = functionNode;
 	return variables[functionName];
 }
@@ -74,9 +74,9 @@ ExecuteFunction = function ExecuteFunction(body) {
 		localParams.forEach((p,i) => {
 			const paramName = this.paramsOrder[i];
 			variables[paramName] = p;
-		})
+		});
 		const executed = this.body.map(statement => ExecuteNode(statement));
-		return executed[executed.length - 1]
+		return executed[executed.length - 1];
 	}
 }
 
@@ -103,6 +103,13 @@ ExecuteArithmeticExpr = function ExecuteArithmeticExpr(node) {
 	}
 	if (rightSide.type) {
 		rightSide = ExecuteNode(rightSide);
+	}
+	// TODO: fix this
+	if (typeof leftSide !== "number") {
+		leftSide = Number(leftSide);
+	}
+	if (typeof rightSide !== "number") {
+		rightSide = Number(rightSide);
 	}
 	switch(node.operator) {
 		case "+":
@@ -161,7 +168,7 @@ ExecuteBooleanExpr = function ExecuteBooleanExpr(node) {
 ExecuteParams = function ExecuteParams(node) {
 	arr = node.params.map(param => {
 		return ExecuteNode(param);
-	})
+	});
 	return arr;
 }
 
