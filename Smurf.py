@@ -2,13 +2,14 @@ from arpeggio import ParserPython, visit_parse_tree
 import Grammar as grammar
 from ASTGenerator import ASTGenerator
 from Interpreter import Interpreter
+import sys
 
 def main():
     #Creates the arpeggio parser
     parser = ParserPython(grammar.code, grammar.comment)
     
     #Reads the smurf source code file
-    f = open("code.smu", "r")
+    f = open(sys.argv[1], "r")
     contents = f.read()
     
     #Generates the parse tree
