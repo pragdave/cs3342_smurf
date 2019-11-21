@@ -4,8 +4,10 @@ class Binding:
         self.bindings = {}
 
     def setVariable(self,name,value):
-        self.bindings[name] = value
-        return value
+        if name in self.bindings:
+            value = self.bindings[name] = value
+        else:
+            raise Exception("Variable " + str(name) + " does not exist")
 
     def getVariable(self,name):
         if name in self.bindings:
@@ -15,6 +17,10 @@ class Binding:
         else:
             raise Exception("Variable " + str(name) + " does not exist")
 
+    def defineVariable(self,name,value=0):
+        self.bindings[name] = value
+        return value
+        
 #########################
 # Top-Level Structures ##
 #########################
@@ -63,7 +69,7 @@ class Decl:
     def evaluate(self,binding):
         lhs = self.name.evaluate(binding);
         rhs = self.value.evaluate(binding)
-        return binding.setVariable(lhs,rhs)
+        return binding.defineVariable(lhs,rhs)
 
 
 class Variable_Reference:
@@ -156,7 +162,7 @@ class Param_List:
     def evaluate(self,binding):
         newBinding = Binding(binding)
         for param in self.paramList:
-            newBinding.setVariable(param.evaluate(binding),0)
+            newBinding.defineVariable(param.evaluate(binding))
         return newBinding
 
 
