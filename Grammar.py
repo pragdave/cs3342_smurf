@@ -6,7 +6,7 @@ from arpeggio import RegExMatch, Optional, ZeroOrMore, OneOrMore, EOF
 
 #Int or float or nothing
 def number():
-    return [RegExMatch('\d*\.\d*|\d+'), RegExMatch('\w+')]
+    return [RegExMatch('\d*\.\d*|\d+'), RegExMatch('[a-z][a-zA-Z_0-9]*')]
 
 #An optional plus/minus followed by a number or an arithmetic expression
 def factor():
@@ -26,11 +26,11 @@ def arithmetic_expression():
 
 #Handles varaible assignment
 def var_decl():
-    return RegExMatch('\w+'), "=", evaluatable
+    return RegExMatch('[a-z][a-zA-Z_0-9]*'), "=", evaluatable
 
 #Handles variable declaration
 def var_let():
-    return "let", [var_decl, RegExMatch('\w+')], ZeroOrMore(",", [var_decl, RegExMatch('\w+')])
+    return "let", [var_decl, RegExMatch('[a-z][a-zA-Z_0-9]*')], ZeroOrMore(",", [var_decl, RegExMatch('[a-z][a-zA-Z_0-9]*')])
 
 #Handles boolean expressions ==, !=, >=, >, <=, <
 def boolean_expression():
@@ -50,7 +50,7 @@ def if_statement():
     
 #Handles function assignment
 def fn_decl():
-    return RegExMatch('\w+'), "=", "fn", "(", Optional(RegExMatch('\w+')), ZeroOrMore(",", RegExMatch('\w+')), ")", code_block
+    return RegExMatch('[a-z][a-zA-Z_0-9]*'), "=", "fn", "(", Optional(RegExMatch('[a-z][a-zA-Z_0-9]*')), ZeroOrMore(",", RegExMatch('[a-z][a-zA-Z_0-9]*')), ")", code_block
     
 #Handles function declaration
 def fn_let():
@@ -58,7 +58,7 @@ def fn_let():
     
 #Handles function call
 def fn_call():
-    return RegExMatch('\w+'), func_parameters
+    return RegExMatch('[a-z][a-zA-Z_0-9]*'), func_parameters
 
 #########################
 #Non-Interpretable types#
@@ -70,7 +70,7 @@ def valid_line():
 
 #Declares what types can be evaluated to a value
 def evaluatable():
-    return [fn_call, if_statement, code_block, arithmetic_expression, boolean_expression, RegExMatch('\w+')]
+    return [fn_call, if_statement, code_block, arithmetic_expression, boolean_expression, RegExMatch('[a-z][a-zA-Z_0-9]*')]
     
 def func_parameters():
     return "(", Optional(evaluatable), ZeroOrMore(",", evaluatable), ")"
