@@ -57,11 +57,15 @@ def expr(): return                  [("fn", function_definition),
 
 def boolean_expression(): return    (arithmetic_expression, relop, arithmetic_expression)
 
-def arithmetic_expression(): return [(mult_term, addop, arithmetic_expression), 
-                                     mult_term]
+# def arithmetic_expression(): return [(mult_term, addop, arithmetic_expression), 
+#                                      mult_term]
 
-def mult_term(): return             [(primary, mulop, mult_term,), 
-                                     primary]
+def arithmetic_expression(): return (mult_term, ZeroOrMore(addop, mult_term))
+
+# def mult_term(): return             [(primary, mulop, mult_term,), 
+#                                      primary]
+
+def mult_term(): return             (primary, ZeroOrMore(mulop, primary))
 
 def primary(): return               [integer, 
                                      function_call, 

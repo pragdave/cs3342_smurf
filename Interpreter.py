@@ -69,6 +69,7 @@ class Interpreter:
     
     def evaluate_Printer(self, node, binding):
         val = 0
+        # out = open('output.txt', 'a')
         print("Print: ", end='')
         for i, x in enumerate(node.expressions):
             val = x.accept(self, binding)
