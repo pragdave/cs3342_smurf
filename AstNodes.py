@@ -27,69 +27,19 @@ def relop_list(children):
 
 
 
-@dataclass
 class Code():
-    expressions: List['Expr']
+    def __init__(self, expr):
+        self.expressions = expr
 
     def accept(self, visitor):
         return visitor.evaluate_code(self)
-    
-@dataclass
-class Integer():
-    value: int
+
+class VariableDeclaration():
+    def __init__(self, vars):
+        self.vars = vars
 
     def accept(self, visitor):
-        return visitor.evaluate_integer(self)
-        
-@dataclass
-class If():
-    cond: 'Expr'
-    then_branch: 'Expr'
-
-    def accept(self, visitor):
-        return visitor.evaluate_if(self)
-
-@dataclass
-class IfElse():
-    cond:        'Expr'
-    then_branch: 'Expr'
-    else_branch: 'Expr'
-
-    def accept(self, visitor):
-        return visitor.evaluate_ifelse(self)
-
-@dataclass
-class Expr():
-    expression: 'Expr'
-
-    def accept(self, visitor):
-        return visitor.evaluate_expr(self)
-
-
-@dataclass
-class BinOp():
-    left: 'Expr'
-    op: str
-    right:  'Expr'
-
-    def accept(self, visitor):
-        return visitor.evaluate_bin_op(self)
-
-@dataclass
-class RelOp():
-    left: 'Expr'
-    op: str
-    right: 'Expr'
-
-    def accept(self, visitor):
-        return visitor.evaluate_rel_op(self)
-
-@dataclass
-class VariableReference():
-    name: str
-
-    def accept(self, visitor):
-        return visitor.evaluate_variable_reference(self)
+        return visitor.evaluate_variable_declaration(self)  
 
 class Declaration():
     def __init__(self, name, expr):
@@ -97,31 +47,72 @@ class Declaration():
         self.expression = expr
 
     def accept(self, visitor):
-        return visitor.evaluate_declaration(self)
+        return visitor.evaluate_declaration(self)  
 
 class SimpleDeclaration():
     def __init__(self, name):
         self.name = name
 
     def accept(self, visitor):
-        return visitor.evaluate_simple_declaration(self)
+        return visitor.evaluate_simple_declaration(self)    
 
-@dataclass
+class VariableReference():
+    def __init__(self, name):
+        self.name = name
+
+    def accept(self, visitor):
+        return visitor.evaluate_variable_reference(self)
+
+class If():
+    def __init__(self, condition, then):
+        self.cond = condition
+        self.then_branch = then
+
+    def accept(self, visitor):
+        return visitor.evaluate_if(self)
+
+class IfElse():
+    def __init__(self, condition, then, other):
+        self.cond = condition
+        self.then_branch = then
+        self.else_branch = other
+
+    def accept(self, visitor):
+        return visitor.evaluate_ifelse(self)
+
 class Assignment():
-    name: str
-    expression: 'Expr'
+    def __init__(self, name, expr):
+        self.name = name
+        self.expression = expr
 
     def accept(self, visitor):
         return visitor.evaluate_assignment(self)
 
-@dataclass
-class FunctionDecl():
-    params: List[str]
-    body: 'Code'
+class RelOp():
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
 
     def accept(self, visitor):
-        return visitor.evaluate_function_decl(self)
+        return visitor.evaluate_rel_op(self)
 
+class BinOp():
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+
+    def accept(self, visitor):
+        return visitor.evaluate_bin_op(self)
+
+class Integer():
+    def __init__(self, value):
+        self.value = value
+
+    def accept(self, visitor):
+        return visitor.evaluate_integer(self)
+        
 class FunctionCall():
     def __init__(self, name, args = []):
         self.name = name
@@ -140,6 +131,14 @@ class PrintFunc():
     def accept(self, visitor):
         return visitor.evaluate_print_func(self)
 
+class FunctionDef():
+    def __init__(self, params, body):
+        self.params = params
+        self.body = body
+
+    def accept(self, visitor):
+        return visitor.evaluate_function_def(self)  
+
 class Thunk():
     def __init__(self, params, body, binding):
         self.formal_params = params
@@ -147,12 +146,4 @@ class Thunk():
         self.defining_binding = binding
 
     def accept(self, visitor, args):
-        return visitor.evaluate_thunk(self, args)
-
-class VariableDeclaration():
-    def __init__(self, vars):
-        self.vars = vars
-
-    def accept(self, visitor):
-        return visitor.evaluate_variable_declaration(self)
-
+        return visitor.evaluate_thunk(self, args)      
