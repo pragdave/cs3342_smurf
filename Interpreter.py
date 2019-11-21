@@ -87,7 +87,7 @@ class Interpreter(PTNodeVisitor):
             printLine += str(expr.accept(self))
             printLine += "|"
         printLine = printLine[:-1]
-        print(printLine)
+        print("Print: ",printLine)
         return printLine
         
     def evaluate_code_block(self, node):
