@@ -2,6 +2,7 @@ from arpeggio import *
 from arpeggio import Optional, ZeroOrMore, OneOrMore, EOF
 from arpeggio import RegExMatch as _
 from arpeggio import ParserPython
+from visitor import SmurfVisitor
 import os
 
 
@@ -59,8 +60,10 @@ def main(debug = False):
     #test_program = open(os.path.join(current_dir, 'C:\\Users\\mailt\Documents\\GitHub\\cs3342_smurf\\test_cases\\00_expr.smu')).read()
     parser = ParserPython(program, comment, debug = debug)
     #parse_tree = parser_parse(test_program)
-    parser_tree = parser.parse("1 + (2 * 3)")
-    print(parser_tree)
+    parsing_tree = parser.parse("-1")
+    print(parsing_tree)
+    result = visit_parse_tree(parsing_tree, SmurfVisitor(debug=True))
+    print(result)
 
 if __name__ == "__main__":
     main(debug=True)
