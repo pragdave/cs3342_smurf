@@ -65,7 +65,7 @@ int main(int argc, const char * argv[]) {
         return new intNode(x);
     };
     
-    parser["Binop"] = [](const SemanticValues& sv) {
+    parser["binop"] = [](const SemanticValues& sv) {
         /*switch (binopNode) {
             case 0:
                 return binopNode(sv[0], binopNode.operation, sv[2]);

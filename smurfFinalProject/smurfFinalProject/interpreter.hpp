@@ -13,8 +13,9 @@
 #pragma once
 #include <map>
 #include <string>
-#include "node.hpp"
+#include <functional>
 #include "visitor.hpp"
+#include "node.hpp"
 
 using namespace std;
 
@@ -26,8 +27,10 @@ class interpreter: public visitor {
         {"/", [](int left, int right) {return left / right; }}
     };
 public:
-    int evaluate_integer(node *nodex, int value);
-    int evaluate_binop(node *nodex, node *left, string operation, node *right);
+    int evaluate_integer(node*, int);
+    int evaluate_binop(node*, node*, string, node*);
+    int eval_op(int,string, int);
+    bool eval_relop(int, string, int);
 };
 
 

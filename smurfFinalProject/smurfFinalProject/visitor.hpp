@@ -10,11 +10,12 @@
 #define visitor_hpp
 
 #include <stdio.h>
-#include "node.hpp"
 #include <string>
 #pragma once
 
 using namespace std;
+
+class node;
 
 class visitor {
 public:

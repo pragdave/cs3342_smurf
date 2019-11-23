@@ -8,7 +8,16 @@
 // Based on pragdave/peglibeg
 
 #include "node.hpp"
+//node
+string node::str(){
+    return string("node");
+};
 
+int node::accept(visitor *visitorx){
+    return 99999;
+}
+
+//int node
 intNode::intNode(int x){
     val = x;
 }
@@ -21,6 +30,7 @@ int intNode::accept(visitor *visitorx){
     return visitorx->evaluate_integer(this, val);
 }
 
+//binop node
 binopNode::binopNode(node* l, string op, node* r){
     left = l;
     operation = op;
@@ -35,6 +45,7 @@ int binopNode::accept(visitor *visitorx){
     return visitorx->evaluate_binop(this, left, operation, right);
 }
 
+//op node
 operationNode::operationNode(string op){
     operation = op;
 }
