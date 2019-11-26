@@ -59,6 +59,7 @@ int Interpreter::evaluate_funcall(AstNode *node, vector<string> names, vector<As
 		AstNode* toPass = new IntegerNode(toSet);
 		b.set_variable(names[i], toPass);
 	}
+	b = b + bindings;
 	Interpreter* forFunc = getInterpreter(b);
 	return forFunc->evaluate_block(node, block->getCode());
 };
@@ -76,8 +77,13 @@ Interpreter* Interpreter::getInterpreter(Binding& b) {
 
 int Interpreter::evaluate_print(AstNode *node, vector<AstNode*> nodes) {
 	int ret = 0;
+	cout << "Print: ";
 	for (int i = 0; i < nodes.size(); i++) {
 		ret = nodes[i]->accept(this);
-		cout << "Print: " << ret << endl;
+		cout << ret;
+		if (i < nodes.size()-1)
+			cout << "|";
 	}
+	cout << endl;
+	return ret;
 }

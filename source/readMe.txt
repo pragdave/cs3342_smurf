@@ -103,3 +103,46 @@
 			- fib
 				same recurssion issue
 
+11/26/2019 2:46
+	Working:
+		- Ints
+		- Comparisons
+		- variablereference
+		- assignments
+		- variable declaration
+		- more than one code statement result
+		- if/else
+		- functions
+		- Tests that run
+			- ALL 00_expr.smu
+			- 01_variables.smu
+				print(b-a)
+				print(a-1)
+				print(2+b/a)
+				print(b)
+			- ALL 02_let.smu
+			- ALL 10_if.smu
+			- ALL 20_fn_basics.smu
+			- ALL 21_recursive_fns.smu
+			- 22_closures.smu
+				print(f(1))
+				print(f(1)) pt2
+			- ALL 99_fib.smu
+	Fix:
+		- Math with var = var + whatever
+		- Comments
+	Start/Issues:
+		- Tests that don't run
+			- 01_variables.smu
+				a = a + b print(a)
+				b = b-a print(b)
+				let c = a a = b b = c print(a) print(b)
+			- 22_closures.smu
+				print(add_2(2))
+				print(add_3(10))
+				print(add_3(2))
+				print(add_2(10))
+
+
+
+

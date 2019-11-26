@@ -28,4 +28,8 @@ Binding& Binding::operator = (Binding& b) {
 	return *this;
 }
 
+Binding& Binding::operator + (Binding& b) {
+	this->bindings.insert(b.bindings.begin(), b.bindings.end());
+	return *this;
+}
 

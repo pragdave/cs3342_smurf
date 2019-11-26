@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>
+#include <fstream>
+#include <string>
 
 #include "visitor.h"
 #include "ast_node.h"
@@ -16,8 +18,8 @@ auto grammar = R"(
 		statement                       <-  ( vDec 
 						/   assignment 
 						/   expr )+
-		vDec                            <-  'let' _ (identifier _ '=' _ expr _ (',')?)*
-		assignment                      <-  identifier _ '=' _ expr
+		vDec                            <-  'let' _ assignment (',')?
+		assignment                      <-  identifier _ '=' _ expr (',')?
 		boolean_expression              <-  arithmetic_expression _ relop _ arithmetic_expression
 		arithmetic_expression           <-  mult_term (_ add_op _ mult_term )*
 		mult_term                       <-  primary (_ mul_op _ primary)* 
@@ -35,9 +37,9 @@ auto grammar = R"(
 						/   variablereference
 						/   number
 						/   '(' _ arithmetic_expression _ ')'
-		comment                         <-  '#' [''""``-+0-9|a-zA-Z=>< ]* '\n'?
+		comment                         <-  '#' [''""``-+0-9|a-zA-Z=>< ]*
 		~_                              <-  [ \t\r\n]*
-		identifier                      <-  < [a-z][a-zA-Z0-9]* >
+		identifier                      <-  < [a-z][a-zA-Z0-9'_']* >
 		number                         	<-  < ('-')? [0-9]+ > 
 		add_op                          <-  < '+' / '-' > 
 		mul_op                          <-  < '*' / '/' > 
@@ -216,8 +218,14 @@ int main(int argc, const char **argv) {
 	setup_ast_generation(parser);
 
 	ParseTreeNode val = ParseTreeNode();
-	auto expr = argv[1];
+	
+	ifstream ifs(argv[1]);
+	string content( (istreambuf_iterator<char>(ifs)),
+			(istreambuf_iterator<char>() ));
+
+	const char* expr = content.c_str();
 	if (!parser.parse(expr, val)) {
 		cout << "syntax error..." << endl;
 	}
+
 }

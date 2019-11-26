@@ -13,4 +13,5 @@ public:
 	void set_variable(string&, AstNode*& val);
 	AstNode* get_variable_value(string& name);
 	Binding& operator=(Binding& b);
+	Binding& operator+(Binding& b);
 };
