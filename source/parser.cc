@@ -27,11 +27,11 @@ auto grammar = R"(
 						/   ifexpression
 						/   boolean_expression 
 						/   arithmetic_expression
-		function_definition             <-  'fn' _ '(' _ (identifier ( ',' _ identifier)*)? ')'  _ block
+		function_definition             <-  'fn' _ '(' _ (identifier ( ',' _ identifier)*)? ')' _ block
 		functioncall                    <-  variablereference _ '(' (_ expr _ (',' _ expr)*)? _ ')'
-		block                           <-  '{' (_ statement _)* '}'
+		block                           <-  '{' (_ statement _)* '}' 
 		
-		ifexpression                    <-  'if' _ expr _ block _ ('else' _ block)? _
+		ifexpression                    <-  'if' _ expr _ block _ ('else' _ block)?
 		variablereference               <-  identifier
 		primary                         <-  functioncall
 						/   variablereference
@@ -219,8 +219,6 @@ int main(int argc, const char **argv) {
 	ParseTreeNode val = ParseTreeNode();
 	
 	ifstream ifs;
-	//string content( (istreambuf_iterator<char>(ifs)),
-	//		(istreambuf_iterator<char>() ));
 	
 	ifs.open(argv[1]);
 	string toSend = "";
@@ -235,10 +233,8 @@ int main(int argc, const char **argv) {
 			toSend += ' ';
 		}
 	}
-	const char* expr = toSend.c_str();
-	
 
-	//const char* expr = content.c_str();
+	const char* expr = toSend.c_str();
 	if (!parser.parse(expr, val)) {
 		cout << "syntax error..." << endl;
 	}
