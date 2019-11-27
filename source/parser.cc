@@ -14,7 +14,7 @@ using namespace peg;
 using namespace std;
 
 auto grammar = R"(
-		program                         <-  ( statement _ (comment)?)*
+		program                         <-  (_ statement _)*
 		statement                       <-  ( vDec 
 						/   assignment 
 						/   expr )+
@@ -37,7 +37,6 @@ auto grammar = R"(
 						/   variablereference
 						/   number
 						/   '(' _ arithmetic_expression _ ')'
-		comment                         <-  '#' [''""``-+0-9|a-zA-Z=>< ]*
 		~_                              <-  [ \t\r\n]*
 		identifier                      <-  < [a-z][a-zA-Z0-9'_']* >
 		number                         	<-  < ('-')? [0-9]+ > 
@@ -219,11 +218,27 @@ int main(int argc, const char **argv) {
 
 	ParseTreeNode val = ParseTreeNode();
 	
-	ifstream ifs(argv[1]);
-	string content( (istreambuf_iterator<char>(ifs)),
-			(istreambuf_iterator<char>() ));
+	ifstream ifs;
+	//string content( (istreambuf_iterator<char>(ifs)),
+	//		(istreambuf_iterator<char>() ));
+	
+	ifs.open(argv[1]);
+	string toSend = "";
+	string toParse = "";
+	if (ifs.is_open()) {
+		while (getline(ifs, toParse)) {
+			int i = 0;
+			while (toParse[i] != '#' && i < toParse.size()) {
+				toSend += toParse[i];
+				i++;
+			}
+			toSend += ' ';
+		}
+	}
+	const char* expr = toSend.c_str();
+	
 
-	const char* expr = content.c_str();
+	//const char* expr = content.c_str();
 	if (!parser.parse(expr, val)) {
 		cout << "syntax error..." << endl;
 	}
