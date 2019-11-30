@@ -7,14 +7,6 @@ class Code:
     return visitor.evaluate_code(self)
 
 
-class StatementNode:
-  def __init__(self, statement):
-    self.statement = statement
-
-  def accept(self, visitor):
-    return visitor.evaluate_statement(self)
-
-
 class VariableNode:
   def __init__(self, name):
     self.name = name
@@ -63,6 +55,7 @@ class VariableDeclNode:
 class FunctionCallNode:
   def __init__(self, name, args = []):
     self.name = name
+    print(f"function call node: {self.name}")
     if type(args) != list:
       self.args = [args]
     else:

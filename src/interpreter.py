@@ -28,6 +28,9 @@ class Binding:
 
 class Interpreter:
   def __init__(self):
+    # interpreter-wide binding
+    # using this method because I find it easier and clearer than passing the binding
+    # into every function that needs it
     self.binding = Binding()
 
   def evaluate_code(self, node):
@@ -35,9 +38,6 @@ class Interpreter:
     for stmnt in node.statements:
       final_value = stmnt.accept(self)
     return final_value
-
-  def evaluate_statement(self, statement):
-    statement.accept(self)
 
   def evaluate_variable(self, node):
     return self.binding.get_value(node.name)
@@ -54,13 +54,14 @@ class Interpreter:
     return self.binding.set_variable(node.name, node.expr.accept(self))
 
   def evaluate_function_call(self, node):
+    # evaluates all of the expressions within the call arguments for the function
     arg_values = [
       arg.accept(self) for arg in node.args
     ]
     if node.name == "print":
       result = "Print: "
       for i in range(0, len(arg_values) - 1):
-        result = result + str(arg_values[i]) + "|"
+        result += str(arg_values[i]) + "|"
       result += str(arg_values[-1])
       print(result)
       return arg_values[-1]
@@ -81,15 +82,18 @@ class Interpreter:
         return node.else_block.accept(self)
 
   def evaluate_thunk(self, node, args):
-    print(f"thunk node params: {node.body}")
+    # stores the current binding for replacement later
     temp_binding = self.binding
+    # temporarily changes the current binding to the one at definition
     self.binding = node.binding_at_def
     self.binding = self.binding.push()
+    # set all passed in arguments for the new binding
     for formal, actual in zip(node.params, args):
       self.binding.set_variable(formal.name, actual)
 
+    
     result = node.body.accept(self)
-    self.binding.pop()
+    # sets the class's binding to what it was before the thunk was evaluated
     self.binding = temp_binding
     return result
 

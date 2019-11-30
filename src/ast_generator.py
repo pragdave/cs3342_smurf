@@ -37,12 +37,6 @@ class VisitorClass(PTNodeVisitor):
     else:
       return IntegerNode(int(children[0]))
 
-  def visit_primary(self, node, children):
-    return children[0]
-
-  def visit_identifier(self, node, children):
-    return node.value
-
   def visit_assignment(self, node, children):
     if self.debug:
       print("assign: {}".format(children))
