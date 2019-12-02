@@ -13,8 +13,8 @@ int Interpreter::evaluate_integer(AstNode *node, int value) {
 }
 
 int Interpreter::evaluate_binop(AstNode *node, AstNode *left, string op, AstNode *right) {
-	int lval = left->accept(this);
 	int rval = right->accept(this);
+	int lval = left->accept(this);
 	int ans = eval_op[op](lval, rval);
 	return ans;
 }
@@ -25,8 +25,8 @@ int Interpreter::evaluate_varref(AstNode *node, string name) {
 }
 
 int Interpreter::evaluate_assignment(AstNode* node, AstNode* left, string op, AstNode* right) {
-	string name = left->to_string();
-	int value = right->accept(this);    
+	int value = right->accept(this);  
+	string name = left->to_string();  
 	bindings.set_variable(name, right);
 	return value;
 }

@@ -143,6 +143,81 @@
 				print(add_3(2))
 				print(add_2(10))
 
+11/26/2019 11:34
+	Working:
+		- Ints
+		- Comparisons
+		- variablereference
+		- assignments
+		- variable declaration
+		- more than one code statement result
+		- if/else
+		- functions
+		- comments
+		- Tests that run
+			- ALL 00_expr.smu
+			- 01_variables.smu 1-4
+			- ALL 02_let.smu
+			- ALL 10_if.smu
+			- ALL 20_fn_basics.smu
+			- ALL 21_recursive_fns.smu
+			- 22_closures.smu 1-2
+			- ALL 99_fib.smu
+	Fix:
+		- Math with var = var + whatever
+	Start/Issues:
+		- Tests that don't run
+			- 01_variables.smu
+				a = a + b print(a)
+				b = b-a print(b)
+				let c = a a = b b = c print(a) print(b)
+			- 22_closures.smu
+				print(add_2(2))
+				print(add_3(10))
+				print(add_3(2))
+				print(add_2(10))
+	NOTE:
+		I believe the issue lies in the order of which things are
+			executed. I think that perhaps the assignment node
+			is going left to right, not right to left. Not 
+			entirely sure why and I will have to try to piece
+			that one out.
 
-
-
+12/1/2019 9:14
+	Working:
+		- Ints
+		- Comparisons
+		- variablereference
+		- assignments
+		- variable declaration
+		- more than one code statement result
+		- if/else
+		- functions
+		- comments
+		- Tests that run
+			- ALL 00_expr.smu
+			- 01_variables.smu 1-4
+			- ALL 02_let.smu
+			- ALL 10_if.smu
+			- ALL 20_fn_basics.smu
+			- ALL 21_recursive_fns.smu
+			- 22_closures.smu 1-2
+			- ALL 99_fib.smu
+	Fix:
+		- Math with var = var + whatever
+	Start/Issues:
+		- Tests that don't run
+			- 01_variables.smu
+				a = a + b print(a)
+				b = b-a print(b)
+				let c = a a = b b = c print(a) print(b)
+			- 22_closures.smu
+				print(add_2(2))
+				print(add_3(10))
+				print(add_3(2))
+				print(add_2(10))
+	NOTE:
+		I still cannot find the error, I messed with the ordering and
+			found nothing of use. I simply am at a loss at this
+			point, printing also isn't helping me much to see the
+			order in which things are happening.
