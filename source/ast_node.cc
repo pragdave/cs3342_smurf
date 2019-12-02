@@ -114,11 +114,6 @@ Block::Block(vector<AstNode*> ns, int nN) {
 }
 
 string Block::to_string() {
-	//string ret = "";
-	for (int i = 0; i < numNodes; i++) {
-	//	ret = nodes[i]->to_string();
-
-	}
 	return "block";
 }
 
@@ -139,7 +134,7 @@ FunCall::FunCall(vector<AstNode*> v, AstNode* funcD) {
 }
 
 string FunCall::to_string() {
-	return "hi";
+	return "function calls";
 }
 
 int FunCall::accept(Visitor *visitor) {

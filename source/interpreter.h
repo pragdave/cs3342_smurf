@@ -8,6 +8,7 @@
 
 using namespace std;
 
+//define interpreter for code
 class Interpreter : public Visitor {
 	map<string, function<int(int, int)>> eval_op = {
 		{"+",  [] (int l, int r) { return l + r;  }},

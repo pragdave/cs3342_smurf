@@ -1,12 +1,10 @@
 #pragma once
 
-
-
-
 class AstNode;
 
 using namespace std;
 
+//create virtual functions for visitor
 class Visitor {
 public:
 	virtual int evaluate_integer(AstNode *node, int value) 

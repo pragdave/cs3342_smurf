@@ -6,6 +6,7 @@
 
 using namespace std;
 
+//create smurf binding
 class Binding {
 	map<string, AstNode*> bindings;
 public:

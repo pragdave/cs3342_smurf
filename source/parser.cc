@@ -1,3 +1,4 @@
+//dependencies
 #include <peglib.h>
 #include <iostream>
 #include <cstdlib>
@@ -13,6 +14,7 @@
 using namespace peg;
 using namespace std;
 
+//grammar for smurf
 auto grammar = R"(
 		program                         <-  (_ statement _)*
 		statement                       <-  ( vDec 
@@ -59,6 +61,8 @@ public:
 	string to_string() { return content->to_string(); }
 };
 
+//functions for creating nodes
+//binary operation node
 AstNode *bin_op(const SemanticValues &sv) {
 	AstNode *left = sv[0].get<ParseTreeNode>().get();
 	for (auto i = 1u; i < sv.size(); i += 2) {
@@ -69,6 +73,7 @@ AstNode *bin_op(const SemanticValues &sv) {
 	return left;
 };
 
+//assignment node
 AstNode *assign(const SemanticValues &sv) {
 	AstNode *left = sv[0].get<ParseTreeNode>().get();
 	for (auto i = 1u; i < sv.size(); i += 2) {
@@ -78,6 +83,7 @@ AstNode *assign(const SemanticValues &sv) {
 	return left;
 }
 
+//if else node
 AstNode *ifElse(const SemanticValues &sv) {
 	AstNode *left = sv[0].get<ParseTreeNode>().get();
 	AstNode *right = sv[1u].get<ParseTreeNode>().get();
@@ -88,6 +94,7 @@ AstNode *ifElse(const SemanticValues &sv) {
 	return left;
 }
 
+//block node
 AstNode *bind(const SemanticValues &sv) {
 	vector<AstNode*> vec;
 	int j = 0;
@@ -98,6 +105,7 @@ AstNode *bind(const SemanticValues &sv) {
 	return new Block(vec, j);
 }
 
+//function definition node
 AstNode *funDef(const SemanticValues &sv) {
 	vector<AstNode*> vars;
 	AstNode* block;
@@ -109,6 +117,7 @@ AstNode *funDef(const SemanticValues &sv) {
 
 }
 
+//function call node
 AstNode *funCall(const SemanticValues &sv) {
 	AstNode* ref = sv[0].get<ParseTreeNode>().get();
 	vector<AstNode*> vars;
@@ -122,6 +131,7 @@ AstNode *funCall(const SemanticValues &sv) {
 	
 }
 
+//parse information for smurf
 void setup_ast_generation(parser &parser) {
 
 	parser["vDec"] = [](const SemanticValues &sv) {
@@ -178,7 +188,6 @@ void setup_ast_generation(parser &parser) {
 		return ParseTreeNode(new OpNode(sv.str()));
 	};
 
-
 	parser["block"] = [](const SemanticValues &sv) {
 		AstNode *n = bind(sv);
 		return ParseTreeNode(n);
@@ -213,16 +222,16 @@ int main(int argc, const char **argv) {
 		return 1;
 	}
 
+	//create parser with parsing information and grammar
 	parser parser(grammar);
 	setup_ast_generation(parser);
 
-	ParseTreeNode val = ParseTreeNode();
-	
+	//read in file
 	ifstream ifs;
-	
 	ifs.open(argv[1]);
 	string toSend = "";
 	string toParse = "";
+	//remove comments and new lines
 	if (ifs.is_open()) {
 		while (getline(ifs, toParse)) {
 			int i = 0;
@@ -234,7 +243,9 @@ int main(int argc, const char **argv) {
 		}
 	}
 
+	//parse code from file
 	const char* expr = toSend.c_str();
+	ParseTreeNode val = ParseTreeNode();
 	if (!parser.parse(expr, val)) {
 		cout << "syntax error..." << endl;
 	}
