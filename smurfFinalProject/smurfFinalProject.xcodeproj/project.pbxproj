@@ -30,7 +30,6 @@
 		FB5BCC16237B685B00439CEF /* smurfFinalProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = smurfFinalProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB5BCC19237B685B00439CEF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		FB5BCC21237B68E300439CEF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
-		FB5BCC29237B68E400439CEF /* peglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = peglib.h; sourceTree = SOURCE_ROOT; };
 		FB5BCC2D237B70F500439CEF /* ast.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ast.cpp; sourceTree = "<group>"; };
 		FB5BCC2E237B70F500439CEF /* ast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ast.hpp; sourceTree = "<group>"; };
 		FB5BCC3C237C64B600439CEF /* test_cases */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test_cases; sourceTree = SOURCE_ROOT; };
@@ -40,6 +39,7 @@
 		FB6E0C752386274400CD285C /* interpreter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = interpreter.hpp; sourceTree = "<group>"; };
 		FB6E0C7723862CE700CD285C /* visitor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = visitor.cpp; sourceTree = "<group>"; };
 		FB6E0C7823862CE700CD285C /* visitor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = visitor.hpp; sourceTree = "<group>"; };
+		FB6E0C7D2396CA9100CD285C /* peglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = peglib.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 				FB5BCC2E237B70F500439CEF /* ast.hpp */,
 				FB6E0C712384DD7700CD285C /* node.cpp */,
 				FB6E0C722384DD7700CD285C /* node.hpp */,
-				FB5BCC29237B68E400439CEF /* peglib.h */,
+				FB6E0C7D2396CA9100CD285C /* peglib.h */,
 				FB5BCC21237B68E300439CEF /* README.md */,
 			);
 			path = smurfFinalProject;

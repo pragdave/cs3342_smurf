@@ -38,7 +38,7 @@ binopNode::binopNode(node* l, string op, node* r){
 }
 
 string binopNode::str(){
-    return '(' + left->str()+ operation + right->str() + ')';
+    return "(" + left->str()+ operation + right->str() + ")";
 }
 
 int binopNode::accept(visitor *visitorx){

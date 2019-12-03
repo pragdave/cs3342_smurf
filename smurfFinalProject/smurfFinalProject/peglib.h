@@ -1,4 +1,4 @@
-﻿//
+//
 //  peglib.h
 //
 //  Copyright (c) 2015-18 Yuji Hirose. All rights reserved.
