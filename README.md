@@ -17,9 +17,9 @@ it would be blue).
 
 **Fill this in before submitting your final pull request**
 
-Name:
+Name: Taylor Slaton
 
-SMU ID:
+SMU ID: 45341716
 
 ##### Grading criteria (see [Grading](#grading) below):
 
