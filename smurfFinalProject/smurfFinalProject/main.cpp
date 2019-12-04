@@ -81,7 +81,8 @@ void setup_ast_generation(parser &parser)
         return ParseTreeNode(n);
     };
     
-    parser["number"] = [](const SemanticValues &sv) {
+    parser["integer"] = [](const SemanticValues &sv) {
+        cout << "in number: " << sv.str() << endl;
         return ParseTreeNode(new intNode(atoi(sv.c_str())));
     };
 }
@@ -169,13 +170,14 @@ int main(int argc, const char **argv) {
     setup_ast_generation(parser);
     
     auto expr = argv[1];
+    cout<< "EXPR:" << expr <<endl;
     ParseTreeNode val = ParseTreeNode();
     if (parser.parse(expr, val))
     {
         cout << val.to_string() << " = " << val.get()->accept(new interpreter()) << endl;
         return 0;
     }
-    
+    /*
     parser["integer"] = [](const SemanticValues& sv) {
         int x = stoi(sv.str());
         cout<<"X: "<<x<<endl;
@@ -183,6 +185,7 @@ int main(int argc, const char **argv) {
         cout<<"Here"<<endl;
         return returnNode;
     };
+     */
     
     
     cout<<"Val: "<<&val<<endl;
