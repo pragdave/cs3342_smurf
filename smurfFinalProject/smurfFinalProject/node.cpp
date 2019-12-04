@@ -58,6 +58,18 @@ string operationNode::str(){
     return operation;
 }
 
+//identifier node
+identifierNode::identifierNode(string id){
+    identifier = id;
+}
+
+int identifierNode::accept(visitor *visitorx){
+    return 0;
+}
+
+string identifierNode::str(){
+    return identifier;
+}
 
 
 

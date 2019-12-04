@@ -20,8 +20,10 @@ using namespace std;
 
 auto grammar = R"(
     expr        <-  term ( add_op term )*
+    identifier  <-  ['a'-'z']['a'-'z''A'-'Z'0-9]*   //identifier and assignment are not working properly...need to find out why 
+    assignment  <-  identifier '=' expr
     term        <-  primary ( mul_op  primary )*
-    primary     <-  integer / '('  expr ')' 
+    primary     <-  integer / '('  expr ')'
     add_op      <-  '+' / '-'
     mul_op      <-  '*' / '/'
     integer     <- < '-'? [0-9]+ >
@@ -38,16 +40,19 @@ public:
     ParseTreeNode(){};
     ParseTreeNode(node *content_node)
     {
+        cout<<"parsing tree node"<<endl;
         content = content_node;
     }
     
     node *get() const
     {
+        cout<<"getting info"<<endl;
         return content;
     }
     
     string to_string()
     {
+        cout<<"making string"<<endl;
         return content->str();
     }
 };
@@ -65,6 +70,11 @@ node *bin_op(const SemanticValues &sv)
     return left;
 };
 
+node *assign(const SemanticValues &sv) {
+    node *identifier = sv[0].get<ParseTreeNode>().get();
+    return identifier;
+};
+
 void setup_ast_generation(parser &parser)
 {
     parser["expr"] = [](const SemanticValues &sv) {
@@ -73,11 +83,23 @@ void setup_ast_generation(parser &parser)
         return ParseTreeNode(n);
     };
     
+    parser["identifier"] = [](const SemanticValues &sv){
+        //cout << "id: "<< sv.str() << endl;
+        return ParseTreeNode(new identifierNode(sv.str()));
+    };
+    
+    parser["assignment"] = [](const SemanticValues &sv) {
+        node *n = assign(sv);
+        return ParseTreeNode(n);
+    };
+    
     parser["add_op"] = [](const SemanticValues &sv) {
+        //cout << "add/sub: " << sv.str() << endl;
         return ParseTreeNode(new operationNode(sv.str()));
     };
     
     parser["mul_op"] = [](const SemanticValues &sv) {
+        //cout << "mul/div: " << sv.str() << endl;
         return ParseTreeNode(new operationNode(sv.str()));
     };
     
@@ -87,9 +109,10 @@ void setup_ast_generation(parser &parser)
     };
     
     parser["integer"] = [](const SemanticValues &sv) {
-        cout << "in number: " << sv.str() << endl;
+        //cout << "in number: " << sv.str() << endl;
         return ParseTreeNode(new intNode(atoi(sv.c_str())));
     };
+    
 }
 
 int main(int argc, const char **argv) {
@@ -118,8 +141,6 @@ int main(int argc, const char **argv) {
     
     cout << "syntax error..." << endl;
     return -1;
-    
-    
     
     
     /* program     <- code EOF

@@ -52,7 +52,14 @@ public:
     int accept(visitor*);
 };
 
-
+class identifierNode: public node {
+private:
+    string identifier;
+public:
+    identifierNode(string);
+    string str();
+    int accept(visitor*);
+};
 
 
 

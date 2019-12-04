@@ -17,3 +17,7 @@ int visitor::evaluate_integer(node *nodex, int x){
 int visitor::evaluate_binop(node *nodex, node *left, string operation, node *right){
     return 0;
 }
+
+int visitor::evalute_identifier(node *nodex, string id){
+    return 0;
+}
