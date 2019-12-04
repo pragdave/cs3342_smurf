@@ -29,8 +29,7 @@ class interpreter: public visitor {
 public:
     int evaluate_integer(node*, int);
     int evaluate_binop(node*, node*, string, node*);
-    int eval_op(int,string, int);
-    bool eval_relop(int, string, int);
+
 };
 
 

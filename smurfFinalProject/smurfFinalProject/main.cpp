@@ -19,6 +19,11 @@ using namespace peg;
 using namespace std;
 
 auto grammar = R"(
+    expr        <-  term ( add_op term )*
+    term        <-  primary ( mul_op  primary )*
+    primary     <-  integer / '('  expr ')' 
+    add_op      <-  '+' / '-'
+    mul_op      <-  '*' / '/'
     integer     <- < '-'? [0-9]+ >
     %whitespace <- [ \t]*
 )";
@@ -89,6 +94,33 @@ void setup_ast_generation(parser &parser)
 
 int main(int argc, const char **argv) {
     
+    if (argc < 2 || string("--help") == argv[1])
+    {
+        cout << "usage: parser [formula]" << endl;
+        return 1;
+    }
+    
+    parser parser(grammar);
+    setup_ast_generation(parser);
+    
+    auto expr = argv[1];
+    cout<< "EXPR:" << expr <<endl;
+    ParseTreeNode val = ParseTreeNode();
+    if (parser.parse(expr, val))
+    {
+        cout << val.to_string() << " = " << val.get()->accept(new interpreter()) << endl;
+        return 0;
+    }
+    
+    
+    cout<<"Val: "<<&val<<endl;
+    
+    
+    cout << "syntax error..." << endl;
+    return -1;
+    
+    
+    
     
     /* program     <- code EOF
      comment     <- '#' r'.*'
@@ -105,7 +137,6 @@ int main(int argc, const char **argv) {
      arithmetic_expression    <- mult_term addop arithmetic_expression / mult_term
      mult_term   <- primary mulop mult_term / primary
      primary     <- integer / function_call/ variable_reference/ '(' arithmetic_expression ')'
-     addop       <- '+' / '-'
      mulop       <- '*' / '/'
      relop       <- '==' / '!-' / '>=' / '>' / '<=' / '<'
      function_call <- variable_reference '(' call_arguments ')' / 'print' '(' call_arguments ')'
@@ -158,41 +189,17 @@ int main(int argc, const char **argv) {
 
     cout<<"Val 1 = "<<val1<<endl;
     //cout<<"Val 2 = "<<val2<<endl;
-    return 0; */
-    
-    if (argc < 2 || string("--help") == argv[1])
-    {
-        cout << "usage: parser [formula]" << endl;
-        return 1;
-    }
-    
-    parser parser(grammar);
-    setup_ast_generation(parser);
-    
-    auto expr = argv[1];
-    cout<< "EXPR:" << expr <<endl;
-    ParseTreeNode val = ParseTreeNode();
-    if (parser.parse(expr, val))
-    {
-        cout << val.to_string() << " = " << val.get()->accept(new interpreter()) << endl;
-        return 0;
-    }
-    /*
-    parser["integer"] = [](const SemanticValues& sv) {
-        int x = stoi(sv.str());
-        cout<<"X: "<<x<<endl;
-        intNode returnNode = *new intNode(x);
-        cout<<"Here"<<endl;
-        return returnNode;
-    };
+    return 0;
+     
+     parser["integer"] = [](const SemanticValues& sv) {
+     int x = stoi(sv.str());
+     cout<<"X: "<<x<<endl;
+     intNode returnNode = *new intNode(x);
+     cout<<"Here"<<endl;
+     return returnNode;
+     };
      */
     
-    
-    cout<<"Val: "<<&val<<endl;
-    
-    
-    cout << "syntax error..." << endl;
-    return -1;
 }
 
 

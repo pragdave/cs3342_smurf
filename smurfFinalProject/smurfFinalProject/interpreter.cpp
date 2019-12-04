@@ -16,34 +16,7 @@ int interpreter::evaluate_integer(node *nodex, int value){
 int interpreter::evaluate_binop(node *nodex, node *left, string operation, node *right){
     int lval = left->accept(this);
     int rval = right->accept(this);
-    return eval_op(lval, operation, rval);
+    return evaluateOperator[operation](lval, rval);
 }
 
-int interpreter::eval_op(int left, string operation, int right) {
-    if (operation == "+") {
-        return left + right;
-    } else if (operation == "-") {
-        return left - right;
-    } else if (operation == "*") {
-        return left * right;
-    } else if (operation == "/") {
-        return left / right;
-    } else {
-        return -1;
-    }
-}
 
-bool interpreter::eval_relop(int left, string operation, int right) {
-    if (operation == ">") {
-        return left > right;
-    } else if (operation == ">=") {
-        return left >= right;
-    } else if (operation == "<") {
-        return left < right;
-    } else if (operation == "<=") {
-        return left <= right;
-    } else {
-        //std::cout<<"Error with evaluating relation operation"<<std::endl;
-        return false;
-    }
-}
