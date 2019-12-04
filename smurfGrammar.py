@@ -17,12 +17,13 @@ def expr():                     return [("fn",function_definition),("if",if_expr
 def boolean_expression():       return arithmetic_expression, relop, arithmetic_expression
 def arithmetic_expression():    return [(mult_term,addop,arithmetic_expression),mult_term]
 def mult_term():                return [(primary,mulop,mult_term),primary]
-def primary():                  return [integer,function_call,variable_reference,("(",arithmetic_expression,")")]
+def primary():                  return [integer,print_call,function_call,variable_reference,("(",arithmetic_expression,")")]
 def integer():                  return _(r'-?[0-9]+')
 def addop():                    return ["+","-"]
 def mulop():                    return ["*","/"]
 def relop():                    return ["==","!=",">=",">","<=","<"]
-def function_call():            return [("print","(",call_arguments,")"),(variable_reference,"(",call_arguments,")")]
+def function_call():            return variable_reference,"(",call_arguments,")"
+def print_call():               return "print","(",call_arguments,")"
 def call_arguments():           return Optional(expr, ZeroOrMore(",",expr))
 def function_definition():      return param_list,brace_block
 def param_list():               return [("(",identifier, ZeroOrMore(",",identifier),")"),("(",")")]

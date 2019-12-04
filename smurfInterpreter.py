@@ -103,15 +103,6 @@ class Function_Call:
 
     def evaluate(self,binding):
         argList = self.arguments.evaluate(binding)
-        if self.name == "print":
-            printStr = "Print: "
-            for x in range(len(argList)):
-                if x > 0:
-                    printStr = printStr + "|"
-                printStr = printStr + str(argList[x])
-            print(printStr)
-            return 0;
-    
         variable = self.name.evaluate(binding)
         newBinding = Binding(variable[0].parent)
         newBinding.bindings = variable[0].bindings.copy()
@@ -120,6 +111,19 @@ class Function_Call:
             newBinding.setVariable(list(newBinding.bindings.keys())[x],argList[x])
         return function.evaluate(newBinding)
 
+class Print_Call:
+    def __init__(self,arguments):
+        self.arguments = arguments
+
+    def evaluate(self,binding):
+        argList = self.arguments.evaluate(binding)
+        printStr = "Print: "
+        for x in range(len(argList)):
+            if x > 0:
+                printStr = printStr + "|"
+            printStr = printStr + str(argList[x])
+        print(printStr)
+        return 0;
 
 class Call_Arguments:
     def __init__(self,argList):
