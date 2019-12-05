@@ -18,6 +18,6 @@ int visitor::evaluate_binop(node *nodex, node *left, string operation, node *rig
     return 0;
 }
 
-int visitor::evalute_identifier(node *nodex, string id){
+int visitor::evaluate_identifier(node *nodex, string id){
     return 0;
 }

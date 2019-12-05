@@ -21,7 +21,7 @@ class visitor {
 public:
     virtual int evaluate_integer(node*, int);
     virtual int evaluate_binop(node*, node*, string, node*);
-    virtual int evalute_identifier(node*, string);
+    virtual int evaluate_identifier(node*, string);
 };
 
 #endif /* visitor_hpp */

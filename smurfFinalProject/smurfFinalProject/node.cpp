@@ -17,6 +17,10 @@ int node::accept(visitor *visitorx){
     return 99999;
 }
 
+void node::print(string x){
+    cout<< "Printing General Node: "<< x <<endl;
+}
+
 //int node
 intNode::intNode(int x){
     val = x;
@@ -35,6 +39,9 @@ binopNode::binopNode(node* l, string op, node* r){
     left = l;
     operation = op;
     right = r;
+    string lstr = l->str();
+    string rstr = r->str();
+    print(op, lstr, rstr);
 }
 
 string binopNode::str(){
@@ -43,6 +50,10 @@ string binopNode::str(){
 
 int binopNode::accept(visitor *visitorx){
     return visitorx->evaluate_binop(this, left, operation, right);
+}
+
+void binopNode::print(string op, string l, string r){
+    cout<< "Printing BinopNode | Operation: "<<op<< " | Left: " <<l<< " | Right: "<<r<<endl;
 }
 
 //op node
@@ -64,7 +75,7 @@ identifierNode::identifierNode(string id){
 }
 
 int identifierNode::accept(visitor *visitorx){
-    return 0;
+    return visitorx->evaluate_identifier(this, identifier);
 }
 
 string identifierNode::str(){

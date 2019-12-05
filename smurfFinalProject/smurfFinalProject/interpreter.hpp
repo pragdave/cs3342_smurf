@@ -24,12 +24,19 @@ class interpreter: public visitor {
         {"+", [](int left, int right) {return left + right; }},
         {"-", [](int left, int right) {return left - right; }},
         {"*", [](int left, int right) {return left * right; }},
-        {"/", [](int left, int right) {return left / right; }}
+        {"/", [](int left, int right) {return left / right; }},
+        
+        {"==", [](int left, int right) {return left == right; }},
+        {"!=", [](int left, int right) {return left != right; }},
+        {">=", [](int left, int right) {return left >= right; }},
+        {">", [](int left, int right) {return left > right; }},
+        {"<=", [](int left, int right) {return left <= right; }},
+        {"<", [](int left, int right) {return left < right; }}
     };
 public:
     int evaluate_integer(node*, int);
     int evaluate_binop(node*, node*, string, node*);
-    int evalute_identifier(node*, string);
+    int evaluate_identifier(node*, string);
 };
 
 

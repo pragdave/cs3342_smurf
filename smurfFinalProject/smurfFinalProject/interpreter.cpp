@@ -19,7 +19,7 @@ int interpreter::evaluate_binop(node *nodex, node *left, string operation, node 
     return evaluateOperator[operation](lval, rval);
 }
 
-int interpreter::evalute_identifier(node *nodex, string id){
+int interpreter::evaluate_identifier(node *nodex, string id){
     return nodex->accept(this);
 }
 

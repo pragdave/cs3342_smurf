@@ -10,7 +10,7 @@
 #ifndef node_hpp
 #define node_hpp
 #pragma once
-
+#include <iostream>
 #include <string>
 #include "visitor.hpp"
 
@@ -20,6 +20,7 @@ class node {
 public:
     virtual string str();
     virtual int accept(visitor*);
+    virtual void print(string);
                        
 };
 
@@ -41,6 +42,7 @@ public:
     binopNode(node*, string, node*);
     string str();
     int accept(visitor*);
+    void print(string, string, string);
 };
 
 class operationNode: public node {
