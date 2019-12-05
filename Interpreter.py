@@ -1,8 +1,27 @@
 from arpeggio import PTNodeVisitor
 
+class Bindings():
+    def __init__(self, parent, binding):
+        self.parent = parent
+        self.binding = binding
+    
+    def getVal(self, identifier):
+        if self.binding[identifier]:
+            return self.binding[identifier]
+        return self.parent.getVal(identifier)
+        
+    def setVal(self, identifier, val):
+        self.binding[identifier] = val
+        
+    def setFunc(self, identifier, params, code):
+        self.binding[identifier] = [params, code]
+        
+    def __str__(self):
+        return str(self.binding)
+
 class Interpreter(PTNodeVisitor):
-    varBinding = {}
-    funcBinding = {}
+    varBinding = Bindings(None, {})
+    funcBinding = Bindings(None, {})
     
     ##############
     #Math Portion#
@@ -12,7 +31,8 @@ class Interpreter(PTNodeVisitor):
         try:
             return int(node.value)
         except ValueError:
-            return self.varBinding[node.value]
+            return self.varBinding.getVal(node.value)
+            
     def evaluate_factor(self, node):
         if node.sign == "-":
             return -1 * node.value.accept(self)
@@ -41,24 +61,24 @@ class Interpreter(PTNodeVisitor):
     ####################
     
     def evaluate_var_decl(self, node):
-        self.varBinding[node.name] = node.expr.accept(self)
+        self.varBinding.setVal(node.name, node.expr.accept(self))
         print("variable bindings: ", self.varBinding)
     
     def evaluate_var_let(self, node):
         for decl in node.list:
             if isinstance(decl, str):
-                self.varBinding[decl] = 0
+                self.varBinding.setVal(decl, 0)
             else:
-                decl.accept(self) let all work
+                decl.accept(self)
     
     def evaluate_var_decl(self, node):
-        self.binding[node.name] = node.expr.accept(self)
-        print("bindings: ", self.binding)
+        self.varBinding.setVal(node.name, node.expr.accept(self))
+        print("bindings: ", self.varBinding)
     
     def evaluate_var_let(self, node):
         for decl in node.list:
             if isinstance(decl, str):
-                self.binding[decl] = 0
+                self.varBinding.setVal(decl, 0)
             else:
                 decl.accept(self)
     
@@ -102,7 +122,7 @@ class Interpreter(PTNodeVisitor):
         return node.elseBlock.accept(self)
     
     def evaluate_fn_decl(self, node):
-        self.funcBinding[node.name] = [node.paramList, node.codeBlock]
+        self.funcBinding.setFunc(node.name, node.paramList, node.codeBlock)
         print("function bindings: ", self.funcBinding)
         
     def evaluate_fn_let(self, node):
@@ -110,17 +130,17 @@ class Interpreter(PTNodeVisitor):
             decl.accept(self)
             
     def evaluate_fn_call(self, node):
-        function = self.funcBinding[node.name]
+        function = self.funcBinding.getVal(node.name)
         parameters = function[0]
         code = function[1]
-        tempBinding = self.varBinding.copy()
+        #tempBinding = self.varBinding.copy()
         
-        index = 0
-        for param in parameters:
-            tempBinding[param] = node.paramList[index].accept(self)
-            index += 1
-        print(self.varBinding)
-        print(tempBinding)
+        #index = 0
+        #for param in parameters:
+        #    tempBinding[param] = node.paramList[index].accept(self)
+        #    index += 1
+        #print(self.varBinding)
+        #print(tempBinding)
         return code.accept(self)
     
     ####################
