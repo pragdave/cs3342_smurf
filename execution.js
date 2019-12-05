@@ -12,7 +12,7 @@ variables = {
 				}
 				printString += p;
 			});
-			console.log(printString);
+			console.log("Print: " + printString);
 		}
 	}
 };

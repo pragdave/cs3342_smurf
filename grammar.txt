@@ -72,6 +72,7 @@ brace_block = "{" _ code:code _ "}" { return code; }
 
 whitespace = [ \t\r\n]+
 line_terminator = [\r\n]
-comment = "#" (!line_terminator .)* line_terminator
+file_terminator = !.
+comment = "#" (!line_terminator .)* line_terminator / "#" (!line_terminator .)* file_terminator
 
 _ = ( whitespace / comment )*

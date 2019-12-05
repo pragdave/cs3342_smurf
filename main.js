@@ -17,7 +17,6 @@ fs.readFile("grammar.txt", "utf8", function (err, data) {
 			throw err2;
 			return;
 		}
-		console.log("hello")
 		const code = data2;
 		const ast = parser.parse(code);
 		fs.writeFile("ast.json", JSON.stringify(ast, null, "\t"), function(err) {
