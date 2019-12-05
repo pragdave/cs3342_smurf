@@ -24,6 +24,7 @@ class Mult_Term:
 class Arithmetic_Expression:
     def __init__(self, multTerm, plusAndTermList):
         self.multTerm = multTerm
+        self.plusAndTermList = plusAndTermList
     
     def accept(self, visitor):
         return visitor.evaluate_arithmetic_expression(self)

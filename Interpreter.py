@@ -13,7 +13,6 @@ class Interpreter(PTNodeVisitor):
             return int(node.value)
         except ValueError:
             return self.varBinding[node.value]
-
     def evaluate_factor(self, node):
         if node.sign == "-":
             return -1 * node.value.accept(self)
