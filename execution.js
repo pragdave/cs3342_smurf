@@ -104,7 +104,6 @@ ExecuteArithmeticExpr = function ExecuteArithmeticExpr(node) {
 	if (rightSide.type) {
 		rightSide = ExecuteNode(rightSide);
 	}
-	// TODO: fix this
 	if (typeof leftSide !== "number") {
 		leftSide = Number(leftSide);
 	}

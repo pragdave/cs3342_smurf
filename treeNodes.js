@@ -103,7 +103,6 @@ RootNode = function RootNode() {
 	this.type = "root";
 	this.statements = [];
 
-	// TODO: possibly remove this and track in execution
 	this.addStatements = function(statementArr) {
 		statementArr.forEach(node => {
 			switch(node.type) {
