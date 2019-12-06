@@ -16,15 +16,19 @@
 #include <functional>
 #include "visitor.hpp"
 #include "node.hpp"
+#include "binding.hpp"
 
 using namespace std;
 
 class interpreter: public visitor {
     map< string, function<int(int, int)>> evaluateOperator = {
+        //add_ops
         {"+", [](int left, int right) {return left + right; }},
         {"-", [](int left, int right) {return left - right; }},
+        //mul_ops
         {"*", [](int left, int right) {return left * right; }},
         {"/", [](int left, int right) {return left / right; }},
+        //rel_ops
         {"==", [](int left, int right) {return left == right; }},
         {"!=", [](int left, int right) {return left != right; }},
         {">=", [](int left, int right) {return left >= right; }},
@@ -35,7 +39,9 @@ class interpreter: public visitor {
 public:
     int evaluate_integer(node*, int);
     int evaluate_binop(node*, node*, string, node*);
-    int evaluate_identifier(node*, string);
+    int evaluate_assignment(node*, node*, node*);
+    int evaluate_variable(node*, string);
+    
 };
 
 

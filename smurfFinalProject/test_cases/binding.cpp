@@ -1,9 +1,9 @@
 //
-//  binaryop.cpp
+//  binding.cpp
 //  smurfFinalProject
 //
-//  Created by Alden Shiverick on 11/12/19.
+//  Created by Alden Shiverick on 12/6/19.
 //  Copyright © 2019 Alden Shiverick. All rights reserved.
 //
 
-#include "binaryop.hpp"
+#include "binding.hpp"

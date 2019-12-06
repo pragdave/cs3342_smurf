@@ -21,7 +21,6 @@ public:
     virtual string str();
     virtual int accept(visitor*);
     virtual void print(string);
-                       
 };
 
 class intNode: public node {
@@ -54,25 +53,28 @@ public:
     int accept(visitor*);
 };
 
-class identifierNode: public node {
+class variableNode: public node {
 private:
-    string identifier;
+    string variable;
 public:
-    identifierNode(string);
+    variableNode(string);
     string str();
     int accept(visitor*);
-    void print(string);
 };
 
 class assignmentNode: public node {
 private:
-    string identifier;
-    string expression;
+    node *left;
+    node *right;
+    string assignment;
 public:
-    assignmentNode(string, string);
+    assignmentNode(node*, node*);
     string str();
     int accept(visitor*);
+    void print(string, string);
 };
+
+
 
 
 

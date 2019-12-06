@@ -11,7 +11,9 @@
 
 #include <stdio.h>
 #include <string>
+#include "binding.hpp"
 #pragma once
+
 
 using namespace std;
 
@@ -19,9 +21,12 @@ class node;
 
 class visitor {
 public:
+    binding *bindings;
+    string variableName;
     virtual int evaluate_integer(node*, int);
     virtual int evaluate_binop(node*, node*, string, node*);
-    virtual int evaluate_identifier(node*, string);
+    virtual int evaluate_assignment(node*, node*, node*);
+    virtual int evaluate_variable(node*, string);
 };
 
 #endif /* visitor_hpp */

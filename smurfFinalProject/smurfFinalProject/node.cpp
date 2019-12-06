@@ -69,36 +69,42 @@ string operationNode::str(){
     return operation;
 }
 
-//identifier node
-identifierNode::identifierNode(string id){
-    identifier = id;
+//variable node
+variableNode::variableNode(string var){
+    variable = var;
 }
 
-int identifierNode::accept(visitor *visitorx){
-    return visitorx->evaluate_identifier(this, identifier);
+string variableNode::str(){
+    return variable;
 }
 
-string identifierNode::str(){
-    return identifier;
-}
-
-void identifierNode::print(string print){
-    cout<<"Id Node: "<<print<<endl;
+int variableNode::accept(visitor *visitorx){
+    visitorx->evaluate_variable(this, variable);
+    return 0;
 }
 
 //assignment node
-assignmentNode::assignmentNode(string id,string expr){
-    identifier = id;
-    expression = expr;
+assignmentNode::assignmentNode(node *l, node *r){
+    left = l;
+    assignment = "=";
+    right = r;
+    string lstr = l->str();
+    string rstr = r->str();
+    print(lstr, rstr);
 }
 
 string assignmentNode::str(){
-    return "(" + identifier + "=" + expression + ")";
+    return "(" + left->str()+ "=" + right->str() + ")";
 }
 
 int assignmentNode::accept(visitor *visitorx){
-    return visitorx->evaluate_identifier(this, identifier);
+    return visitorx->evaluate_assignment(this, left, right);
 }
+
+void assignmentNode::print(string l, string r) {
+    cout<<"Printing Assignment Node | Assignment: = | Left: "<<l<<" | Right: "<<r<<endl;
+}
+
 
 
 

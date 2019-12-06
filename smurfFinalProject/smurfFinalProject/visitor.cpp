@@ -13,11 +13,14 @@ int visitor::evaluate_integer(node *nodex, int x){
     return 0;
 }
 
-
 int visitor::evaluate_binop(node *nodex, node *left, string operation, node *right){
     return 0;
 }
 
-int visitor::evaluate_identifier(node *nodex, string id){
+int visitor::evaluate_assignment(node *nodex, node *left, node *right){
+    return 0;
+}
+
+int visitor::evaluate_variable(node *nodex, string x){
     return 0;
 }

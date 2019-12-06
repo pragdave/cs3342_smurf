@@ -16,38 +16,29 @@
 #include "node.hpp"
 #include "interpreter.hpp"
 
-
 using namespace peg;
 using namespace std;
 
-
-
 auto grammar = R"(
     program                 <-  (print_statement / expr)+
-    print_statement         <-  'print('expr')'
+    print_statement         <-  'print(' expr ')'
+    statement               <-  'let' variable_declaration / assignment / expr
     expr                    <-  boolean_expression / arithmetic_expression
     boolean_expression      <-  arithmetic_expression rel_op arithmetic_expression
     arithmetic_expression   <-  mult_term add_op arithmetic_expression / mult_term
     mult_term               <-  primary mul_op mult_term / primary
+    variable_declaration    <-  decl (',' decl)*
+    decl                    <-  identifier ('=' expr)?
     primary                 <-  integer / '(' arithmetic_expression ')'
-    identifier              <-  < ['a'-'z']['a'-'z''A'-'Z'0-9]* >
+    assignment              <-  identifier '=' expr
     variable_reference      <-  identifier
+    identifier              <-  < ['a'-'z']['a'-'z''A'-'Z'0-9]* >
     integer                 <-  < '-'? [0-9]+ >
     add_op                  <-  < '+' / '-' >
     mul_op                  <-  < '*' / '/' >
     rel_op                  <-  < '==' / '!=' / '>=' / '>' / '<=' / '<' >
-    _                       <-  [ \t\r\n]*
-    %whitespace             <-  [ \t\r\n]*
+    %whitespace             <- ([ \t\r\n])*
 )";
-//    primary                 <-  integer / '(' arithmetic_expression ')'
-
-
-//%whitespace             <-  [ \t\r\n]*
-
-//statement               <-  assignment / expr
-//comment                 <-  '#' r'.*'
-//decl                    <-  identifier ('=' expr)?
-//assignment              <-  identifier '=' expr
 
 class visitor;
 
@@ -92,14 +83,13 @@ node *bin_op(const SemanticValues &sv)
 
 void setup_ast_generation(parser &parser)
 {
-    
-    cout<<"first hi"<<endl;
-    parser["identifier"] = [](const SemanticValues &sv) {
-        return ParseTreeNode(new identifierNode(sv.str()));
+    parser["assignment"] = [](const SemanticValues &sv) {
+        node *n = bin_op(sv);
+        return ParseTreeNode(n);
     };
-    
-    parser["variable_reference"] = [](const SemanticValues &sv) {
-        return ParseTreeNode(new identifierNode(sv.str()));
+                                                
+    parser["identifier"] = [](const SemanticValues &sv) {
+        return ParseTreeNode(new variableNode(sv.str()));
     };
     
     parser["expr"] = [](const SemanticValues &sv) {
@@ -124,13 +114,6 @@ void setup_ast_generation(parser &parser)
         node *n = bin_op(sv);
         return ParseTreeNode(n);
     };
-    
-    /*
-    parser["primary"] = [](const SemanticValues &sv) {
-        //what does primary need to return??? It can be int / function call / variable reference / arithmetic expression
-        return sv[0];
-    };
-     */
     
     parser["integer"] = [](const SemanticValues &sv) {
         //cout << "in number: " << sv.str() << endl;
@@ -169,18 +152,18 @@ int main(int argc, const char **argv) {
     ParseTreeNode val = ParseTreeNode();
     if (parser.parse(expr, val))
     {
+        visitor *interpret = new interpreter();
+        interpret->bindings = new binding();
+        
         cout << "Val that is being parsed: "<< val.to_string() << endl;
-        cout << val.to_string() << " = " << val.get()->accept(new interpreter()) << endl;
+        cout << val.to_string() << " = " << val.get()->accept(interpret) << endl;
         return 0;
     }
     
-    
     cout<<"Val: "<<&val<<endl;
-    
     
     cout << "syntax error..." << endl;
     return -1;
-    
     
     //identifier  <-  ['a'-'z']['a'-'z''A'-'Z'0-9]*   //identifier and assignment are not working properly...need to find out why
     //assignment  <-  identifier '=' expr
