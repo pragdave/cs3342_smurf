@@ -18,22 +18,36 @@
 
 using namespace peg;
 using namespace std;
+/*
+ //    program                 <-  (print_statement / expr)+
+ //    print_statement         <-  'print(' expr ')'
+
+ */
 
 auto grammar = R"(
     expr                    <-  boolean_expression / arithmetic_expression
     boolean_expression      <-  arithmetic_expression rel_op arithmetic_expression
     arithmetic_expression   <-  mult_term add_op arithmetic_expression / mult_term
     mult_term               <-  primary mul_op mult_term / primary
-    primary                 <-  integer /  variable_reference / '(' arithmetic_expression ')'
-    assignment              <-  identifier '=' expr
+    primary                 <-  integer / '(' arithmetic_expression ')'
+    identifier              <-  < ['a'-'z']['a'-'z''A'-'Z'0-9]* >
     variable_reference      <-  identifier
-    add_op                  <-  '+' / '-'
-    mul_op                  <-  '*' / '/'
-    rel_op                  <-  '==' / '!=' / '>=' / '>' / '<=' / '<'
-    integer                 <-  < '-'? [0-9]+ >
-    identifier              <-  ['a'-'z']['a'-'z''A'-'Z'_ 0-9]*
-    %whitespace             <-  [ \t]*
+    integer                 <-  < '-'? [0-9]+ > _
+    add_op                  <-  < '+' / '-' >
+    mul_op                  <-  < '*' / '/' >
+    rel_op                  <-  < '==' / '!=' / '>=' / '>' / '<=' / '<' >
+    _                       <-  [ \t\r\n]*
+    %whitespace             <-  [ \t\r\n]*
 )";
+//    primary                 <-  integer / '(' arithmetic_expression ')'
+
+
+//%whitespace             <-  [ \t\r\n]*
+
+//statement               <-  assignment / expr
+//comment                 <-  '#' r'.*'
+//decl                    <-  identifier ('=' expr)?
+//assignment              <-  identifier '=' expr
 
 class visitor;
 
@@ -45,19 +59,20 @@ public:
     ParseTreeNode(){};
     ParseTreeNode(node *content_node)
     {
-        //cout<<"parsing tree node"<<endl;
+        cout<<"parsing tree node"<<endl;
         content = content_node;
+        
     }
     
     node *get() const
     {
-        //cout<<"getting info"<<endl;
+        cout<<"getting info"<<endl;
         return content;
     }
     
     string to_string()
     {
-        //cout<<"making string"<<endl;
+        cout<<"making string"<<endl;
         return content->str();
     }
 };
@@ -75,25 +90,52 @@ node *bin_op(const SemanticValues &sv)
     return left;
 };
 
-node *assign(const SemanticValues &sv) {
-    node *identifier = sv[0].get<ParseTreeNode>().get();
-    return identifier;
-};
-
 void setup_ast_generation(parser &parser)
 {
-    cout<<"hi"<<endl;
-    parser["boolean_expression"] = [](const SemanticValues &sv) {
+    
+    cout<<"first hi"<<endl;
+    parser["identifier"] = [](const SemanticValues &sv) {
+        return ParseTreeNode(new identifierNode(sv.str()));
+    };
+    
+    parser["variable_reference"] = [](const SemanticValues &sv) {
+        return ParseTreeNode(new identifierNode(sv.str()));
+    };
+    
+    parser["expr"] = [](const SemanticValues &sv) {
         cout << "expr: " << sv.str() << endl;
         node *n = bin_op(sv);
         return ParseTreeNode(n);
     };
-    cout<<"second hi"<<endl;
     
-    parser["identifier"] = [](const SemanticValues &sv){
-        return ParseTreeNode(new identifierNode(sv.str()));
+    parser["arithmetic_expression"] = [](const SemanticValues &sv) {
+        cout << "arithmetic_expression: " << sv.str() << endl;
+        node *n = bin_op(sv);
+        return ParseTreeNode(n);
     };
-    cout<<"third hi"<<endl;
+    
+    parser["boolean_expression"] = [](const SemanticValues &sv) {
+        cout << "boolean_expression: " << sv.str() << endl;
+        node *n = bin_op(sv);
+        return ParseTreeNode(n);
+    };
+    
+    parser["mult_term"] = [](const SemanticValues &sv) {
+        node *n = bin_op(sv);
+        return ParseTreeNode(n);
+    };
+    
+    /*
+    parser["primary"] = [](const SemanticValues &sv) {
+        //what does primary need to return??? It can be int / function call / variable reference / arithmetic expression
+        return sv[0];
+    };
+     */
+    
+    parser["integer"] = [](const SemanticValues &sv) {
+        cout << "in number: " << sv.str() << endl;
+        return ParseTreeNode(new intNode(atoi(sv.c_str())));
+    };
     
     parser["add_op"] = [](const SemanticValues &sv) {
         //cout << "add/sub: " << sv.str() << endl;
@@ -106,20 +148,9 @@ void setup_ast_generation(parser &parser)
     };
     
     parser["rel_op"] = [](const SemanticValues &sv) {
-        //cout << "relationop: " << sv.str() << endl;
+        cout << "relationop: " << sv.str() << endl;
         return ParseTreeNode(new operationNode(sv.str()));
     };
-    
-    parser["term"] = [](const SemanticValues &sv) {
-        node *n = bin_op(sv);
-        return ParseTreeNode(n);
-    };
-    
-    parser["integer"] = [](const SemanticValues &sv) {
-        //cout << "in number: " << sv.str() << endl;
-        return ParseTreeNode(new intNode(atoi(sv.c_str())));
-    };
-    
 }
 
 int main(int argc, const char **argv) {
@@ -132,6 +163,7 @@ int main(int argc, const char **argv) {
     
     parser parser(grammar);
     setup_ast_generation(parser);
+    
     
     auto expr = argv[1];
     cout<< "EXPR:" << expr <<endl;

@@ -25,7 +25,6 @@ class interpreter: public visitor {
         {"-", [](int left, int right) {return left - right; }},
         {"*", [](int left, int right) {return left * right; }},
         {"/", [](int left, int right) {return left / right; }},
-        
         {"==", [](int left, int right) {return left == right; }},
         {"!=", [](int left, int right) {return left != right; }},
         {">=", [](int left, int right) {return left >= right; }},

@@ -82,6 +82,23 @@ string identifierNode::str(){
     return identifier;
 }
 
+void identifierNode::print(string print){
+    cout<<"Id Node: "<<print<<endl;
+}
+
+//assignment node
+assignmentNode::assignmentNode(string id,string expr){
+    identifier = id;
+    expression = expr;
+}
+
+string assignmentNode::str(){
+    return "(" + identifier + "=" + expression + ")";
+}
+
+int assignmentNode::accept(visitor *visitorx){
+    return visitorx->evaluate_identifier(this, identifier);
+}
 
 
 

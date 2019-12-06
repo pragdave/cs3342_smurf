@@ -61,8 +61,18 @@ public:
     identifierNode(string);
     string str();
     int accept(visitor*);
+    void print(string);
 };
 
+class assignmentNode: public node {
+private:
+    string identifier;
+    string expression;
+public:
+    assignmentNode(string, string);
+    string str();
+    int accept(visitor*);
+};
 
 
 
