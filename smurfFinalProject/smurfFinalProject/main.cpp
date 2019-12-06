@@ -9,6 +9,7 @@
 #include "peglib.h"
 #include <assert.h>
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 
 #include "visitor.hpp"
@@ -18,13 +19,12 @@
 
 using namespace peg;
 using namespace std;
-/*
- //    program                 <-  (print_statement / expr)+
- //    print_statement         <-  'print(' expr ')'
 
- */
+
 
 auto grammar = R"(
+    program                 <-  (print_statement / expr)+
+    print_statement         <-  'print('expr')'
     expr                    <-  boolean_expression / arithmetic_expression
     boolean_expression      <-  arithmetic_expression rel_op arithmetic_expression
     arithmetic_expression   <-  mult_term add_op arithmetic_expression / mult_term
@@ -32,7 +32,7 @@ auto grammar = R"(
     primary                 <-  integer / '(' arithmetic_expression ')'
     identifier              <-  < ['a'-'z']['a'-'z''A'-'Z'0-9]* >
     variable_reference      <-  identifier
-    integer                 <-  < '-'? [0-9]+ > _
+    integer                 <-  < '-'? [0-9]+ >
     add_op                  <-  < '+' / '-' >
     mul_op                  <-  < '*' / '/' >
     rel_op                  <-  < '==' / '!=' / '>=' / '>' / '<=' / '<' >
@@ -59,20 +59,20 @@ public:
     ParseTreeNode(){};
     ParseTreeNode(node *content_node)
     {
-        cout<<"parsing tree node"<<endl;
+        //cout<<"parsing tree node"<<endl;
         content = content_node;
         
     }
     
     node *get() const
     {
-        cout<<"getting info"<<endl;
+        //cout<<"getting info"<<endl;
         return content;
     }
     
     string to_string()
     {
-        cout<<"making string"<<endl;
+        //cout<<"making string"<<endl;
         return content->str();
     }
 };
@@ -103,19 +103,19 @@ void setup_ast_generation(parser &parser)
     };
     
     parser["expr"] = [](const SemanticValues &sv) {
-        cout << "expr: " << sv.str() << endl;
+        //cout << "expr: " << sv.str() << endl;
         node *n = bin_op(sv);
         return ParseTreeNode(n);
     };
     
     parser["arithmetic_expression"] = [](const SemanticValues &sv) {
-        cout << "arithmetic_expression: " << sv.str() << endl;
+        //cout << "arithmetic_expression: " << sv.str() << endl;
         node *n = bin_op(sv);
         return ParseTreeNode(n);
     };
     
     parser["boolean_expression"] = [](const SemanticValues &sv) {
-        cout << "boolean_expression: " << sv.str() << endl;
+        //cout << "boolean_expression: " << sv.str() << endl;
         node *n = bin_op(sv);
         return ParseTreeNode(n);
     };
@@ -133,7 +133,7 @@ void setup_ast_generation(parser &parser)
      */
     
     parser["integer"] = [](const SemanticValues &sv) {
-        cout << "in number: " << sv.str() << endl;
+        //cout << "in number: " << sv.str() << endl;
         return ParseTreeNode(new intNode(atoi(sv.c_str())));
     };
     
@@ -148,7 +148,7 @@ void setup_ast_generation(parser &parser)
     };
     
     parser["rel_op"] = [](const SemanticValues &sv) {
-        cout << "relationop: " << sv.str() << endl;
+        //cout << "relationop: " << sv.str() << endl;
         return ParseTreeNode(new operationNode(sv.str()));
     };
 }
@@ -163,7 +163,6 @@ int main(int argc, const char **argv) {
     
     parser parser(grammar);
     setup_ast_generation(parser);
-    
     
     auto expr = argv[1];
     cout<< "EXPR:" << expr <<endl;
