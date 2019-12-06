@@ -11,12 +11,12 @@ Revision history
 Submission Checklist
 Fill this in before submitting your final pull request
 
-Name:
+Name: Patrick DeVries
 
-SMU ID:
+SMU ID: 47381598
 
 Grading criteria (see Grading below):
-[ ] test-based
+[X] test-based
 
 [ ] feature based
 
@@ -30,12 +30,12 @@ Function calls (no params)	[ ]	[ ]	[ ]
 Function calls + bindings	[ ]	[ ]	[ ]
 I've included in this PR:
 
-[ ] everything I'll need to build a running version of your submission (source, dependency loading, etc)
+[X] everything I'll need to build a running version of your submission (source, dependency loading, etc)
+  Just python and Arpeggio
+[X] a build file that will create an executable (if required)
 
-[ ] a build file that will create an executable (if required)
-
-[ ] a script that will run the tests (if you're making a test-based submission)
-
+[X] a script that will run the tests (if you're making a test-based submission)
+  'python ../test_runner.py "python ../parser.py"' will run all tests from inside the test_cases folder
 (see Deliverables for more details)
 
 Your Task
