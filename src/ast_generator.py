@@ -76,17 +76,13 @@ class VisitorClass(PTNodeVisitor):
       return IfExprNode(children[0], children[1], children[2])
 
   def visit_param_list(self, node, children):
-    params = []
-    for child in children:
-      params.append(VariableNode(child))
+    params = [VariableNode(child) for child in children]
     return params
 
   def visit_call_arguments(self, node, children):
     if self.debug:
       print(f"visit call: {children}")
-    args = []
-    for child in children:
-      args.append(child)
+    args = [child for child in children]
     return args
 
   def visit_boolean_expr(self, node, children):
