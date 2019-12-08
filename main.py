@@ -1,11 +1,14 @@
 from arpeggio import ParserPython
-from test_grammar import *
+from Grammar import *
+from AstVisitor import *
 
 
 code = """
-  1+1
+  -1
 """
 
 parser = ParserPython(arithemtic_expression)
 parse_tree = parser.parse(code)
-print(parse_tree)
+ast = visit_parse_tree(parse_tree, AstVistor(debug=False))
+print(ast)
+
