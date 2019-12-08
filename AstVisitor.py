@@ -29,8 +29,8 @@ class AstVistor(PTNodeVisitor):
         else:
             return children[0]
     
-    def visit_primary(self ,node, children):
-        return children[0]
+    # def visit_primary(self ,node, children):
+    #     return children[0]
 
     def visit_integer(self, node, children):
         return IntegerNode(int(node.value))
