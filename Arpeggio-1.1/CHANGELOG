@@ -1,0 +1,68 @@
+Changelog for Arpeggio
+======================
+
+* 2015-08-27 Release 1.1
+  - Reworking NoMatch exception handling code.
+  - Some optimization tweaks. Removed unnecessary exception handling.
+  - Improved debug printings.
+  - Fix in ordered choice with optional matches (issue #20)
+  - Fixing parser invalid state after handling non-string inputs
+    (thanks Santi Villalba - sdvillal@github)
+  - Some fixes in conversion to utf-8 encoding.
+  - Various improvements and additions to the tests.
+
+* 2015-04-14 Release 1.0
+  - Functionally identical to v0.10. It is just the time to go
+    production-stable ;)
+
+* 2015-02-10 Release 0.10
+  - Documentation - http://arpeggio.readthedocs.org/en/latest/
+  - autokwd parser parameter. Match on word boundaries for keyword-like
+    string matches.
+  - skipws and ws parameters for Sequence.
+  - Improvements in error reporting.
+
+* 2014-10-16 Release 0.9
+  - Visitor pattern support for semantic analysis - issue 15
+  - Alternative PEG syntax (arpeggio.cleanpeg module) - issue 11
+  - Support for unicode in grammars.
+  - Python 2/3 compatibility for unicodes.
+
+* 2014-09-20 Release 0.8
+
+  - Support for eolterm modifier in repetitions.
+  - Support for custom regex match string representation.
+  - Various bugfixes.
+  - Improved debug messages.
+
+* 2014-08-16 Release 0.7
+
+  - Parse tree navigation
+  - Better semantic action debugging output.
+  - Tests reorganization and cleanup.
+  - Examples cleanup.
+  - Reference resolving unification in parser constructions.
+  - Default semantic actions and automatic terminal suppressing during semantic analysis.
+  - PEG language support refactoring and code cleaning.
+
+* 2014-06-06  Release 0.6
+
+  - Support for Python 3 (issue #7)
+  - Matched rules available as attributes of non-terminals (issue #2)
+  - Lexical rules support (issue #6). Implemented as Combine decorator.
+
+* 2014-02-02 Release 0.5
+
+  - Bugfixes
+  - Examples
+  - Parse tree reduction for one-child non-terminals.
+
+* 2009-09-15 - Initial release (v0.1-dev)
+
+  - Basic error reporting.
+  - Basic support for comments handling (needs refactoring)
+  - Raw parse tree.
+  - Support for semantic actions with abbility to transform parse 
+      tree to semantic representation - aka Abstract Semantic Graphs (see examples).
+
+
