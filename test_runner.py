@@ -10,7 +10,7 @@ def get_expected(path):
   return [ v for _,v in re.findall(r'(#=>\s*)(.+)', content, re.M) ]
 
 def normalize(output):
-  return [ v for _,v in re.findall(r'(Print:\s*)(.+)\r\n', output, re.M) ]
+  return [ v for _,v in re.findall(r'(Print:\s*)(.+)\r?\n', output, re.M) ]
 
 def compare(stdout, expected):
   output = normalize(stdout)
