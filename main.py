@@ -9,5 +9,5 @@ code = """
 parser = ParserPython(arithemtic_expression)
 parse_tree = parser.parse(code)
 ast = visit_parse_tree(parse_tree, AstVistor(debug=True))
-print(ast.evaluate())
+ast.evaluate()
 
