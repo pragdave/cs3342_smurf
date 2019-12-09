@@ -6,15 +6,15 @@ class ASTGenerator(PTNodeVisitor):
     #Math Portion#
     ##############
     def visit_number(self, node, children):
-        return nodes.Number(node.value)
+        if len(children) == 1:
+            return nodes.Number(children[0], "none")
+        return nodes.Number(children[1], "-")
+            
+    def visit_var_ref(self, node, children):
+        return nodes.Var_Ref(node.value)
     
     def visit_factor(self, node, children):
-        if len(children) == 1:
-            return nodes.Factor(children[0], "none")
-        if children[0] == '-':
-            return nodes.Factor(children[1], "-")
-        else:
-            return nodes.Factor(children[1], "+")
+        return nodes.Factor(children[0])
         
     def visit_mult_term(self, node, children):
         return nodes.Mult_Term(children[0], children[1:])
@@ -34,7 +34,9 @@ class ASTGenerator(PTNodeVisitor):
         
     def visit_boolean_expression(self, node, children):
         if len(children) == 1:
-            return nodes.Number(children[0])
+            return nodes.Number(children[0], "none")
+        elif len(children) == 2:
+            return nodes.Number(children[1], "-")
         return nodes.Boolean_Expression(children[0], children[1], children[2])
     
     def visit_print_func(self, node, children):
