@@ -2,22 +2,6 @@ import math
 from typing import List
 from AstNodes import *
 
-bin_ops = {
-    "+": lambda l, r: l + r,
-    "-": lambda l, r: l - r,
-    "*": lambda l, r: l * r,
-    "/": lambda l, r: math.trunc(l/r)
-}
-
-rel_ops = {
-    "==": lambda l, r: l == r,
-    "!=": lambda l, r: l != r,
-    ">=": lambda l, r: l >= r,
-    ">": lambda l, r: l > r,
-    "<=": lambda l, r: l <= r,
-    "<": lambda l, r: l < r
-}
-
 class Binding:
     def __init__(self, outer=None):
         self.bindings = {}
@@ -41,6 +25,8 @@ class Binding:
 
         raise Exception(f"Variable '{name}' is not defined")
 
+
+#Interpreter class for Smurf
 class Interpreter:
     def __init__(self):
         self.binding = Binding()
@@ -59,11 +45,9 @@ class Interpreter:
 
     def evaluate_declaration(self, node):
         self.binding.set_variable(node.name, node.expression.accept(self))
-        print("variable bindings: ", self.binding.bindings)
 
     def evaluate_simple_declaration(self, node):
         self.binding.set_variable(node.name, None)
-        print("variable bindings: ", self.binding.bindings)
 
     def evaluate_variable_reference(self, node):
         return self.binding.get_variable_value(node.name)
@@ -86,12 +70,12 @@ class Interpreter:
     def evaluate_rel_op(self, node):
         left = node.left.accept(self)
         right = node.right.accept(self)
-        return rel_ops[node.op](left, right)
+        return node.rel_ops[node.op](left, right)
 
     def evaluate_bin_op(self, node):
         left = node.left.accept(self)
         right = node.right.accept(self)
-        return bin_ops[node.op](left, right)
+        return node.bin_ops[node.op](left, right)
 
     def evaluate_integer(self, node):
         try:
@@ -100,14 +84,13 @@ class Interpreter:
             return self.binding.get_variable_value(node.value)
 
     def evaluate_function_call(self, node):
-        print(node.args)
         arg_values = [
             arg.accept(self) for arg in node.args
         ]
         thunk = self.binding.get_variable_value(node.name)
         return thunk.accept(self, arg_values)
 
-    def evaluate_print_func(self, node):
+    def evaluate_print_function(self, node):
         lists = node.listOfLists[0]
         printLine = "Print: "
         for expr in lists:
@@ -117,8 +100,8 @@ class Interpreter:
         print(printLine)
         return printLine
 
-    def evaluate_function_def(self, node):
-        return Thunk(node.params, node.body, self.binding)
+    def evaluate_function_definition(self, node):
+        return ThunkNode(node.params, node.body, self.binding)
 
     def evaluate_thunk(self, node, args):       
         temp = self.binding
@@ -127,7 +110,6 @@ class Interpreter:
        
         for formal, actual in zip(node.formal_params, args):
             self.binding.set_variable(formal.name, actual)
-        print(f"hoooo {node.defining_binding.bindings}")
         
         result = node.body.accept(self)
         

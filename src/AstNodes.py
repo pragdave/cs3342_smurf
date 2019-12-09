@@ -2,7 +2,7 @@ import math
 from dataclasses import dataclass
 from typing import List
 
-
+#This file contains all the defintions for the AST Nodes
 def binop_list(children):
     child = children[0]
     length = len(children)
@@ -10,38 +10,28 @@ def binop_list(children):
     while offset < length:
         op = children[offset]
         right = children[offset + 1]
-        child = BinOp(child, op, right)
+        child = BinOpNode(child, op, right)
         offset += 2
-    return child    
-
-def relop_list(children):
-    child = children[0]
-    length = len(children)
-    offset = 1
-    while offset < length:
-        op = children[offset]
-        right = children[offset + 1]
-        child = RelOp(child, op, right)
-        offset += 2
-    return child    
+    return child  
 
 
-
-class Code():
+class CodeNode():
     def __init__(self, expr):
         self.expressions = expr
 
     def accept(self, visitor):
         return visitor.evaluate_code(self)
 
-class VariableDeclaration():
+
+class VariableDeclarationNode():
     def __init__(self, vars):
         self.vars = vars
 
     def accept(self, visitor):
         return visitor.evaluate_variable_declaration(self)  
 
-class Declaration():
+
+class DeclarationNode():
     def __init__(self, name, expr):
         self.name = name
         self.expression = expr
@@ -49,21 +39,24 @@ class Declaration():
     def accept(self, visitor):
         return visitor.evaluate_declaration(self)  
 
-class SimpleDeclaration():
+
+class SimpleDeclarationNode():
     def __init__(self, name):
         self.name = name
 
     def accept(self, visitor):
-        return visitor.evaluate_simple_declaration(self)    
+        return visitor.evaluate_simple_declaration(self)   
 
-class VariableReference():
+
+class VariableReferenceNode():
     def __init__(self, name):
         self.name = name
 
     def accept(self, visitor):
         return visitor.evaluate_variable_reference(self)
 
-class If():
+
+class IfNode():
     def __init__(self, condition, then):
         self.cond = condition
         self.then_branch = then
@@ -71,7 +64,8 @@ class If():
     def accept(self, visitor):
         return visitor.evaluate_if(self)
 
-class IfElse():
+
+class IfElseNode():
     def __init__(self, condition, then, other):
         self.cond = condition
         self.then_branch = then
@@ -80,7 +74,8 @@ class IfElse():
     def accept(self, visitor):
         return visitor.evaluate_ifelse(self)
 
-class Assignment():
+
+class AssignmentNode():
     def __init__(self, name, expr):
         self.name = name
         self.expression = expr
@@ -88,7 +83,17 @@ class Assignment():
     def accept(self, visitor):
         return visitor.evaluate_assignment(self)
 
-class RelOp():
+
+class RelOpNode():
+    rel_ops = {
+        "==": lambda l, r: l == r,
+        "!=": lambda l, r: l != r,
+        ">=": lambda l, r: l >= r,
+        ">": lambda l, r: l > r,
+        "<=": lambda l, r: l <= r,
+        "<": lambda l, r: l < r
+    }
+
     def __init__(self, left, op, right):
         self.left = left
         self.op = op
@@ -97,7 +102,15 @@ class RelOp():
     def accept(self, visitor):
         return visitor.evaluate_rel_op(self)
 
-class BinOp():
+
+class BinOpNode():
+    bin_ops = {
+        "+": lambda l, r: l + r,
+        "-": lambda l, r: l - r,
+        "*": lambda l, r: l * r,
+        "/": lambda l, r: math.trunc(l/r)
+    }
+
     def __init__(self, left, op, right):
         self.left = left
         self.op = op
@@ -106,14 +119,16 @@ class BinOp():
     def accept(self, visitor):
         return visitor.evaluate_bin_op(self)
 
-class Integer():
+
+class IntegerNode():
     def __init__(self, value):
         self.value = value
 
     def accept(self, visitor):
         return visitor.evaluate_integer(self)
+
         
-class FunctionCall():
+class FunctionCallNode():
     def __init__(self, name, args = []):
         self.name = name
         if type(args) != list:
@@ -124,22 +139,25 @@ class FunctionCall():
     def accept(self, visitor):
         return visitor.evaluate_function_call(self)
 
-class PrintFunc():
+
+class PrintFunctionNode():
     def __init__(self, listOfLists):
         self.listOfLists = listOfLists
 
     def accept(self, visitor):
-        return visitor.evaluate_print_func(self)
+        return visitor.evaluate_print_function(self)
 
-class FunctionDef():
+
+class FunctionDefinitionNode():
     def __init__(self, params, body):
         self.params = params
         self.body = body
 
     def accept(self, visitor):
-        return visitor.evaluate_function_def(self)  
+        return visitor.evaluate_function_definition(self)  
 
-class Thunk():
+
+class ThunkNode():
     def __init__(self, params, body, binding):
         self.formal_params = params
         self.body = body
