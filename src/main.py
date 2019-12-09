@@ -24,7 +24,7 @@ statement
   / assignment
   / expr
 
-variable_decl 
+variable_decl
   = decl ("," decl)*
 
 decl 
@@ -99,26 +99,10 @@ brace_block
 def runGrammar(program):
   parser = ParserPEG(grammar, "program", "comment", debug=False)
   tree = parser.parse(program)
-  ast = visit_parse_tree(tree, VisitorClass(debug=True))
+  ast = visit_parse_tree(tree, VisitorClass(debug=False))
   ast.accept(Interpreter())
 
 # runGrammar("""
-# let a = 99
-# let f = fn(x) { x + a }
-
-# print(f(1))     #=> 100
-
-# # check it's a live reference
-# a = 100
-# print(f(1))     #=> 101
-
-# # check function execution creates a closure
-
-# let add_n = fn (n) { fn (x) { x + n }}
-# let add_2 = add_n(2)
-# let add_3 = add_n(3)
-# print(add_2(2))       #=> 4
-# print(add_3(10))      #=> 13
-# print(add_3(2))       #=> 5
-# print(add_2(10))      #=> 12
+# let f = fn (a) { a + 1 }
+# print(f(3))
 # """)

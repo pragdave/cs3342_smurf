@@ -23,10 +23,9 @@ class VisitorClass(PTNodeVisitor):
     return Code(children)
 
   def visit_arithmetic_expr(self, node, children):
-    return binop_list(children)
-
-  def visit_variable_value(self, node, children):
-    return VariableNode(children[0])
+    value = binop_list(children)
+    print(value)
+    return value
 
   def visit_mult_term(self, node, children):
     return binop_list(children)

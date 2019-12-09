@@ -48,6 +48,7 @@ class VariableDeclNode:
   def accept(self, visitor):
     value = None
     for decl in self.decls:
+      print(f"vnode decl: {decl}")
       value = decl.accept(visitor)
     return value
 
@@ -55,7 +56,6 @@ class VariableDeclNode:
 class FunctionCallNode:
   def __init__(self, name, args = []):
     self.name = name
-    print(f"function call node: {self.name}")
     if type(args) != list:
       self.args = [args]
     else:

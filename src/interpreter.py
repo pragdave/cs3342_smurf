@@ -14,9 +14,9 @@ class Binding:
 
   def set_variable(self, name, value):
     self.bindings[name] = value
+    return value
 
   def get_value(self, name):
-    print(self.bindings)
     if name in self.bindings:
       return self.bindings[name]
     
@@ -46,12 +46,10 @@ class Interpreter:
     return node.value
 
   def evaluate_assignment(self, node):
-    value = node.expr.accept(self)
-    self.binding.set_variable(node.name, value)
-    return value
+    return self.binding.set_variable(node.name, node.expr.accept(self))
 
   def evaluate_decl(self, node):
-    return self.binding.set_variable(node.name, node.expr.accept(self))
+    return self.binding.set_variable(node.name, None if node.expr == None else node.expr.accept(self))
 
   def evaluate_function_call(self, node):
     # evaluates all of the expressions within the call arguments for the function
@@ -67,7 +65,7 @@ class Interpreter:
       return arg_values[-1]
     else:
       thunk = self.binding.get_value(node.name)
-      return thunk.accept(self, arg_values) #===================================================
+      return thunk.accept(self, arg_values)
 
   def evaluate_function_def(self, node):
     return Thunk(node.params, node.body, self.binding)
@@ -91,7 +89,6 @@ class Interpreter:
     for formal, actual in zip(node.params, args):
       self.binding.set_variable(formal.name, actual)
 
-    
     result = node.body.accept(self)
     # sets the class's binding to what it was before the thunk was evaluated
     self.binding = temp_binding
