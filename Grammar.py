@@ -3,6 +3,7 @@ from arpeggio import RegExMatch as _
 from arpeggio.export import PMDOTExporter as PMDOTOutput
 from arpeggio.export import PTDOTExporter as PTDOTOutput
 
+def expr():                     return [arithemtic_expression],EOF
 def arithemtic_expression():    return  [(multerm, addop, arithemtic_expression),multerm]
 def multerm():                  return [(primary, mulop, multerm),primary]
 def primary():                  return [integer, ('(',arithemtic_expression,')')]

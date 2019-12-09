@@ -1,12 +1,10 @@
-from arpeggio import ParserPython
+from arpeggio import ParserPython, PTNodeVisitor, visit_parse_tree
 from Grammar import *
 from AstVisitor import *
 
-code = """
-  1+1
-"""
+code = "1*2"
 
-parser = ParserPython(arithemtic_expression)
+parser = ParserPython(expr)
 parse_tree = parser.parse(code)
 ast = visit_parse_tree(parse_tree, AstVistor(debug=True))
 ast.evaluate()
