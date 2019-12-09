@@ -75,7 +75,7 @@ def primary():
 
 
 def statement():
-    return [("let", variable_declaration), assignment, expr]
+    return [("let", variable_declaration), assignment, expr, print_smurf]
 
 def comment():
     return "#"
@@ -84,7 +84,7 @@ def brace_block():
     return "{", code, "}"
 
 def print_smurf():
-    return "print", "(", identifier, ")"
+    return "print", "(", [identifier, integer, boolean_expression, arithmetic_expression], ")"
 
 #if_expression = expr brace_block ( "else" brace_block )?
 def if_expression():

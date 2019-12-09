@@ -1,13 +1,44 @@
+class Binding:
+    def __init__(self):
+        self.bindings = {}
+    def set_variable(self, name, value):
+        print(f"Set {name} to {value}")
+        self.bindings[name] = value
+    def get_variable_value(self, name):
+        return self.bindings.get(name, 0)
 
-
-
-class Declaration:
-    def __init__(self, ident, value):
-        self.ident = ident
-        self.value = value
-    
+class Variable:
+    def __init__(self, name):
+        self.name = name
     def evaluate(self, binding):
-        return self.ident.evaluate(binding)
+        return binding.get_variable_value(self.name)
+
+
+class Code:
+    def __init__(self, expressions):
+        self.expressions = expressions
+
+    def run(self, binding):
+        value = 0
+        for exp in self.expressions:
+            value = e.run(binding)
+        return value
+
+class Assignment:
+    def __init__(self, name, expression):
+        self.name = name
+        self.expression = expression
+    def run(self, binding):
+        value = self.expression.run(binding)
+        binding.set_variable(self.name, value)
+        return value
+        
+
+class Print:
+    def __init__(self, value):
+        self.value = value
+    def run(self, binding):
+        print(value)
 
 #######
 # OPS #
@@ -19,8 +50,9 @@ class Times:
         self.rhs = rhs
     
     def evaluate(self, binding):
-        res = self.lhs.evaluate(binding) * self.rhs.evaluate(binding)
-        return res
+        left = self.lhs.evaluate(binding)
+        right = self.rhs.evaluate(binding)
+        return left*right
     
 class Divide:
     def __init__(self, lhs, rhs):
@@ -28,7 +60,9 @@ class Divide:
         self.rhs = rhs
         
     def evaluate(self, binding):
-        res = self.lhs.evaluate(binding) / self.rhs.evaluate(binding)
+        left = self.lhs.evaluate(binding)
+        right = self.rhs.evaluate(binding)
+        return left / right
     
 class Plus:
     def __init__(self, lhs, rhs):
@@ -36,8 +70,9 @@ class Plus:
         self.rhs = rhs
         
     def evaluate(self, binding):
-        res = self.lhs.evaluate(binding) + self.rhs.evaluate(binding)
-        return res
+        left = self.lhs.evaluate(binding)
+        right = self.rhs.evaluate(binding)
+        return left+right
     
 class Minus:
     def __init__(self, lhs, rhs):
