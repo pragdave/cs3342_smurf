@@ -97,7 +97,7 @@ def runSmurf(program):
     parser = ParserPEG(grammar, "program", "comment", debug = False)
     parse_tree = parser.parse(program)
     ast = visit_parse_tree(parse_tree, NodeVisitor(debug = False))
-    result = ast.accept(Interpreter())
+    ast.accept(Interpreter())
 
 # runSmurf("""
 # let a = 5, b = 4 print(a+b)
