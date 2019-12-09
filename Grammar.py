@@ -73,7 +73,7 @@ def valid_line():
 
 #Declares what types can be evaluated to a value
 def evaluatable():
-    return [fn_call, if_statement, code_block, arithmetic_expression, boolean_expression]
+    return [if_statement, arithmetic_expression, fn_call, code_block, arithmetic_expression, boolean_expression]
     
 def func_parameters():
     return "(", Optional(evaluatable), ZeroOrMore(",", evaluatable), ")"

@@ -5,7 +5,7 @@ class Bindings():
     
     def getVal(self, identifier):
         if isinstance(identifier, str):
-            if self.binding[identifier]:
+            if str(self.binding[identifier]):
                 return self.binding[identifier]
             else:
                 return self.parent.getVal(identifier)
@@ -22,6 +22,12 @@ class Bindings():
             paramsTemp.append(param.ident)
         
         self.binding[identifier] = [paramsTemp, code, bindings]
+        
+    def copy(self):
+        tempBinding = dict(self.binding)
+        
+        newBinding = Bindings(self.parent, tempBinding)
+        return newBinding
         
     def __str__(self):
         return str(self.binding)

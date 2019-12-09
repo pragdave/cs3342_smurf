@@ -40,9 +40,7 @@ class Interpreter(PTNodeVisitor):
     ####################
     
     def evaluate_var_decl(self, node, bindings):
-        
         bindings.setVal(node.name, node.expr.accept(self, bindings))
-        print("variable bindings: ", bindings)
     
     def evaluate_var_let(self, node, bindings):
         for decl in node.list:
@@ -53,7 +51,6 @@ class Interpreter(PTNodeVisitor):
     
     def evaluate_var_decl(self, node, bindings):
         bindings.setVal(node.name.ident, node.expr.accept(self, bindings))
-        #print("bindings: ", bindings)
     
     def evaluate_var_let(self, node, bindings):
         for decl in node.list:
@@ -86,13 +83,14 @@ class Interpreter(PTNodeVisitor):
             printLine += str(expr.accept(self, bindings))
             printLine += "|"
         printLine = printLine[:-1]
-        print("Print: ",printLine)
+        print("Print:",printLine)
         return printLine
         
     def evaluate_code_block(self, node, bindings):
-        lastLine = node.list.pop()
-        for line in node.list:
-            line.accept(self, bindings)
+        lastLine = node.list[-1]
+        if len(node.list) > 1:
+            for line in node.list:
+                line.accept(self, bindings)
         return lastLine.accept(self, bindings)
         
     def evaluate_if_statement(self, node, bindings):
@@ -107,21 +105,22 @@ class Interpreter(PTNodeVisitor):
             bindings.setFunc(node.name, node.paramList, node.codeBlock, newBindings)
         else:
             bindings.setFunc(node.name.ident, node.paramList, node.codeBlock, newBindings)
-        #print("bindings: ", bindings)
         
     def evaluate_fn_let(self, node, bindings):
         for decl in node.list:
             decl.accept(self, bindings)
             
     def evaluate_fn_call(self, node, bindings):
-        function = bindings.getVal(node.name)
+        bindingsTemp = bindings.copy()
+        function = bindingsTemp.getVal(node.name)
         parameters = function[0]
         code = function[1]
         index = 0
         for param in parameters:
-            bindings.setVal(param, node.paramList[index].accept(self, bindings))
+            temp = node.paramList[index].accept(self, bindings)
+            bindingsTemp.setVal(param, temp)
             index += 1
-        return code.accept(self, bindings)
+        return code.accept(self, bindingsTemp)
     
     ####################
     #Top Level Function#
