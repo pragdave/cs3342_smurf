@@ -45,6 +45,9 @@ class AstVisitor(PTNodeVisitor):
         return children[0]
 
     def visit_integer(self, node, children):
-        return IntegerNode(int(node.value))
+        if children[0] == '-':
+            return IntegerNode(-int(children[1]))
+        else: 
+            return IntegerNode(int(children[0]))
 
    
