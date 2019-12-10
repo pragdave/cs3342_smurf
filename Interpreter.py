@@ -4,7 +4,7 @@ class Binding:
         self.bindings = {}
     
     def set_variable(self, name, value):
-        print(f"{name} -> {value}")
+        print(f"{name} <- {value}")
         self.bindings[name] = value
     
     def get_variable(self, name):
