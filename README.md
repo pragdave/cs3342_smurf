@@ -17,13 +17,13 @@ it would be blue).
 
 **Fill this in before submitting your final pull request**
 
-Name:
+Name: Hayden Center
 
-SMU ID:
+SMU ID: 47725474
 
 ##### Grading criteria (see [Grading](#grading) below):
 
-[ ] test-based
+[x] test-based
 
 [ ] feature based
 
@@ -40,12 +40,12 @@ If feature based, put an X in the cell that represents the combination of syntax
 
 I've included in this PR:
 
-[ ] everything I'll need to build a running version of your submission (source,
+[x] everything I'll need to build a running version of your submission (source,
     dependency loading, etc)
 
-[ ] a build file that will create an executable (if required)
+[x] a build file that will create an executable (if required)
 
-[ ] a script that will run the tests (if you're making a test-based submission)
+[x] a script that will run the tests (if you're making a test-based submission)
 
 (see [Deliverables](#deliverables) for more details)
 
