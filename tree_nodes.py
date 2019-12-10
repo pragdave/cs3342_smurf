@@ -7,7 +7,6 @@ class Variable:
     def accept(self, visitor, binding):
         return visitor.evaluate_var_value(self, binding)
 
-
 class Code:
     def __init__(self, expressions):
         self.expressions = expressions
@@ -23,98 +22,45 @@ class Assignment:
     def accept(self, visitor, binding):
         return visitor.evaluate_assignment(self, binding)
 
-
-#######
-# OPS #
-#######
-
-class Times:
-    def __init__(self, lhs, rhs):
+class Arithmetic_Expression:
+    def __init__(self, lhs, expressions):
         self.lhs = lhs
-        self.rhs = rhs
-    
-    def accept(self, visitor, binding):
-        return visitor.evaluate_times(self, binding)
-    
-class Divide:
-    def __init__(self, lhs, rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-    
-    def accept(self, visitor, binding):
-        return visitor.evaluate_divide(self, binding)
-    
-class Plus:
-    def __init__(self, lhs, rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-    
-    def accept(self, visitor, binding):
-        return visitor.evaluate_plus(self, binding)
-    
-class Minus:
-    def __init__(self, lhs, rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-    
-    def accept(self, visitor, binding):
-        return visitor.evaluate_minus(self, binding)
-
-class Equals:
-    def __init__(self, lhs, rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-    
-    def accept(self, visitor, binding):
-        return visitor.evaluate_equals(self, binding)
+        self.expressions = expressions
         
+    def accept(self, visitor, binding):
+        return visitor.evaluate_arith_expr(self, binding)
 
-class NotEquals:
-    def __init__(self, lhs, rhs):
+class Mult_Term:
+    def __init__(self, lhs, expressions):
         self.lhs = lhs
+        self.expressions = expressions
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_mult_term(self, binding)
+    
+class Boolean_Expression:
+    def __init__(self, lhs, op, rhs):
+        self.lhs = lhs
+        self.op = op
         self.rhs = rhs
     
     def accept(self, visitor, binding):
-        return visitor.evaluate_not_equals(self, binding)
-
-class GreaterEquals:
-    def __init__(self, lhs, rhs):
-        self.lhs = lhs
-        self.rhs = rhs
+        return visitor.evaluate_bool_expr(self, binding)
+    
+class Print_Smurf:
+    def __init__(self, to_print):
+        self.to_print = to_print
     
     def accept(self, visitor, binding):
-        return visitor.evaluate_greater_equal(self, binding)
-    
-class Greater:
-    def __init__(self, lhs, rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-    
-    def accept(self, visitor, binding):
-        return visitor.evaluate_greater_than(self, binding)
-    
-class LessEquals:
-    def __init__(self, lhs, rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-    
-    def accept(self, visitor, binding):
-        return visitor.evaluate_less_equal(self, binding)
-
-class Less:
-    def __init__(self, lhs, rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-    
-    def accept(self, visitor, binding):
-        return visitor.evaluate_less_than(self, binding)
+        return visitor.evaluate_print_smurf(self, binding)
 
 #############
 # TERMINALS #
 #############
 
 class Integer:
-    def __init__(self, value):
+    def __init__(self, sign, value):
+        self.sign = sign
         self.value = value
     
     def accept(self, visitor, binding):

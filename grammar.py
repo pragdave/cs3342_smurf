@@ -3,7 +3,7 @@ from arpeggio import RegExMatch, Optional, ZeroOrMore, OneOrMore, EOF
 
 #integer = "-"? [0-9]+
 def integer():
-    return [RegExMatch('\d*\.\d'), RegExMatch('\d+')]
+    return Optional('-'), [RegExMatch('\d*\.\d'), RegExMatch('\d+')]
 
 #addop   = '+' | '-'
 #mulop   = '*' | '/'
@@ -75,7 +75,7 @@ def primary():
 
 
 def statement():
-    return [("let", variable_declaration), assignment, expr, print_smurf]
+    return [print_smurf, ("let", variable_declaration), assignment, expr]
 
 def comment():
     return RegExMatch('#.*')
@@ -84,7 +84,7 @@ def brace_block():
     return "{", code, "}"
 
 def print_smurf():
-    return "print", "(", [arithmetic_expression, boolean_expression, identifier], ")"
+    return "print", "(", OneOrMore([arithmetic_expression, boolean_expression, primary]), ")"
 
 def call_arguments():
     return (expr, ZeroOrMore(",", expr))

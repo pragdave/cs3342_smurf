@@ -13,61 +13,28 @@ class Visitor(PTNodeVisitor):
             return Assignment(node, children)
     
     def visit_print_smurf(self, node, children):
-        if(len(children) == 1):
-            print("Print: {}".format(children[0]))
-            
+        return Print_Smurf(children)
     
     def visit_variable_value(self, node, children):
         return Variable(node.value)
     
     def visit_integer(self, node, children):
-        return Integer(int(node.value))
+        if(len(children)) > 1:
+            return Integer(children[0], children[1])
+        else:
+            return Integer('', children[0])
 
     def visit_arithmetic_expression(self, node, children):
-        if(len(children) > 1 and len(children) < 4):
-            if(children[1] == '+'):
-                return (Plus(children[0], children[2]))
-            if(children[1] == '-'):
-                return (Minus(children[0], children[2]))
-            if(children[1] == '*'):
-                return (Times(children[0], children[2]))
-            if(children[1] == '/'):
-                return (Divide(children[0], children[2]))
-        elif(len(children) == 1):
-            return Integer(node.value)
-        else:
-            #print(len(children))
-            return 0
+        return Arithmetic_Expression(children[0], children[1:])
 
     def visit_mult_term(self, node, children):
-        if(len(children) > 1):
-            if(children[1] == '+'):
-                return (Plus(children[0], children[2]))
-            if(children[1] == '-'):
-                return (Minus(children[0], children[2]))
-            if(children[1] == '*'):
-                return (Times(children[0], children[2]))
-            if(children[1] == '/'):
-                return (Divide(children[0], children[2]))
-        else:
-            return Integer(int(node.value))
+        return Mult_Term(children[0], children[1:])
         
     def visit_primary(self, node, children):
         return children[0]
 
     def visit_boolean_expression(self, node, children):
-        if(children[1] == '=='):
-            return (Equals(children[0], children[2]))
-        if(children[1] == '!='):
-            return (NotEquals(children[0], children[2]))
-        if(children[1] == '>='):
-            return (GreaterEquals(children[0], children[2]))
-        if(children[1] == '>'):
-            return (Greater(children[0], children[2]))
-        if(children[1] == '<='):
-            return (LessEquals(children[0], children[2]))
-        if(children[1] == '<'):
-            return (Less(children[0], children[2]))
+        return Boolean_Expression(children[0], children[1], children[2])
 
     def visit_identifier(self, node, children):
         return children
