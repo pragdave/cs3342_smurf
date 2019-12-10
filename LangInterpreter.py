@@ -1,3 +1,5 @@
+
+
 class AddOpEvaluator:
     def __init__(self, lhs, rhs, symbol):
         self.lhs = lhs
@@ -10,6 +12,21 @@ class AddOpEvaluator:
             return int(ans)
         elif self.symbol == "-":
             ans = self.lhs.eval(context) - self.rhs.eval(context)
+            return int(ans)
+
+
+class MulOpEvaluator:
+    def __init__(self, lhs, rhs, symbol):
+        self.lhs = lhs
+        self.rhs = rhs
+        self.symbol = symbol
+
+    def eval(self, context):
+        if self.symbol == "*":
+            ans = self.lhs.eval(context) * self.rhs.eval(context)
+            return int(ans)
+        elif self.symbol == "/":
+            ans = self.lhs.eval(context) / self.rhs.eval(context)
             return int(ans)
 
 
