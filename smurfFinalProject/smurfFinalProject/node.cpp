@@ -41,7 +41,7 @@ binopNode::binopNode(node* l, string op, node* r){
     right = r;
     string lstr = l->str();
     string rstr = r->str();
-    print(op, lstr, rstr);
+    //print(op, lstr, rstr);
 }
 
 string binopNode::str(){

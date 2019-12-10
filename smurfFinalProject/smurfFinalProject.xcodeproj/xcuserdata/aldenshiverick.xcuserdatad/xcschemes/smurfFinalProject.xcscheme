@@ -63,7 +63,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "f=3"
+            argument = "abc=123"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
