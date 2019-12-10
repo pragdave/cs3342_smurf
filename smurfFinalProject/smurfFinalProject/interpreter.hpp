@@ -14,6 +14,7 @@
 #include <map>
 #include <string>
 #include <functional>
+#include <iostream>
 #include "visitor.hpp"
 #include "node.hpp"
 #include "binding.hpp"

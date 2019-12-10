@@ -22,10 +22,10 @@ using namespace std;
 auto grammar = R"(
     program                 <-  code
     code                    <-  statement*
-    statement               <-  'let' variable_declaration / assignment / expr
+    statement               <-  'let(' variable_declaration ')' / assignment / expr
+    function_call           <-  variable_reference '(' call_arguments ')' / 'print(' call_arguments ')'
     variable_declaration    <-  decl (',' decl)*
     decl                    <-  identifier ('=' expr)?
-    identifier              <-  < ['a-z']['a-z''A-Z'0-9]* >
     variable_reference      <-  identifier
     assignment              <-  identifier '=' expr
     expr                    <-  boolean_expression / arithmetic_expression
@@ -37,7 +37,7 @@ auto grammar = R"(
     add_op                  <-  < '+' / '-' >
     mul_op                  <-  < '*' / '/' >
     rel_op                  <-  < '==' / '!=' / '>=' / '>' / '<=' / '<' >
-    function_call           <-  variable_reference '(' call_arguments ')' / 'print(' call_arguments ')'
+    identifier              <-  < ['a-z']['a-z''A-Z'0-9]* >
     call_arguments          <-  (expr (',' expr)*)?
     %whitespace             <-  [ \t\r\n]*
 )";
@@ -47,25 +47,18 @@ class visitor;
 class ParseTreeNode
 {
     node *content;
-    
 public:
     ParseTreeNode(){};
-    ParseTreeNode(node *content_node)
-    {
-        //cout<<"parsing tree node"<<endl;
+    ParseTreeNode(node *content_node){
         content = content_node;
         
     }
     
-    node *get() const
-    {
-        //cout<<"getting info"<<endl;
+    node *get() const{
         return content;
     }
     
-    string to_string()
-    {
-        //cout<<"making string"<<endl;
+    string to_string(){
         return content->str();
     }
 };
@@ -74,8 +67,7 @@ node *bin_op(const SemanticValues &sv)
 {
     node *left = sv[0].get<ParseTreeNode>().get();
     
-    for (unsigned int i = 1; i < sv.size(); i += 2)
-    {
+    for (unsigned int i = 1; i < sv.size(); i += 2){
         node *right = sv[i + 1].get<ParseTreeNode>().get();
         string op = sv[i].get<ParseTreeNode>().get()->str();
         left = new binopNode(left, op, right);
@@ -87,14 +79,21 @@ node *assign(const SemanticValues &sv){
     node *left = sv[0].get<ParseTreeNode>().get();
     node *right = sv[1].get<ParseTreeNode>().get();
     left = new assignmentNode(left, right);
+    cout<<"Assigning here too"<<endl;
     return left;
 };
 
 
 void setup_ast_generation(parser &parser)
 {
+    parser["variable_declaration"] = [](const SemanticValues &sv) {
+        node *n = assign(sv);
+        return ParseTreeNode(n);
+    };
+    
     parser["assignment"] = [](const SemanticValues &sv) {
         node *n = assign(sv);
+        cout<<"Assigning"<<endl;
         return ParseTreeNode(n);
     };
                                                 
@@ -103,19 +102,16 @@ void setup_ast_generation(parser &parser)
     };
     
     parser["expr"] = [](const SemanticValues &sv) {
-        //cout << "expr: " << sv.str() << endl;
         node *n = bin_op(sv);
         return ParseTreeNode(n);
     };
     
     parser["arithmetic_expression"] = [](const SemanticValues &sv) {
-        //cout << "arithmetic_expression: " << sv.str() << endl;
         node *n = bin_op(sv);
         return ParseTreeNode(n);
     };
     
     parser["boolean_expression"] = [](const SemanticValues &sv) {
-        //cout << "boolean_expression: " << sv.str() << endl;
         node *n = bin_op(sv);
         return ParseTreeNode(n);
     };
@@ -126,30 +122,25 @@ void setup_ast_generation(parser &parser)
     };
     
     parser["integer"] = [](const SemanticValues &sv) {
-        //cout << "in number: " << sv.str() << endl;
         return ParseTreeNode(new intNode(atoi(sv.c_str())));
     };
     
     parser["add_op"] = [](const SemanticValues &sv) {
-        //cout << "add/sub: " << sv.str() << endl;
         return ParseTreeNode(new operationNode(sv.token()));
     };
     
     parser["mul_op"] = [](const SemanticValues &sv) {
-        //cout << "mul/div: " << sv.str() << endl;
         return ParseTreeNode(new operationNode(sv.token()));
     };
     
     parser["rel_op"] = [](const SemanticValues &sv) {
-        //cout << "relationop: " << sv.str() << endl;
         return ParseTreeNode(new operationNode(sv.token()));
     };
 }
 
 int main(int argc, const char **argv) {
     
-    if (argc < 2 || string("--help") == argv[1])
-    {
+    if (argc < 2 || string("--help") == argv[1]){
         cout << "usage: parser [formula]" << endl;
         return 1;
     }
@@ -160,8 +151,7 @@ int main(int argc, const char **argv) {
     auto expr = argv[1];
     cout<< "EXPR:" << expr <<endl;
     ParseTreeNode val = ParseTreeNode();
-    if (parser.parse(expr, val))
-    {
+    if (parser.parse(expr, val)){
         visitor *interpret = new interpreter();
         interpret->bindings = new binding();
         
@@ -177,11 +167,11 @@ int main(int argc, const char **argv) {
     
     
     /*
-     comment        <-  '#' r'.*'
-     if_expression <- expr brace_block ( 'else' brace_block )?
-     function_definition <- param_list brace_block
-     param_list  <- '(' identifier (',' identifier)* ')' / '(' ')'
-     brace_block <- '{' code '}'
+     comment                <-  '#' r'.*'
+     if_expression          <- expr brace_block ( 'else' brace_block )?
+     function_definition    <- param_list brace_block
+     param_list             <- '(' identifier (',' identifier)* ')' / '(' ')'
+     brace_block            <- '{' code '}'
     */
     
 }
