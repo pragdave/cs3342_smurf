@@ -1,0 +1,4 @@
+Change directory to the test_cases folder
+
+Run the following command in the terminal:
+python3 ../test_runner.py "python3 ../main.py"
