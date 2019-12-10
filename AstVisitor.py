@@ -1,7 +1,17 @@
 from Interpreter import *
-from Grammar import *
+from arpeggio import PTNodeVisitor
+# from Grammar import *
 
-class AstVistor(PTNodeVisitor):
+class AstVisitor(PTNodeVisitor):
+    def visit_start(self, node, children):
+        return children[0]
+
+    def visit_assignment(self, node, children):
+        return Assignment(children[0], children[1])
+
+    def visit_variable_reference(self, node, children):
+        return VariableReference(node.value)
+
     def visit_arithmetic_expression(self, node, children):
         if len(children) > 1:
             if children[1] == '+':
