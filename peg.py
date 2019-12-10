@@ -1,20 +1,37 @@
-from arpeggio.cleanpeg import ParserPEG
+from arpeggio.cleanpeg import ParserPEG,visit_parse_tree
+from AstVisitor import *
+
 import sys
 
 grammar = """
-    arithmentic_expression
-        = mult_term (addop mult_term)*
-    mult_term
-        = primary (mulop primary)*
+    expr 
+        = arithmetic_expression EOF
+
+    arithmetic_expression
+        = multerm addop arithmetic_expression
+        / multerm
+
+    multerm
+        = primary mulop multerm
+        / primary
+
     primary
         = integer
-        / "(" arithmentic_expression ")"
+        / "(" arithmetic_expression ")"
+
     integer
         = "-"? r'[0-9]+'
+
     addop
         = '+' / '-'
     mulop
         = '*' / '/'
 """
-parser = ParserPEG(grammar, "arithmentic_expression", debug=True)
-tree = parser.parse(sys.argv[1])
+
+code = "1--1"
+
+parser = ParserPEG(grammar, "expr", debug=False)
+parse_tree = parser.parse(code)
+ast = visit_parse_tree(parse_tree, AstVistor(debug=False))
+print(ast.accept())
+
