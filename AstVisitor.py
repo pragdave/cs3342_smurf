@@ -10,8 +10,6 @@ class AstVisitor(PTNodeVisitor):
         return VariableDecl(children)
 
     def visit_decl(self,node,children):
-        print(children[0])
-        print(children[1])
         return Decl(children[0], children[1])
 
     def visit_assignment(self, node, children):

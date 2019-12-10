@@ -31,7 +31,7 @@ class VariableDecl:
         return result
 
 class Decl:
-    def _init_(self, name, expr):
+    def __init__(self, name, expr):
         self.name = name
         self.expr = expr
     
