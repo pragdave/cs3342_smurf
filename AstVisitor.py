@@ -3,11 +3,23 @@ from arpeggio import PTNodeVisitor
 # from Grammar import *
 
 class AstVisitor(PTNodeVisitor):
-    def visit_start(self, node, children):
-        return children[0]
+    def visit_code(self, node, children):
+        return CodeBlock(children)
+
+    def visit_variable_declaration(self,node,children):
+        return VariableDecl(children)
+
+    def visit_decl(self,node,children):
+        print(children[0])
+        print(children[1])
+        return Decl(children[0], children[1])
 
     def visit_assignment(self, node, children):
         return Assignment(children[0], children[1])
+
+    # why ?
+    # def visit_identifier(self,node,children):
+    #     return Identifier(str(node.value))
 
     def visit_variable_reference(self, node, children):
         return VariableReference(node.value)

@@ -11,15 +11,48 @@ class Binding:
         return self.bindings.get(name, 0)
 
 # Node Interpreter
+class CodeBlock:
+    def __init__(self, expr):
+        self.expr = expr
+    
+    def evaluate(self, binding):
+        result = 0
+        for e in self.expr:
+            result = e.evaluate(binding)
+        return result
+
+class VariableDecl:
+    def __init__(self, decl):
+        self.decl = decl
+    
+    def evaluate(self, binding):
+        for d in self.decl:
+            result = d.evaluate(binding)
+        return result
+
+class Decl:
+    def _init_(self, name, expr):
+        self.name = name
+        self.expr = expr
+    
+    def evaluate(self, binding):
+        # refName = self.name.evaluate(binding)
+        value = self.expr.evaluate(binding)
+        binding.set_variable(self.name, value)
+        return value
+
+
 class Assignment:
     def __init__(self, name, expr):
         self.name = name
         self.expr = expr
     
     def evaluate(self, binding):
+        # refName = self.name.evaluate(binding)
         value = self.expr.evaluate(binding)
         binding.set_variable(self.name, value)
-        return value
+        # return value
+        
 
 class VariableReference:
     def _init_(self, name):
@@ -27,6 +60,13 @@ class VariableReference:
     
     def evaluate(self, binding):
         return binding.get_variable(self.name)
+
+# class Identifier:
+#     def __init__(self, value):
+#         self.value = value
+    
+#     def evaluate(self, binding):
+#         return self.value
 
 class IntegerNode:
     def __init__(self, value):

@@ -9,7 +9,6 @@ def statement(): return [("let", variable_declaration),
                         assignment, 
                         expr]                  
 
-
 # variable 
 def variable_declaration():     return decl, ZeroOrMore(',', decl)
 def decl():                     return identifier, Optional("=",expr)
@@ -30,12 +29,10 @@ def relop():    return  ['==','!=','>=','>','<=','<']
 
 
 test = """ 
-let a = 1
-b = 1
-1+1
+let a = 1+1
 """
 parser = ParserPython(program)
 parse_tree = parser.parse(test)
 print(parse_tree)
-# ast = visit_parse_tree(parse_tree, AstVisitor(debug=False))
-# print(ast.evaluate(Binding()))
+ast = visit_parse_tree(parse_tree, AstVisitor(debug=True))
+ast.evaluate(Binding())
