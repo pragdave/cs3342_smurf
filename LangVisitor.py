@@ -1,10 +1,13 @@
 from arpeggio import PTNodeVisitor
 
+
 class LangVisitor(PTNodeVisitor):
     userVars = {}
+    state = ""
 
-    # def visit_program(self, node, children):
-    #
+    def visit_program(self, node, children):
+        state = "runNow"
+
     # def visit_comment(self, node, children):
     #
     # def visit_code(self, node, children):
@@ -14,8 +17,9 @@ class LangVisitor(PTNodeVisitor):
     #
     # def visit_variable_declaration(self, node, children):
     #
-    # def visit_decl(self, node, children):
-    #     self.userVars[str(node[0])] = node[2]
+
+    def visit_decl(self, node, children):
+        self.userVars[state+"_"+str(node[0])] = node[2]
     #
     # def visit_identifier(self, node, children):
     #
@@ -43,13 +47,18 @@ class LangVisitor(PTNodeVisitor):
     #
     # def visit_relop(self, node, children):
     #
-    # def visit_function_call(self, node, children):
-    #
+
+    def visit_function_call(self, node, children):
+        print("Function call")
     # def visit_call_arguments(self, node, children):
     #
-    # def visit_function_definition(self, node, children):
+
     #
     # def visit_param_list(self, node, children):
 
-    def visit_brace_block(self, node, children):              
+    def visit_brace_block(self, node, children):
         print("brace block")
+
+    def visit_function_definition(self, node, children):
+        print("Function definition: ")
+        state = node[0]
