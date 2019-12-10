@@ -39,7 +39,7 @@ def relop():    return ['==','!=','>=','>','<=','<']
 
 
 test = """ 
-1 --1
+let three = fn () {1+2}
 """
 parser = ParserPython(program)
 parse_tree = parser.parse(test)

@@ -22,6 +22,23 @@ class CodeBlock:
             result = e.evaluate(binding)
         return result
 
+class FunctionDecl:
+    def __init__(self, params, body):
+        self.paramas = params
+        self.body = body
+
+    def evaluate(self,binding):
+        return self.body
+
+class FunctionCall:
+    def __init__(self, name, args):
+        self.name = name
+        self.args = args
+
+    def evaluate(self, binding):
+        body = binding.get_variable(self.name)
+        return body.evaluate(binding, [])
+
 class VariableDecl:
     def __init__(self, decl):
         self.decl = decl

@@ -6,6 +6,16 @@ class AstVisitor(PTNodeVisitor):
     def visit_code(self, node, children):
         return CodeBlock(children)
 
+    # function 
+    def visit_function_definition(self, node, children):
+        return FunctionDecl(children[0], children[1])
+
+    def visit_function_call(self, node, children):
+        if len(children) == 1:
+            return FunctionCall(children[0], [])
+        else:
+            return FunctionCall(children[0], children[1])
+
     def visit_variable_declaration(self,node,children):
         return VariableDecl(children)
 
