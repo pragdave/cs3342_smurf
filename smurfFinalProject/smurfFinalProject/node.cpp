@@ -90,7 +90,7 @@ assignmentNode::assignmentNode(node *l, node *r){
     right = r;
     string lstr = l->str();
     string rstr = r->str();
-    print(lstr, rstr);
+    //print(lstr, rstr);
 }
 
 string assignmentNode::str(){

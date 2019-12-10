@@ -23,7 +23,7 @@ int interpreter::evaluate_assignment(node *nodex, node *left, node *right){
     left->accept(this);                                              //sets the variableName used in this->
     int rval = right->accept(this);
     this->bindings->insertValue(variableName, rval);
-    cout<<"evaluating assignment | variableName: "<<variableName<<" | rvalue: "<<rval<<endl;
+    //cout<<"evaluating assignment | variableName: "<<variableName<<" | rvalue: "<<rval<<endl;
     return rval;
 }
 

@@ -79,14 +79,13 @@ node *assign(const SemanticValues &sv){
     node *left = sv[0].get<ParseTreeNode>().get();
     node *right = sv[1].get<ParseTreeNode>().get();
     left = new assignmentNode(left, right);
-    cout<<"Assigning here too"<<endl;
     return left;
 };
 
 
 void setup_ast_generation(parser &parser)
 {
-    parser["variable_declaration"] = [](const SemanticValues &sv) {
+    parser["decl"] = [](const SemanticValues &sv) {
         node *n = assign(sv);
         return ParseTreeNode(n);
     };
