@@ -13,6 +13,8 @@ class AddOpEvaluator:
         elif self.symbol == "-":
             ans = self.lhs.eval(context) - self.rhs.eval(context)
             return int(ans)
+        else:
+            raise Exception("Invalid add op encountered.")
 
 
 class MulOpEvaluator:
@@ -28,6 +30,8 @@ class MulOpEvaluator:
         elif self.symbol == "/":
             ans = self.lhs.eval(context) / self.rhs.eval(context)
             return int(ans)
+        else:
+            raise Exception("Invalid mul op encountered.")
 
 
 class BooleanEvaluator:
