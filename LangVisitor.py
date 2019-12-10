@@ -1,70 +1,83 @@
 from arpeggio import PTNodeVisitor
-from LangInterpreter import *
+from src.CodeEvaluator import *
+from src.ExpressionEvaluator import *
+from src.LangEvaluator import *
+from src.VariableEvaluator import *
 
 
 class LangVisitor(PTNodeVisitor):
-    userVars = {}
-
     def visit_program(self, node, children):
-        state = "runNow"
+        return (Program(children[0]))
 
-    # def visit_comment(self, node, children):
-    #
-    # def visit_code(self, node, children):
-    #
-    def visit_statement(self, node, children):
-        print("statement")
-    #
+    def visit_code(self, node, children):
+        return (Code(children))
+
     # def visit_variable_declaration(self, node, children):
-    #
+    #     return (Declaration(children))
 
     def visit_decl(self, node, children):
-        if len(children) > 1:
-            self.userVars[str(children[0])] = children[1]
+        # if len(children) == 1:
+        #     return (Decl(children[0], 0))
+        # else:
+        return (Declaration(children[0], children[1]))
 
-    # def visit_identifier(self, node, children):
-    #
-    # def visit_variable_reference(self, node, children):
-    #
-    # def visit_if_expression(self, node, children):
-    #
-    # def visit_assignment(self, node, children):
-    #
-    # def visit_expr(self, node, children):
-    #
-    # def visit_boolean_expression(self, node, children):
-    #
-    # def visit_arithmetic_expression(self, node, children):
-    #
-    # def visit_mult_term(self, node, children):
-    #
-    # def visit_primary(self, node, children):
-    #
+    def visit_identifier(self, node, children):
+        return (Terminal(str(node.value)))
 
-    # def visit_integer(self, node, children):
-    #
-    # def visit_addop(self, node, children):
-    #
-    # def visit_mulop(self, node, children):
-    #
+    def visit_variable_reference(self, node, children):
+        return (VarReference(node.value))
+
+    def visit_if_expression(self, node, children):
+        if len(children) == 2:
+            return (If_Expression(children[0], children[1]))
+        else:
+            return (If_Expression(children[0], children[1], children[2]))
+
+    def visit_assignment(self, node, children):
+        return (Assignment(children[0], children[1]))
 
     def visit_boolean_expression(self, node, children):
-        ls = children[0]
-        print(ls.evaluate())
-        rs = children[2]
+        left = children[0]
+        right = children[2]
         symbol = children[1]
-        return BooleanEvaluator(ls, rs, symbol)
+        return BooleanEvaluator(left, right, symbol)
 
-    def visit_function_call(self, node, children):
-        print("Function call")
+    def visit_arithmetic_expression(self, node, children):
+        if len(children) == 1:
+            return children[0]
+        left = children[0]
+        right = children[2]
+        symbol = children[1]
+        return AddOpEvaluator(left, right, symbol)
+
+    def visit_mult_term(self, node, children):
+        if len(children) == 1:
+            return children[0]
+        left = children[0]
+        right = children[2]
+        symbol = children[1]
+        return MulOpEvaluator(left, right, symbol)
+
+    def visit_integer(self, node, children):
+        return Terminal(int(node.value))
+
+    # def visit_function_call(self, node, children):
+    #     if len(children) == 1:
+    #         return (Function_Call(Call_Arguments([]), children[0]))
+    #     else:
+    #         return (Function_Call(children[1], children[0]))
+
+    def visit_print_call(self, node, children):
+        # if len(children) == 0:
+        #     return (Function(Call_Arguments([])))
+        # else:
+        return (PrintFunction(children[0]))
+
     # def visit_call_arguments(self, node, children):
-    #
+    #     return (Call_Arguments(children))
 
-    #
+    # def visit_function_definition(self, node, children):
+    #     return (Function_Definition(children[0], children[1]))
+
     # def visit_param_list(self, node, children):
-
-    def visit_brace_block(self, node, children):
-        print("brace block")
-
-    def visit_function_definition(self, node, children):
-        print("Function definition: ")
+    #     return (Param_List(children))

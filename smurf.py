@@ -90,11 +90,7 @@ def main():
     # using graphviz and dot
     # add debug=True for thorough print and .dot file
     # dot -Tpng -O .\program_parse_tree.dot to turn dot to png
-    parse_tree = parser.parse("let abc = 123, abcd = 1234"
-                              "print(1 > 0)"
-                              #"let myF = fn(a,b){a+b}"
-                              #"let a = 5"
-                              #"(4 - 1) * 5 + (2 + 4) + 7"
+    parse_tree = parser.parse("print(6)"
                               )
     visit_parse_tree(parse_tree, LangVisitor(debug=False))
 

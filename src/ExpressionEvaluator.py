@@ -1,3 +1,6 @@
+from src.LangEvaluator import Context
+
+
 class AddOpEvaluator:
     def __init__(self, lhs, rhs, symbol):
         self.lhs = lhs

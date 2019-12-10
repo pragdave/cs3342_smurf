@@ -1,3 +1,6 @@
+from src.LangEvaluator import Context
+
+
 class Declaration:
     def __init__(self, id, value):
         self.id = id
@@ -5,14 +8,6 @@ class Declaration:
 
     def eval(self, context):
         return context.setVar(self.id.eval(context), self.value.eval(context))
-
-
-class Terminal:
-    def __init__(self, val):
-        self.value = val
-
-    def eval(self, context):
-        return self.value
 
 
 class VarReference:

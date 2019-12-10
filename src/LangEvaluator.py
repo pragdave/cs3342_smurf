@@ -18,3 +18,11 @@ class Context:
 
         else:
             return curContext.context[name]
+
+
+class Terminal:
+    def __init__(self, val):
+        self.value = val
+
+    def eval(self, context):
+        return self.value
