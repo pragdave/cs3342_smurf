@@ -1,44 +1,28 @@
-class Binding:
-    def __init__(self):
-        self.bindings = {}
-    def set_variable(self, name, value):
-        print(f"Set {name} to {value}")
-        self.bindings[name] = value
-    def get_variable_value(self, name):
-        return self.bindings.get(name, 0)
+import bindings as binding
 
 class Variable:
     def __init__(self, name):
         self.name = name
-    def evaluate(self, binding):
-        return binding.get_variable_value(self.name)
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_var_value(self, binding)
 
 
 class Code:
     def __init__(self, expressions):
         self.expressions = expressions
-
-    def run(self, binding):
-        value = 0
-        for exp in self.expressions:
-            value = e.run(binding)
-        return value
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_code(self, binding)
 
 class Assignment:
     def __init__(self, name, expression):
         self.name = name
         self.expression = expression
-    def run(self, binding):
-        value = self.expression.run(binding)
-        binding.set_variable(self.name, value)
-        return value
-        
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_assignment(self, binding)
 
-class Print:
-    def __init__(self, value):
-        self.value = value
-    def run(self, binding):
-        print(value)
 
 #######
 # OPS #
@@ -49,99 +33,81 @@ class Times:
         self.lhs = lhs
         self.rhs = rhs
     
-    def evaluate(self, binding):
-        left = self.lhs.evaluate(binding)
-        right = self.rhs.evaluate(binding)
-        return left*right
+    def accept(self, visitor, binding):
+        return visitor.evaluate_times(self, binding)
     
 class Divide:
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
-        
-    def evaluate(self, binding):
-        left = self.lhs.evaluate(binding)
-        right = self.rhs.evaluate(binding)
-        return left / right
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_divide(self, binding)
     
 class Plus:
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
-        
-    def evaluate(self, binding):
-        left = self.lhs.evaluate(binding)
-        right = self.rhs.evaluate(binding)
-        return left+right
+    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_plus(self, binding)
     
 class Minus:
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
     
-    def evaluate(self, binding):
-        res = self.lhs.evaluate(binding) - self.rhs.evaluate(binding)
-        return res
-    
+    def accept(self, visitor, binding):
+        return visitor.evaluate_minus(self, binding)
+
 class Equals:
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
     
-    def evaluate(self, binding):
-        if(self.lhs.evaluate(binding) == self.rhs.evaluate(binding)):
-            return True
-        return False
+    def accept(self, visitor, binding):
+        return visitor.evaluate_equals(self, binding)
+        
 
 class NotEquals:
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
     
-    def evaluate(self, binding):
-        if(self.lhs.evaluate(binding) == self.rhs.evaluate(binding)):
-            return False
-        return True
+    def accept(self, visitor, binding):
+        return visitor.evaluate_not_equals(self, binding)
 
 class GreaterEquals:
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
     
-    def evaluate(self, binding):
-        if(self.lhs.evaluate(binding) >= self.rhs.evaluate(binding)):
-            return True
-        return False
+    def accept(self, visitor, binding):
+        return visitor.evaluate_greater_equal(self, binding)
     
 class Greater:
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
     
-    def evaluate(self, binding):
-        if(self.lhs.evaluate(binding) > self.rhs.evaluate(binding)):
-            return True
-        return False
+    def accept(self, visitor, binding):
+        return visitor.evaluate_greater_than(self, binding)
     
 class LessEquals:
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
     
-    def evaluate(self, binding):
-        if(self.lhs.evaluate(binding) <= self.rhs.evaluate(binding)):
-            return True
-        return False
+    def accept(self, visitor, binding):
+        return visitor.evaluate_less_equal(self, binding)
 
 class Less:
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
     
-    def evaluate(self, binding):
-        if(self.lhs.evaluate(binding) < self.rhs.evaluate(binding)):
-            return True
-        return False
+    def accept(self, visitor, binding):
+        return visitor.evaluate_less_than(self, binding)
 
 #############
 # TERMINALS #
@@ -151,12 +117,12 @@ class Integer:
     def __init__(self, value):
         self.value = value
     
-    def evaluate(self, binding):
-        return self.value
+    def accept(self, visitor, binding):
+        return visitor.evaluate_integer(self, binding)
 
 class Identifier:
     def __init__(self, ident):
         self.ident = ident
     
-    def evaluate(self, binding):
-        return self.ident.evaluate(binding)
+    def accept(self, visitor, binding):
+        return visitor.evaluate_identifier(self, binding)

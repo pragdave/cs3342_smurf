@@ -4,7 +4,7 @@ from grammar import *
 
 class Visitor(PTNodeVisitor):
     def visit_code(self, node, children):
-        return Code(self)
+        return Code(children)
 
     def visit_assignment(self, node, children):
         if(len(children)) > 2:
@@ -13,7 +13,9 @@ class Visitor(PTNodeVisitor):
             return Assignment(node, children)
     
     def visit_print_smurf(self, node, children):
-        print(children[0].value)
+        if(len(children) == 1):
+            print("Print: {}".format(children[0]))
+            
     
     def visit_variable_value(self, node, children):
         return Variable(node.value)
@@ -22,16 +24,27 @@ class Visitor(PTNodeVisitor):
         return Integer(int(node.value))
 
     def visit_arithmetic_expression(self, node, children):
+        if(len(children) > 1 and len(children) < 4):
+            if(children[1] == '+'):
+                return (Plus(children[0], children[2]))
+            if(children[1] == '-'):
+                return (Minus(children[0], children[2]))
+            if(children[1] == '*'):
+                return (Times(children[0], children[2]))
+            if(children[1] == '/'):
+                return (Divide(children[0], children[2]))
+        elif(len(children) == 1):
+            return Integer(node.value)
+        else:
+            #print(len(children))
+            return 0
+
+    def visit_mult_term(self, node, children):
         if(len(children) > 1):
             if(children[1] == '+'):
                 return (Plus(children[0], children[2]))
             if(children[1] == '-'):
                 return (Minus(children[0], children[2]))
-        else:
-            return Integer(node.value)
-
-    def visit_mult_term(self, node, children):
-        if(len(children) > 1):
             if(children[1] == '*'):
                 return (Times(children[0], children[2]))
             if(children[1] == '/'):

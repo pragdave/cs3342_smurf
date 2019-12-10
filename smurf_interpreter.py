@@ -3,18 +3,20 @@ from arpeggio import ParserPython, visit_parse_tree
 from arpeggio.export import PMDOTExporter, PTDOTExporter
 import grammar as Grammar
 import visitor as Visitor
+from interpreter import Interpreter
 
 
-debug=False
+debug=True
 
-with open('00_expr.smu') as f:
-    source = f.read
+with open('00_expr.smu', 'r') as f:
+    source = f.read()
+    #print(source)
 
-parser = ParserPython(Grammar.program, debug=debug)
+parser = ParserPython(Grammar.program, Grammar.comment, debug=debug)
 
-parse_tree = parser.parse("1 + 1")
+parse_tree = parser.parse("print(1)")
 
 tree = visit_parse_tree(parse_tree, Visitor.Visitor(debug=debug))
 
-
+tree.accept(Interpreter(), {})
 

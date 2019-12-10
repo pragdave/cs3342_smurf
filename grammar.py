@@ -60,13 +60,13 @@ def expr():
 
 
 def decl():
-    return identifier, Optional("=", integer)
+    return identifier, Optional("=", [integer, identifier])
 
 def variable_declaration():
     return decl, ZeroOrMore(",", decl)
 
 def primary():
-    return integer
+    return [integer, function_call, variable_reference, ( "(", arithmetic_expression, ")")]
 
 #statement = "let" variable_declaration | assignment | expr
 #comment  = "#" r'.*'
@@ -78,13 +78,25 @@ def statement():
     return [("let", variable_declaration), assignment, expr, print_smurf]
 
 def comment():
-    return "#"
+    return RegExMatch('#.*')
 
 def brace_block():
     return "{", code, "}"
 
 def print_smurf():
-    return "print", "(", [identifier, integer, boolean_expression, arithmetic_expression], ")"
+    return "print", "(", [arithmetic_expression, boolean_expression, identifier], ")"
+
+def call_arguments():
+    return (expr, ZeroOrMore(",", expr))
+
+def function_call():
+    return [(variable_reference, "(", call_arguments, ")"), ("print", "(", call_arguments, ")")]
+
+def param_list():
+    return [("(", identifier, ZeroOrMore(",", identifier), ")" ), "()"]
+
+def function_definition():
+    return param_list, brace_block
 
 #if_expression = expr brace_block ( "else" brace_block )?
 def if_expression():
@@ -97,17 +109,3 @@ def code():
 #program = code EOF
 def program():
     return code, EOF
-
-"""
-
-function_call  = variable_reference "(" call_arguments ")"
-               | "print" "(" call_arguments ")"
-
-call_arguments = (expr ("," expr)*)?
-
-function_definition = param_list brace_block
-
-param_list =  "(" identifier ("," identifier)* ")"
-           |  "(" ")"
-
-"""
