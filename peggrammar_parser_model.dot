@@ -1,108 +1,108 @@
 digraph arpeggio_graph {
-4528909504 [label="peggrammar=Sequence"];
-4528909504->4528910288 [label="1"]
+4404140968 [label="peggrammar=Sequence"];
+4404140968->4402109632 [label="1"]
 
-4528910288 [label="OneOrMore"];
-4528910288->4530779976 [label="1"]
+4402109632 [label="OneOrMore"];
+4402109632->4402614568 [label="1"]
 
-4530779976 [label="rule=Sequence"];
-4530779976->4530781208 [label="1"]
+4402614568 [label="rule=Sequence"];
+4402614568->4402614736 [label="1"]
 
-4530781208 [label="rule_name=RegExMatch([a-zA-Z_]([a-zA-Z_]|[0-9])*)"];
-4530779976->4530780256 [label="2"]
+4402614736 [label="rule_name=RegExMatch([a-zA-Z_]([a-zA-Z_]|[0-9])*)"];
+4402614568->4402614904 [label="2"]
 
-4530780256 [label="ASSIGNMENT=StrMatch(=)"];
-4530779976->4530914808 [label="3"]
+4402614904 [label="ASSIGNMENT=StrMatch(=)"];
+4402614568->4402615072 [label="3"]
 
-4530914808 [label="ordered_choice=Sequence"];
-4530914808->4530915088 [label="1"]
+4402615072 [label="ordered_choice=Sequence"];
+4402615072->4402615184 [label="1"]
 
-4530915088 [label="sequence=OneOrMore"];
-4530915088->4530915256 [label="1"]
+4402615184 [label="sequence=OneOrMore"];
+4402615184->4402615352 [label="1"]
 
-4530915256 [label="prefix=Sequence"];
-4530915256->4530914752 [label="1"]
+4402615352 [label="prefix=Sequence"];
+4402615352->4402615240 [label="1"]
 
-4530914752 [label="Optional"];
-4530914752->4530915368 [label="1"]
+4402615240 [label="Optional"];
+4402615240->4402615464 [label="1"]
 
-4530915368 [label="OrderedChoice"];
-4530915368->4530915536 [label="1"]
+4402615464 [label="OrderedChoice"];
+4402615464->4402615688 [label="1"]
 
-4530915536 [label="AND=StrMatch(&)"];
-4530915368->4530915592 [label="2"]
+4402615688 [label="AND=StrMatch(&)"];
+4402615464->4402615744 [label="2"]
 
-4530915592 [label="NOT=StrMatch(!)"];
-4530915256->4530915648 [label="2"]
+4402615744 [label="NOT=StrMatch(!)"];
+4402615352->4402615800 [label="2"]
 
-4530915648 [label="sufix=Sequence"];
-4530915648->4530915872 [label="1"]
+4402615800 [label="sufix=Sequence"];
+4402615800->4402616024 [label="1"]
 
-4530915872 [label="expression=Sequence"];
-4530915872->4530915984 [label="1"]
+4402616024 [label="expression=Sequence"];
+4402616024->4402616192 [label="1"]
 
-4530915984 [label="OrderedChoice"];
-4530915984->4530916208 [label="1"]
+4402616192 [label="OrderedChoice"];
+4402616192->4402616472 [label="1"]
 
-4530916208 [label="regex=Sequence"];
-4530916208->4530916320 [label="1"]
+4402616472 [label="regex=Sequence"];
+4402616472->4402616640 [label="1"]
 
-4530916320 [label="StrMatch(r')"];
-4530916208->4530916152 [label="2"]
+4402616640 [label="StrMatch(r')"];
+4402616472->4402616416 [label="2"]
 
-4530916152 [label="RegExMatch((\\\\\\'|[^\\'])*)"];
-4530916208->4530916488 [label="3"]
+4402616416 [label="RegExMatch((\\\\\\'|[^\\'])*)"];
+4402616472->4402616808 [label="3"]
 
-4530916488 [label="StrMatch(')"];
-4530915984->4530916264 [label="2"]
+4402616808 [label="StrMatch(')"];
+4402616192->4402616584 [label="2"]
 
-4530916264 [label="rule_crossref=RegExMatch([a-zA-Z_]([a-zA-Z_]|[0-9])*)"];
-4530915984->4530916096 [label="3"]
+4402616584 [label="rule_crossref=RegExMatch([a-zA-Z_]([a-zA-Z_]|[0-9])*)"];
+4402616192->4402616360 [label="3"]
 
-4530916096 [label="Sequence"];
-4530916096->4530916600 [label="1"]
+4402616360 [label="Sequence"];
+4402616360->4402616920 [label="1"]
 
-4530916600 [label="OPEN=StrMatch(()"];
-4530916096->4530914808 [label="2"]
+4402616920 [label="OPEN=StrMatch(()"];
+4402616360->4402615072 [label="2"]
 
-4530916096->4530916432 [label="3"]
+4402616360->4402616752 [label="3"]
 
-4530916432 [label="CLOSE=StrMatch())"];
-4530915984->4530916544 [label="4"]
+4402616752 [label="CLOSE=StrMatch())"];
+4402616192->4402616864 [label="4"]
 
-4530916544 [label="str_match=RegExMatch((\\'(\\\\\\'|[^\\'])*\\')|(\"[^\"]*\"))"];
-4530915872->4530915816 [label="2"]
+4402616864 [label="str_match=RegExMatch((\\'(\\\\\\'|[^\\'])*\\')|(\"[^\"]*\"))"];
+4402616024->4402615968 [label="2"]
 
-4530915816 [label="Not"];
-4530915816->4530780256 [label="1"]
+4402615968 [label="Not"];
+4402615968->4402614904 [label="1"]
 
-4530915648->4530915480 [label="2"]
+4402615800->4402615632 [label="2"]
 
-4530915480 [label="Optional"];
-4530915480->4530915760 [label="1"]
+4402615632 [label="Optional"];
+4402615632->4402615912 [label="1"]
 
-4530915760 [label="OrderedChoice"];
-4530915760->4530916712 [label="1"]
+4402615912 [label="OrderedChoice"];
+4402615912->4402617032 [label="1"]
 
-4530916712 [label="QUESTION=StrMatch(?)"];
-4530915760->4530917328 [label="2"]
+4402617032 [label="QUESTION=StrMatch(?)"];
+4402615912->4402617648 [label="2"]
 
-4530917328 [label="STAR=StrMatch(*)"];
-4530915760->4530916768 [label="3"]
+4402617648 [label="STAR=StrMatch(*)"];
+4402615912->4402617088 [label="3"]
 
-4530916768 [label="PLUS=StrMatch(+)"];
-4530914808->4530781264 [label="2"]
+4402617088 [label="PLUS=StrMatch(+)"];
+4402615072->4402615016 [label="2"]
 
-4530781264 [label="ZeroOrMore"];
-4530781264->4530915032 [label="1"]
+4402615016 [label="ZeroOrMore"];
+4402615016->4402615128 [label="1"]
 
-4530915032 [label="Sequence"];
-4530915032->4530915424 [label="1"]
+4402615128 [label="Sequence"];
+4402615128->4402615576 [label="1"]
 
-4530915424 [label="SLASH=StrMatch(/)"];
-4530915032->4530915088 [label="2"]
+4402615576 [label="SLASH=StrMatch(/)"];
+4402615128->4402615184 [label="2"]
 
-4528909504->4530778352 [label="2"]
+4404140968->4402614624 [label="2"]
 
-4530778352 [label="EOF"];
+4402614624 [label="EOF"];
 }

@@ -4,8 +4,14 @@ from AstVisitor import *
 import sys
 
 grammar = """
+    start 
+        = assignment* EOF
+   
+    assignment 
+        = identifier "=" expr
+
     expr 
-        = arithmetic_expression EOF
+        = arithmetic_expression
 
     arithmetic_expression
         = multerm addop arithmetic_expression
@@ -17,7 +23,14 @@ grammar = """
 
     primary
         = integer
+        / variable_value
         / "(" arithmetic_expression ")"
+
+    variable_value = 
+        identifier
+
+    identifier 
+        = r'[a-z][a-zA-Z_0-9]*'
 
     integer
         = "-"? r'[0-9]+'
@@ -28,10 +41,11 @@ grammar = """
         = '*' / '/'
 """
 
-code = "1--1"
+code = "a=3"
 
-parser = ParserPEG(grammar, "expr", debug=False)
+parser = ParserPEG(grammar, "start", debug=True)
 parse_tree = parser.parse(code)
-ast = visit_parse_tree(parse_tree, AstVistor(debug=False))
-print(ast.accept())
+print(parse_tree)
+# ast = visit_parse_tree(parse_tree, AstVistor(debug=False))
+# print(ast.accept())
 
