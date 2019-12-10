@@ -2,21 +2,6 @@ from arpeggio import PTNodeVisitor
 from LangInterpreter import *
 
 
-class Binding:
-    vars = {}
-    parent = None
-
-    def eval(self, var):
-        return vars[var]
-
-
-class Function:
-    binding = None
-
-    def __init__(self, bind):
-        self.binding = bind
-
-
 class LangVisitor(PTNodeVisitor):
     userVars = {}
 

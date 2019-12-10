@@ -7,7 +7,14 @@ class Context:
         self.context[name] = value
 
     def getVar(self, name):
-        if name in self.context:
-            return self.context[name]
-        else:
+
+        curContext = self
+
+        while (not(curContext is None) and not(name in curContext.context)):
+            curContext = curContext.parent
+
+        if curContext is None:
             raise Exception("Undefined reference encountered.")
+
+        else:
+            return curContext.context[name]
