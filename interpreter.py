@@ -63,18 +63,6 @@ class VariableReference:
         return binding.get(self.value)
 
 
-# class IfExpression:
-#     def __init__(self,expression,ifblock,elseblock):
-#         self.expression = expression
-#         self.ifblock = ifblock
-#         self.elseblock = elseblock
-
-#     def evaluate(self,binding):
-#         if(self.expression.evaluate(binding) == 1):
-#             return self.ifblock.evaluate(binding)
-#         else:
-#             return self.elseblock.evaluate(binding)
-
 class IfExpression:
     def __init__(self,children):
         self.children = children
@@ -94,11 +82,6 @@ class Assignment:
 
     def evaluate(self,binding):
         return binding.add(self.name.evaluate(binding),self.value.evaluate(binding))
-        # if(binding.doesExist(self.name)):
-        #     return binding.add(self.name,self.value)
-        # else:
-        #     print("Must declare new variables using 'let'")
-        #     return self.value
 
 
 class Expr:
@@ -217,7 +200,7 @@ class IsLessThan:
         else:
             return 0
 
-#NOT YET TESTED
+
 class FunctionCall:
     def __init__(self,name,call_arguments):
         self.name = name
@@ -241,6 +224,7 @@ class FunctionCall:
             functionBody = variableRef[1]
             return functionBody.evaluate(newBinding)
 
+
 class PrintFunctionCall:
     def __init__(self,call_arguments):
         self.call_arguments = call_arguments
@@ -257,7 +241,6 @@ class PrintFunctionCall:
         return
 
 
-#NOT YET TESTED
 class CallArguments:
     def __init__(self,arguments):
         self.arguments = arguments
@@ -270,7 +253,6 @@ class CallArguments:
         return list(map(lambda arg: arg.evaluate(binding),self.arguments))
 
 
-#NOT YET TESTED
 class FunctionDefinition:
     def __init__(self,newBinding,codeBlock):
         self.newBinding = newBinding
@@ -282,7 +264,6 @@ class FunctionDefinition:
         return funcDef
 
 
-#NOT YET TESTED
 class ParamList:
     def __init__(self,parameters):
         self.parameters = parameters
