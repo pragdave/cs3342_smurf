@@ -19,14 +19,13 @@ int interpreter::evaluate_binop(node *nodex, node *left, string operation, node 
     return evaluateOperator[operation](lval, rval);
 }
 
-
 int interpreter::evaluate_assignment(node *nodex, node *left, node *right)
 {
     left->accept(this);                                              //sets the variableName used in this->
     int rval = right->accept(this);
     this->bindings->insertValue(variableName, rval);
     return 0;
-};
+}
 
 int interpreter::evaluate_variable(node *nodex, string var){
     variableName = var;

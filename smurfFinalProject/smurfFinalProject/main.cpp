@@ -37,7 +37,7 @@ auto grammar = R"(
     add_op                  <-  < '+' / '-' >
     mul_op                  <-  < '*' / '/' >
     rel_op                  <-  < '==' / '!=' / '>=' / '>' / '<=' / '<' >
-    %whitespace             <- ([ \t\r\n])*
+    %whitespace             <-  [ \t\r\n]*
 )";
 
 class visitor;
@@ -81,10 +81,18 @@ node *bin_op(const SemanticValues &sv)
     return left;
 };
 
+node *assign(const SemanticValues &sv){
+    node *left = sv[0].get<ParseTreeNode>().get();
+    node *right = sv[2].get<ParseTreeNode>().get();
+    left = new assignmentNode(left, right);
+    return left;
+};
+
+
 void setup_ast_generation(parser &parser)
 {
     parser["assignment"] = [](const SemanticValues &sv) {
-        node *n = bin_op(sv);
+        node *n = assign(sv);
         return ParseTreeNode(n);
     };
                                                 
@@ -122,17 +130,17 @@ void setup_ast_generation(parser &parser)
     
     parser["add_op"] = [](const SemanticValues &sv) {
         //cout << "add/sub: " << sv.str() << endl;
-        return ParseTreeNode(new operationNode(sv.str()));
+        return ParseTreeNode(new operationNode(sv.token()));
     };
     
     parser["mul_op"] = [](const SemanticValues &sv) {
         //cout << "mul/div: " << sv.str() << endl;
-        return ParseTreeNode(new operationNode(sv.str()));
+        return ParseTreeNode(new operationNode(sv.token()));
     };
     
     parser["rel_op"] = [](const SemanticValues &sv) {
         //cout << "relationop: " << sv.str() << endl;
-        return ParseTreeNode(new operationNode(sv.str()));
+        return ParseTreeNode(new operationNode(sv.token()));
     };
 }
 
