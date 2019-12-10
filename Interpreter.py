@@ -42,7 +42,7 @@ class Add:
         self.right = right
 
     def evaluate(self, binding):
-        return (self.left.evaluate() + self.right.evaluate())
+        return (self.left.evaluate(binding) + self.right.evaluate(binding))
 
 class Subtract:
     def __init__(self, left, right):
@@ -50,7 +50,7 @@ class Subtract:
         self.right = right
 
     def evaluate(self, binding):
-        return (self.left.evaluate() - self.right.evaluate())
+        return (self.left.evaluate(binding) - self.right.evaluate(binding))
 
 class Multiply:
     def __init__(self, left, right):
@@ -58,7 +58,7 @@ class Multiply:
         self.right = right
 
     def evaluate(self, binding):
-        return (self.left.evaluate() * self.right.evaluate())
+        return (self.left.evaluate(binding) * self.right.evaluate(binding))
 
 class Divide:
     def __init__(self, left, right):
@@ -66,5 +66,5 @@ class Divide:
         self.right = right
 
     def accept(self, binding):
-        return int(self.left.evaluate() / self.right.evaluate())
+        return int(self.left.evaluate(binding) / self.right.evaluate(binding))
     

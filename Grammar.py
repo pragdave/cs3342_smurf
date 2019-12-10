@@ -19,7 +19,7 @@ def mulop():    return ["*","/"]
 def relop():    return  ['==','!=','>=','>','<=','<']
 
 
-code = "a = 2 + 1"
+code = "a = 1 --1"
 parser = ParserPython(start)
 parse_tree = parser.parse(code)
 print(parse_tree)
