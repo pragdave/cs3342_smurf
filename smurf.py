@@ -3,7 +3,6 @@ from arpeggio.export import PMDOTExporter as PMDOTOutput
 from arpeggio.export import PTDOTExporter as PTDOTOutput
 from arpeggio import RegExMatch as RXMatch
 from LangVisitor import LangVisitor
-from FunctionVisitor import FunctionVisitor
 
 
 def program(): return code, EOF
@@ -91,16 +90,12 @@ def main():
     # using graphviz and dot
     # add debug=True for thorough print and .dot file
     # dot -Tpng -O .\program_parse_tree.dot to turn dot to png
-    parse_tree = parser.parse(""
-                              "let b = fn(a){"
-                              "a = 5 + 4"
-                              "}"
-                              "b(5)"
+    parse_tree = parser.parse("let abc = 123, abcd = 1234"
+                              "print(1 > 0)"
                               #"let myF = fn(a,b){a+b}"
                               #"let a = 5"
                               #"(4 - 1) * 5 + (2 + 4) + 7"
                               )
-    visit_parse_tree(parse_tree, FunctionVisitor(debug=False))
     visit_parse_tree(parse_tree, LangVisitor(debug=False))
 
 

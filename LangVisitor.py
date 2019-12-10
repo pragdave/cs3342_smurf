@@ -1,9 +1,24 @@
 from arpeggio import PTNodeVisitor
+from LangInterpreter import *
+
+
+class Binding:
+    vars = {}
+    parent = None
+
+    def eval(self, var):
+        return vars[var]
+
+
+class Function:
+    binding = None
+
+    def __init__(self, bind):
+        self.binding = bind
 
 
 class LangVisitor(PTNodeVisitor):
     userVars = {}
-    state = ""
 
     def visit_program(self, node, children):
         state = "runNow"
@@ -19,8 +34,9 @@ class LangVisitor(PTNodeVisitor):
     #
 
     def visit_decl(self, node, children):
-        self.userVars[state+"_"+str(node[0])] = node[2]
-    #
+        if len(children) > 1:
+            self.userVars[str(children[0])] = children[1]
+
     # def visit_identifier(self, node, children):
     #
     # def visit_variable_reference(self, node, children):
@@ -39,14 +55,20 @@ class LangVisitor(PTNodeVisitor):
     #
     # def visit_primary(self, node, children):
     #
+
     # def visit_integer(self, node, children):
     #
     # def visit_addop(self, node, children):
     #
     # def visit_mulop(self, node, children):
     #
-    # def visit_relop(self, node, children):
-    #
+
+    def visit_boolean_expression(self, node, children):
+        ls = children[0]
+        print(ls.evaluate())
+        rs = children[2]
+        symbol = children[1]
+        return BooleanEvaluator(ls, rs, symbol)
 
     def visit_function_call(self, node, children):
         print("Function call")
@@ -61,4 +83,3 @@ class LangVisitor(PTNodeVisitor):
 
     def visit_function_definition(self, node, children):
         print("Function definition: ")
-        state = node[0]
