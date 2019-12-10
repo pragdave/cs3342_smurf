@@ -9,6 +9,15 @@ def statement(): return [("let", variable_declaration),
                         assignment, 
                         expr]                  
 
+# function
+def function_call():        return [(variable_reference,'(',call_arguments,')'),
+                                    ("print",'(',call_arguments,')')]
+def call_arguments():       return Optional(expr, ZeroOrMore(',',expr))
+def function_definitiion(): return (param_list, brace_block)
+def param_list():           return [('(',identifier, ZeroOrMore(',',identifier),')'),
+                                    ('(',')')]
+def brace_block():          return ('{',code,'}')
+
 # variable 
 def variable_declaration():     return decl, ZeroOrMore(',', decl)
 def decl():                     return identifier, Optional("=",expr)
@@ -17,23 +26,25 @@ def variable_reference():       return identifier
 def identifier():               return _(r'[a-z][a-zA-Z_0-9]*')
 
 # expression
-def expr():                     return [arithmetic_expression]
-def primary():                  return [integer, variable_reference, ('(',arithmetic_expression,')')]
+def expr():                     return [("fn",function_definitiion),
+                                        arithmetic_expression]
+def primary():                  return [integer, function_call, variable_reference, ('(',arithmetic_expression,')')]
 def arithmetic_expression():    return  [(multerm, addop, arithmetic_expression),multerm]
 def multerm():                  return [(primary, mulop, multerm),primary]
 
 def integer():  return _(r'-?\d+')
 def addop():    return ["+", "-"]
 def mulop():    return ["*","/"]
-def relop():    return  ['==','!=','>=','>','<=','<']
+def relop():    return ['==','!=','>=','>','<=','<']
 
 
 test = """ 
-let a = 1+1
-
+let f = fn (x,y) { x+99 }
+print(a)
+f(a,b)
 """
 parser = ParserPython(program)
 parse_tree = parser.parse(test)
 print(parse_tree)
-ast = visit_parse_tree(parse_tree, AstVisitor(debug=True))
-ast.evaluate(Binding())
+# ast = visit_parse_tree(parse_tree, AstVisitor(debug=True))
+# ast.evaluate(Binding())

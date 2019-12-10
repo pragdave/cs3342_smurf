@@ -8,7 +8,8 @@ class Binding:
         self.bindings[name] = value
     
     def get_variable(self, name):
-        return self.bindings.get(name, 0)
+        value = self.bindings.get(name, 0)
+        return value
 
 # Node Interpreter
 class CodeBlock:
@@ -55,7 +56,7 @@ class Assignment:
         
 
 class VariableReference:
-    def _init_(self, name):
+    def __init__(self, name):
         self.name = name
     
     def evaluate(self, binding):

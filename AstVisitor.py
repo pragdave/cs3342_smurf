@@ -9,6 +9,7 @@ class AstVisitor(PTNodeVisitor):
     def visit_variable_declaration(self,node,children):
         return VariableDecl(children)
 
+    # ! optional expr
     def visit_decl(self,node,children):
         return Decl(children[0], children[1])
 
