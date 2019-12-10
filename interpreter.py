@@ -241,6 +241,21 @@ class FunctionCall:
             functionBody = variableRef[1]
             return functionBody.evaluate(newBinding)
 
+class PrintFunctionCall:
+    def __init__(self,call_arguments):
+        self.call_arguments = call_arguments
+
+    def evaluate(self, binding):
+        arguments = self.call_arguments.evaluate(binding)
+        output = "Print: "
+        for args in arguments:
+            if output == "Print: ":
+                output = output + str(args)
+            else:
+                output = output + "|" + str(args)
+        print(output)
+        return
+
 
 #NOT YET TESTED
 class CallArguments:
@@ -276,7 +291,7 @@ class ParamList:
         newBinding = Binding(binding)
         if(len(self.parameters) != 0):
             for parameter in self.parameters:
-                newBinding.add(parameter,0)
+                newBinding.add(parameter.evaluate(binding),0)
         return newBinding
 
 
@@ -289,7 +304,7 @@ class BraceBlock:
 
 
 class Binding:
-    def __init__(self,parent=None):
+    def __init__(self,parent={}):
         self.parent = parent
         self.binding = {}
 

@@ -98,6 +98,12 @@ class SmurfVisitor(PTNodeVisitor):
         else:
             return FunctionCall(children[0],children[1])
 
+    def visit_print_function_call(self,node,children):
+        if(len(children) == 0):
+            return PrintFunctionCall(CallArguments([]))
+        else:
+            return PrintFunctionCall(children[0])
+
 
     #NOT YET TESTED
     def visit_call_arguments(self,node,children):

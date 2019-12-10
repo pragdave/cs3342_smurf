@@ -7,12 +7,12 @@ parser = ParserPython(program,comment)
 fileList = [
     "./test_cases/00_expr.smu",
     "./test_cases/01_variables.smu",
-    # "./test_cases/02_let.smu",
+    "./test_cases/02_let.smu",
     "./test_cases/10_if.smu",
-    # "./test_cases/20_fn_basic.smu",
-    # "./test_cases/21_recursive_fns.smu",
-    # "./test_cases/22_closures.smu",
-    # "./test_cases/99_fib.smu"
+    "./test_cases/20_fn_basic.smu",
+    "./test_cases/21_recursive_fns.smu",
+    "./test_cases/22_closures.smu",
+    "./test_cases/99_fib.smu"
 ]
 
 for f in fileList:
@@ -22,15 +22,15 @@ for f in fileList:
 
     parse_tree = parser.parse(contents)
 
-    print(parse_tree)
+    # print(parse_tree)
 
     PTDOTExporter().exportFile(parse_tree,"my_parse_tree.dot")
 
     solution = visit_parse_tree(parse_tree, SmurfVisitor(debug=False))
 
-    print(solution.evaluate())
+    solution.evaluate()
 
-# parse_tree = parser.parse("print(99)")
+# parse_tree = parser.parse("print(99,4)")
 
 # print(parse_tree)
 
@@ -38,4 +38,4 @@ for f in fileList:
 
 # solution = visit_parse_tree(parse_tree, SmurfVisitor(debug=False))
 
-# print(solution.evaluate())
+# solution.evaluate()
