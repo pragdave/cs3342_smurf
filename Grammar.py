@@ -4,7 +4,7 @@ from AstVisitor import *
 
 # general 
 def program():   return code,EOF
-def comment():   return ("#",_(r'.*'))
+def comment():   return _(r'#.*')
 def code():      return ZeroOrMore(statement)
 def statement(): return [("let", variable_declaration), 
                         assignment, 
@@ -39,16 +39,16 @@ def mulop():    return ["*","/"]
 def relop():    return ['==','!=','>=','>','<=','<']
 
 
-test = """ 
-print(1)            
-print(3 - 1)        
-print(2+1)          
-print(2 * 5 - 3*2)  
-print(4 - -1)       
-print(5--1)         
-print(21/3)         
-print((3-1)*(3+1))  
-"""
+# test = """ 
+# print(1)            
+# print(3 - 1)        
+# print(2+1)          
+# print(2 * 5 - 3*2)  
+# print(4 - -1)       
+# print(5--1)         
+# print(21/3)         
+# print((3-1)*(3+1))  
+# """
 
 # test = """ 
 # let three = fn () {1+2}
@@ -56,9 +56,7 @@ print((3-1)*(3+1))
 # """
 
 def run(test):
-    parser = ParserPython(program)
+    parser = ParserPython(program,comment)
     parse_tree = parser.parse(test)
     ast = visit_parse_tree(parse_tree, AstVisitor(debug=False))
     ast.evaluate(Binding())
-
-run(test)

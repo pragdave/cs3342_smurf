@@ -11,13 +11,13 @@ class Binding:
         return self.outer
     
     def set_variable(self, name, value):
-        print(f"{name} <- {value}")
+        # print(f"{name} <- {value}")
         self.bindings[name] = value
         return value
     
     def get_variable(self, name):
         if name in self.bindings:
-            return self.bindings[name]  #return int 
+            return self.bindings[name] 
         
         if self.outer:
             return self.outer.get_variable(name)
