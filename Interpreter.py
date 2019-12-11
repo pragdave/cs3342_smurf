@@ -150,11 +150,30 @@ class IfExpr:
         self.then = then
         self.elseif = elseif
 
-    def evaluate(self,binding):
+    def evaluate(self, binding):
         if self.ifexpr.evaluate(binding) == 1:
-            self.then.evaluate(binding)
+            return self.then.evaluate(binding)
         else:
-            self.elseif.evaluate(binding)
+            return self.elseif.evaluate(binding)
+
+class BoolExpr:
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+    
+    def evaluate(self, binding):
+        lhs = self.left.evaluate(binding)
+        rhs = self.right.evaluate(binding)
+        operation = {
+            '==':(1 if lhs==rhs else 0),
+            '!=':(0 if lhs==rhs else 1),
+            '>=':(1 if lhs>=rhs else 0),
+            '>' :(1 if lhs>rhs else 0),
+            '<=':(1 if lhs<=rhs else 0),
+            '<': (1 if lhs<rhs else 0),
+        }
+        return operation.get(self.op,"nothing")
 
 class Add:
     def __init__(self, left, right):

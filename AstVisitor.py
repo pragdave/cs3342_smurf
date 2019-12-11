@@ -48,6 +48,9 @@ class AstVisitor(PTNodeVisitor):
         else:
             return IfExpr(children[0],children[1],children[2])
 
+    def visit_boolean_expression(self, node, children):
+        return BoolExpr(children[0],children[1],children[2])
+
     def visit_arithmetic_expression(self, node, children):
         if len(children) > 1:
             if children[1] == '+':

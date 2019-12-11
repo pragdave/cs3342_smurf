@@ -27,13 +27,15 @@ def variable_reference():       return identifier
 def identifier():               return _(r'[a-z][a-zA-Z_0-9]*')
 
 # expression
-def expr():                     return [("fn",function_definition),
-                                        ("if",if_expression),
-                                        arithmetic_expression]
-def primary():                  return [integer, function_call, variable_reference, ('(',arithmetic_expression,')')]
+def expr():                     return  [("fn",function_definition),
+                                         ("if",if_expression),
+                                         boolean_expression,
+                                         arithmetic_expression]
+def primary():                  return  [integer, function_call, variable_reference, ('(',arithmetic_expression,')')]
 def arithmetic_expression():    return  [(multerm, addop, arithmetic_expression),multerm]
-def multerm():                  return [(primary, mulop, multerm),primary]
+def multerm():                  return  [(primary, mulop, multerm),primary]
 def if_expression():            return  (expr,brace_block, Optional("else", brace_block))
+def boolean_expression():      return   (arithmetic_expression,relop,arithmetic_expression)
 
 def integer():  return (Optional('-'), _(r'\d+'))
 def addop():    return ["+", "-"]
@@ -41,15 +43,28 @@ def mulop():    return ["*","/"]
 def relop():    return ['==','!=','>=','>','<=','<']
 
 
-test = """ 
-let a = 0
-if a {
-  print(99)
-}
-else {
-  print(100)
-}      
-"""
+# test = """ 
+# print(if 9 < 10 { 1  } else { -1 })      #=> 1
+# print(if 10 < 9 { -1 } else {  1 })      #=> 1
+# print(if 9 < 9  { -1 } else {  1 })      #=> 1
+
+# print(if  9 <= 10 {  1 } else { -1 })    #=> 1
+# print(if 10 <=  9 { -1 } else {  1 })    #=> 1
+# print(if  9 <=  9 {  1 } else { -1 })    #=> 1
+
+# print(if  9 >= 10 { -1 } else {  1 })    #=> 1
+# print(if 10 >=  9 {  1 } else { -1 })    #=> 1
+# print(if  9 >=  9 {  1 } else { -1 })    #=> 1
+
+# print(if  9 > 10 { -1 } else {  1 })     #=> 1
+# print(if 10 >  9 {  1 } else { -1 })     #=> 1
+# print(if  9 >  9 { -1 } else {  1 })     #=> 1
+
+# print(if  9 ==  9 {  1 } else { -1 })    #=> 1
+# print(if  9 == 10 { -1 } else {  1 })    #=> 1
+# print(if  9 !=  9 { -1 } else {  1 })    #=> 1
+# print(if  9 != 10 {  1 } else { -1 })    #=> 1         
+# """
 
 def run(test):
     parser = ParserPython(program,comment)
@@ -57,4 +72,4 @@ def run(test):
     ast = visit_parse_tree(parse_tree, AstVisitor(debug=False))
     ast.evaluate(Binding())
 
-run(test)
+# run(test)
