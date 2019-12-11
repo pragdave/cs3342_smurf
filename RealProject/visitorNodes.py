@@ -55,6 +55,17 @@ class Arithmetic_Expressions:
         print(f"Arithmetic Reached term: {self.arith}")
         return self.arith[0].eval(binding)
 
+class AddSub:
+    def __init__(self, term1, sign, term3):
+        self.term1 = term1
+        self.sign = sign
+        self.term3 = term3
+
+    def eval(self, binding):
+        if(self.sign == '+'):
+            return self.term1.eval(binding) + self.term3.eval(binding)
+        else:
+            return self.term1.eval(binding) - self.term3.eval(binding)
 
 class Mult_Term:
     def __init__(self, multTerm):
