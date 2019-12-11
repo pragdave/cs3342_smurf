@@ -53,7 +53,7 @@ def assignment():
     return identifier, "=", expr
 
 def expr():
-    return [primary, ("if", if_expression), boolean_expression, arithmetic_expression]
+    return [(function_definition), ("if", if_expression), boolean_expression, arithmetic_expression]
 
 
 #decl = identifier ("=" expr)?
@@ -62,7 +62,7 @@ def expr():
 
 
 def decl():
-    return identifier, Optional("=", [integer, identifier])
+    return identifier, Optional("=", expr)
 
 def variable_declaration():
     return decl, ZeroOrMore(",", decl)
@@ -92,10 +92,10 @@ def function_call():
     return [(variable_reference, "(", call_arguments, ")"), ("print", "(", call_arguments, ")")]
 
 def param_list():
-    return [("(", identifier, ZeroOrMore(",", identifier), ")" ), "()"]
+    return [("(", ")"), ("(", identifier, ZeroOrMore(",", identifier), ")" )]
 
 def function_definition():
-    return param_list, brace_block
+    return "fn", param_list, brace_block
 
 #if_expression = expr brace_block ( "else" brace_block )?
 def if_expression():

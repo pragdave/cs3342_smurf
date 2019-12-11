@@ -11,9 +11,39 @@ class Code:
     def __init__(self, expressions):
         self.expressions = expressions
     
-    def accept(self, visitor,):
+    def accept(self, visitor, bindings):
         return visitor.evaluate_code(self)
 
+class Arguments:
+    def __init__(self, args):
+        self.args = args
+    
+    def accept(self, visitor, bindings):
+        return visitor.evaluate_arguments(self, bindings)
+    
+class Parameters:
+    def __init__(self, params):
+        self.params = params
+    
+    def accept(self, visitor, bindings):
+        return visitor.evaluate_parameters(self, bindings)
+
+class Function_Call:
+    def __init__(self, name, args):
+        self.name = name
+        self.args = args
+    
+    def accept(self, visitor, bindings):
+        return visitor.evaluate_func_call(self, bindings)
+        
+class Function_Definition:
+    def __init__(self, func_binding, func):
+        self.func_binding = func_binding
+        self.func = func
+    
+    def accept(self, visitor, bindings):
+        return visitor.evaluate_func_definition(self, bindings)
+        
 class Assignment:
     def __init__(self, name, value):
         self.name = name
@@ -110,7 +140,6 @@ class Identifier:
         self.ident = ident
     
     def accept(self, visitor, bindings):
-        try:
-            return visitor.evaluate_var_value(self, bindings)
-        except:
-            return visitor.evaluate_identifier(self, bindings)
+        if(bindings.hasVal(self.ident)):
+            return bindings.getValue(self.ident)
+        return visitor.evaluate_identifier(self, bindings)

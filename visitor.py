@@ -8,7 +8,19 @@ class Visitor(PTNodeVisitor):
     
     def visit_brace_block(self, node, children):
         return Brace_Block(children)
-
+    
+    def visit_call_args(self, node, children):
+        return Arguments(children)
+    
+    def visit_func_call(self, node, children):
+        return Function_Call(children[0], children[1:])
+    
+    def visit_params(self, node, children):
+        return Parameters(children)
+    
+    def visit_func_def(self, node, children):
+        return Function_Definition(children[0], children[1])
+    
     def visit_assignment(self, node, children):
         if(len(children)) > 2:
             return Assignment(node, children)
@@ -18,7 +30,7 @@ class Visitor(PTNodeVisitor):
     def visit_print_smurf(self, node, children):
         return Print_Smurf(children)
     
-    def visit_variable_value(self, node, children):
+    def visit_variable_reference(self, node, children):
         return Variable(node.value)
     
     def visit_integer(self, node, children):
@@ -43,7 +55,10 @@ class Visitor(PTNodeVisitor):
         return Identifier(children[0])
 
     def visit_variable_declaration(self, node, children):
-        return Let_Decl(children)
+        if(len(children) == 2):
+            return (Assignment(children[0], children[1]))
+        else:
+            return (Declaration(children[0]))
 
     def visit_decl(self, node, children):
         if(len(children) == 2):
@@ -55,7 +70,7 @@ class Visitor(PTNodeVisitor):
         if(len(children) > 2):
             return If_Else(children[0], children[1], children[3])
         else:
-            return If_Expression(children[0], children[1])    
+            return If_Expression(children[0], children[1])
 
 
 

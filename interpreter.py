@@ -4,16 +4,41 @@ from binding import Binding
 class Interpreter(PTNodeVisitor):
     
     def evaluate_code(self, node):
-        g_binding = Binding({})
-        value = 0
+        g_binding = Binding({}, None)
         for exp in node.expressions:
             value = exp.accept(self, g_binding)
         return value
+    
+    def evaluate_function_call(self, node, bindings):
+        params = node.args.accept(self, bindings)
+        func_name = node.name.accept(self, bindings)
+        funcBinding = Binding(func_name[0].parent)
+        funcBinding.bindings = func_name[0].bindings.copy()
+        function = func_name[1]
+        for x in range(len(params)):
+            funcBinding.setValue(list(funcBinding.bindings.keys())[x],params[x])
+        return function.accept(self, funcBinding)
     
     def evaluate_brace_block(self, node, bindings):
         for exp in node.expressions:
             value = exp.accept(self, bindings)
         return value
+    
+    def evaluate_func_definition(self, node, bindings):
+        new_binding = node.func_binding.accept(self, bindings)
+        return new_binding
+        
+    def evaluate_parameters(self, node, bindings):
+        func_binding = Binding(bindings)
+        for p in node.params:
+            func_binding.createVal(p.accept(self, bindings))
+        return func_binding
+    
+    def evaluate_arguments(self, node, bindings):
+        argList = []
+        for a in node.args:
+            argList.append(map(a.accept(self, bindings), node.args))
+        return argList
     
     def evaluate_let_decl(self, node, bindings):
         for let in node.expressions:
@@ -23,13 +48,15 @@ class Interpreter(PTNodeVisitor):
                 let.accept(self, bindings)
     
     def evaluate_assignment(self, node, bindings):
-        bindings.setValue(node.name.accept(self, bindings), node.value.accept(self, bindings))
+        left = node.name.accept(self, bindings)
+        right = node.value.accept(self, bindings)
+        bindings.setValue(left, right)
     
     def evaluate_var_decl(self, node, bindings):
-        bindings.setValue(node.name.accept(self, bindings), 0)
+        return bindings.setValue(node.name.accept(self, bindings), 0)
     
     def evaluate_var_value(self, node, bindings):
-        name = node.ident
+        name = node.name
         value = bindings.getValue(name)
         return value
     
@@ -50,7 +77,7 @@ class Interpreter(PTNodeVisitor):
             return node.else_expr.accept(self, bindings)
     
     def evaluate_if(self, node, bindings):
-        boolean = node.if_expr.accept(self, bindings)
+        boolean = int(node.if_bool.accept(self, bindings))
         if boolean == 1:
             return node.if_expr.accept(self, bindings)
     
@@ -103,5 +130,9 @@ class Interpreter(PTNodeVisitor):
         return int(node.value)
     
     def evaluate_identifier(self, node, bindings):
-        return node.ident
+        try:
+            val = bindings.getValue(node.ident.accept(self, bindings))
+        except:
+            val = node.ident
+        return val
     
