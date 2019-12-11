@@ -17,7 +17,9 @@ class Binding:
     
     def get_variable(self, name):
         if name in self.bindings:
-            return self.bindings[name]
+            # print("inner")
+            print(self.bindings[name])
+            return self.bindings[name]  #return int 
         
         if self.outer:
             return self.outer.get_variable(name)
@@ -30,7 +32,7 @@ class Thunk:
         self.body = body
         self.df_binding = binding
 
-    def evaluate(self, args):
+    def evaluate(self, binding, args):
         binding = self.df_binding
         binding = binding.push()
 
@@ -54,12 +56,14 @@ class CodeBlock:
         return result
 
 # ------------------------- function -------------------------
-class FunctionDecl:
+class FunctionDef:
     def __init__(self, params, body):
+        print("here!")
         self.params = params
         self.body = body
 
     def evaluate(self,binding):
+        print(f"func del{self.params, self.body}")
         return Thunk(self.params, self.body, binding)
 
 class FunctionCall:

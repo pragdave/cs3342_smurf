@@ -13,7 +13,7 @@ def statement(): return [("let", variable_declaration),
 def function_call():        return [(variable_reference,'(',call_arguments,')'),
                                     ("print",'(',call_arguments,')')]
 def call_arguments():       return Optional(expr, ZeroOrMore(',',expr))
-def function_definitiion(): return (param_list, brace_block)
+def function_definition(): return (param_list, brace_block)
 def param_list():           return [('(',identifier, ZeroOrMore(',',identifier),')'),
                                     ('(',')')]
 def brace_block():          return ('{',code,'}')
@@ -26,7 +26,7 @@ def variable_reference():       return identifier
 def identifier():               return _(r'[a-z][a-zA-Z_0-9]*')
 
 # expression
-def expr():                     return [("fn",function_definitiion),
+def expr():                     return [("fn",function_definition),
                                         arithmetic_expression]
 def primary():                  return [integer, function_call, variable_reference, ('(',arithmetic_expression,')')]
 def arithmetic_expression():    return  [(multerm, addop, arithmetic_expression),multerm]
@@ -38,16 +38,18 @@ def mulop():    return ["*","/"]
 def relop():    return ['==','!=','>=','>','<=','<']
 
 
-test = """ 
-let three = fn (x) {x+3}
-three(0)
-"""
+# test = """ 
+# let three = fn (x) {x+3}
+# three(0)
+# """
 
-# let three = fn () {1+2}
-# three()
+test = """ 
+let three = fn () {1+2}
+three()
+"""
 
 parser = ParserPython(program)
 parse_tree = parser.parse(test)
 print(parse_tree)
 ast = visit_parse_tree(parse_tree, AstVisitor(debug=True))
-ast.evaluate(Binding())
+print(ast.evaluate(Binding()))

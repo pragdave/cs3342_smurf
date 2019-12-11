@@ -8,7 +8,8 @@ class AstVisitor(PTNodeVisitor):
 
     # ------------------------- function -------------------------
     def visit_function_definition(self, node, children):
-        return FunctionDecl(children[0], children[1])
+        print("here")
+        return FunctionDef(children[0], children[1])
 
     def visit_function_call(self, node, children):
         if len(children) == 1:
@@ -16,6 +17,12 @@ class AstVisitor(PTNodeVisitor):
             return FunctionCall(children[0].name, [])
         else:
             return FunctionCall(children[0].name, children[1])
+
+    def visit_param_list(self, node, children):
+        print(children)
+        return children
+
+    def visit_call_arguments(self, node, )
 
     # ------------------------- variable -------------------------
     def visit_variable_declaration(self,node,children):
