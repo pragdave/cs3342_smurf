@@ -1,4 +1,4 @@
-from LangEvaluator import Context
+from LangContext import Context
 
 
 class VariableDeclaration:
