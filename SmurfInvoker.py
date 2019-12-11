@@ -12,6 +12,7 @@ parser = ParserPython(program, comment)
 
 
 # f = sys.argv[1]
+
 f = 'test_cases/20_fn_basic.smu'
 file = open(f, 'rU')
 contents = file.read()

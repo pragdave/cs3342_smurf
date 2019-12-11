@@ -11,14 +11,13 @@ class PrintFunction:
 
 
 class FunctionDefinition:
-    def __init__(self, params, id):
+    def __init__(self, id, parentContext):
         self.id = id
-        self.params = params
+        self.context = parentContext
 
     def eval(self, context):
-        params = self.params.eval(context)
-        var = self.id.eval(context)
-        funcContext = Context(var.parent)
+        funcContext = self.context.eval(context)
+        return (funcContext, self.id)
 
 
 class ParamList:
