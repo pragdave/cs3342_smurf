@@ -175,6 +175,23 @@ class BoolExpr:
         }
         return operation.get(self.op,"nothing")
 
+class BasicExpr:
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+    
+    def evaluate(self, binding):
+        lhs = self.left.evaluate(binding)
+        rhs = self.right.evaluate(binding)
+        operation = {
+            '+':(lhs+rhs),
+            '-':(lhs-rhs),
+            '*':(lhs*rhs),
+            '/':int(lhs/rhs)
+        }
+        return operation.get(self.op,"nothing")
+
 class Add:
     def __init__(self, left, right):
         self.left = left

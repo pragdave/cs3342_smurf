@@ -43,28 +43,19 @@ def mulop():    return ["*","/"]
 def relop():    return ['==','!=','>=','>','<=','<']
 
 
-# test = """ 
-# print(if 9 < 10 { 1  } else { -1 })      #=> 1
-# print(if 10 < 9 { -1 } else {  1 })      #=> 1
-# print(if 9 < 9  { -1 } else {  1 })      #=> 1
+test = """ 
+let sum_up_to = fn(n) {
+  if n < 1 {
+    0
+  }
+  else {
+    n + sum_up_to(n-1)
+  }
+}
 
-# print(if  9 <= 10 {  1 } else { -1 })    #=> 1
-# print(if 10 <=  9 { -1 } else {  1 })    #=> 1
-# print(if  9 <=  9 {  1 } else { -1 })    #=> 1
-
-# print(if  9 >= 10 { -1 } else {  1 })    #=> 1
-# print(if 10 >=  9 {  1 } else { -1 })    #=> 1
-# print(if  9 >=  9 {  1 } else { -1 })    #=> 1
-
-# print(if  9 > 10 { -1 } else {  1 })     #=> 1
-# print(if 10 >  9 {  1 } else { -1 })     #=> 1
-# print(if  9 >  9 { -1 } else {  1 })     #=> 1
-
-# print(if  9 ==  9 {  1 } else { -1 })    #=> 1
-# print(if  9 == 10 { -1 } else {  1 })    #=> 1
-# print(if  9 !=  9 { -1 } else {  1 })    #=> 1
-# print(if  9 != 10 {  1 } else { -1 })    #=> 1         
-# """
+print(sum_up_to(0))     #=> 0
+print(sum_up_to(1))     #=> 1     
+"""
 
 def run(test):
     parser = ParserPython(program,comment)
@@ -72,4 +63,4 @@ def run(test):
     ast = visit_parse_tree(parse_tree, AstVisitor(debug=False))
     ast.evaluate(Binding())
 
-# run(test)
+run(test)
