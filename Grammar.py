@@ -4,6 +4,7 @@ from AstVisitor import *
 
 # general 
 def program():   return code, EOF
+def comment():   return ("#",_(r'.*'))
 def code():      return ZeroOrMore(statement)
 def statement(): return [("let", variable_declaration), 
                         assignment, 
@@ -39,8 +40,15 @@ def relop():    return ['==','!=','>=','>','<=','<']
 
 
 test = """ 
-let f = fn(x, y) { x + y }
-f(99, f(1, 2))
+let fib = fn(n) {
+  if n < 2 {
+    n
+  }
+  else {
+    fib(n-1) + fib(n-2)
+  }
+}
+fib(10)
 """
 
 # test = """ 
