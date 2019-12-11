@@ -40,6 +40,7 @@ def relop():    return ['==','!=','>=','>','<=','<']
 
 test = """ 
 let three = fn () {99+1}
+three()
 """
 parser = ParserPython(program)
 parse_tree = parser.parse(test)

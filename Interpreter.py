@@ -1,14 +1,46 @@
 # Binding
 class Binding:
-    def __init__(self):
+    def __init__(self, outer=None):
         self.bindings = {}
+        self.outer = outer
+
+    def push(self):
+        return Binding(self)
+    
+    def pop(self):
+        return self.outer
     
     def set_variable(self, name, value):
         print(f"{name} <- {value}")
         self.bindings[name] = value
     
     def get_variable(self, name):
-        return self.bindings.get(name, 0)
+        if name in self.bindings:
+            return self.bindings[name]
+        
+        if self.outer:
+            return self.outer.get_variable(name)
+
+        raise Exception(f"Variable '{name} is not defined")
+
+class Thunk:
+    def __init__(self, params, body, binding):
+        self.params = params
+        self.body = body
+        self.df_binding = binding
+
+    def evaluate(self, args):
+        binding = self.df_binding
+        binding = binding.push()
+
+        for param, arg in zip(self.params, args):
+            binding.set_variable(param, arg)
+        
+        result = self.body.evaluate(binding)
+
+        binding = binding.pop()
+        return result
+        
 # Node Interpreter
 class CodeBlock:
     def __init__(self, expr):
@@ -23,20 +55,24 @@ class CodeBlock:
 # ------------------------- function -------------------------
 class FunctionDecl:
     def __init__(self, params, body):
-        self.paramas = params
+        self.params = params
         self.body = body
 
     def evaluate(self,binding):
-        return self.body
+        return Thunk(self.params, self.body, binding)
 
 class FunctionCall:
     def __init__(self, name, args):
-        self.name = name
+        self.name = name 
         self.args = args
 
     def evaluate(self, binding):
-        body = binding.get_variable(self.name)
-        return body.evaluate(binding, [])
+        pValues = [
+            arg.evaluate(binding) for arg in self.args
+        ]
+        print(f"! call:{self.name}")
+        thunk = binding.get_variable(self.name)
+        return thunk.evaluate(binding, pValues)
 
 
 # ------------------------- variable -------------------------
