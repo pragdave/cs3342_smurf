@@ -1,4 +1,4 @@
-Testting:
+Testing:
 cd test_cases
 python3 ../test_runner.py "./a.out"
 
