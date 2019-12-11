@@ -36,7 +36,7 @@ def main(debug = False):
     parser = ParserPython(program, comment, debug = debug)
     #parse_tree = parser_parse(test_program)
     #parsing_tree = parser.parse(fileString)
-    parsing_tree = parser.parse("1")
+    parsing_tree = parser.parse("-1")
     print(f"parsing_tree: {parsing_tree}")
     result = visit_parse_tree(parsing_tree, SmurfVisitor(debug=False))
     #binding = {}

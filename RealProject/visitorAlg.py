@@ -42,6 +42,9 @@ class SmurfVisitor(PTNodeVisitor):
     def visit_integer(self, node, children):
         print(f"Visit Integer children: {children}")
         print(f"Visit Integer: {(node.value)}")
+        if (children[0] == '-'):
+            print(f"Returning: {int(node.value[4:]) * -1}")
+            return Integer  (int(node.value[4:]) * -1)
         print(f"Visit Integer: {int(node.value)}")
         return Integer(int(node.value))
 
