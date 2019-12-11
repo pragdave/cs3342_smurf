@@ -41,11 +41,13 @@ If feature based, put an X in the cell that represents the combination of syntax
 I've included in this PR:
 
 [X] everything I'll need to build a running version of your submission (source,
+
     dependency loading, etc)
 
 [ ] a build file that will create an executable (if required)
 
 [X] a script that will run the tests (if you're making a test-based submission)
+
 
 (see [Deliverables](#deliverables) for more details)
 
