@@ -42,7 +42,7 @@ def main(debug = False):
 
     #parsing_treePic = PictureParser.parse("1")
 
-    parsing_tree = parser.parse("print(1--1)")
+    parsing_tree = parser.parse("print(10 / 5)")
     print(f"parsing_tree: {parsing_tree}")
     print(f"typeof tree: {type(parsing_tree)}")
     result = visit_parse_tree(parsing_tree, SmurfVisitor(debug=True))

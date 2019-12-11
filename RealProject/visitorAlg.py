@@ -46,7 +46,10 @@ class SmurfVisitor(PTNodeVisitor):
     def visit_mult_term(self, node, children):
         print(f"Visit Mult Term children: {children}")
         print(f"Visit Mult Term node: {node}")
-        return children[0]
+        if (len(children) == 1):
+            return children[0]
+        elif (children[1] == '*') or (children[1] == '/'):
+            return MultDivide(children[0], children[1], children[2])
 
     # def visit_primary(self, node, children):
     #     print(f"Visit Primary children: {children}")

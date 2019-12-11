@@ -67,6 +67,18 @@ class AddSub:
         else:
             return self.term1.eval(binding) - self.term3.eval(binding)
 
+class MultDivide:
+    def __init__(self,term1, sign, term3):
+        self.term1 = term1
+        self.sign = sign
+        self.term3 = term3
+
+    def eval(self, binding):
+        if (self.sign == '*'):
+            return self.term1.eval(binding) * self.term3.eval(binding)
+        else:
+            return int(self.term1.eval(binding) / self.term3.eval(binding))
+
 class Mult_Term:
     def __init__(self, multTerm):
         self.multTerm = multTerm
