@@ -144,6 +144,18 @@ class IntegerNode:
 
 
 # ------------------------- expressions -------------------------
+class IfExpr:
+    def __init__(self, ifexpr, then, elseif):
+        self.ifexpr = ifexpr
+        self.then = then
+        self.elseif = elseif
+
+    def evaluate(self,binding):
+        if self.ifexpr.evaluate(binding) == 1:
+            self.then.evaluate(binding)
+        else:
+            self.elseif.evaluate(binding)
+
 class Add:
     def __init__(self, left, right):
         self.left = left

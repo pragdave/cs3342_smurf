@@ -28,10 +28,12 @@ def identifier():               return _(r'[a-z][a-zA-Z_0-9]*')
 
 # expression
 def expr():                     return [("fn",function_definition),
+                                        ("if",if_expression),
                                         arithmetic_expression]
 def primary():                  return [integer, function_call, variable_reference, ('(',arithmetic_expression,')')]
 def arithmetic_expression():    return  [(multerm, addop, arithmetic_expression),multerm]
 def multerm():                  return [(primary, mulop, multerm),primary]
+def if_expression():            return  (expr,brace_block, Optional("else", brace_block))
 
 def integer():  return (Optional('-'), _(r'\d+'))
 def addop():    return ["+", "-"]
@@ -39,19 +41,20 @@ def mulop():    return ["*","/"]
 def relop():    return ['==','!=','>=','>','<=','<']
 
 
-# test = """ 
-# print(1)            
-# print(3 - 1)        
-# print(2+1)          
-# print(2 * 5 - 3*2)  
-# print(4 - -1)       
-# print(5--1)         
-# print(21/3)         
-# print((3-1)*(3+1))  
-# """
+test = """ 
+let a = 0
+if a {
+  print(99)
+}
+else {
+  print(100)
+}      
+"""
 
 def run(test):
     parser = ParserPython(program,comment)
     parse_tree = parser.parse(test)
     ast = visit_parse_tree(parse_tree, AstVisitor(debug=False))
     ast.evaluate(Binding())
+
+run(test)

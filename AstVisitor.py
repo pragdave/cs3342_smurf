@@ -1,6 +1,5 @@
 from Interpreter import *
 from arpeggio import PTNodeVisitor
-# from Grammar import *
 
 class AstVisitor(PTNodeVisitor):
     def visit_code(self, node, children):
@@ -41,6 +40,13 @@ class AstVisitor(PTNodeVisitor):
 
     def visit_variable_reference(self, node, children):
         return VariableReference(node.value)
+
+    # ------------------------- expression -------------------------
+    def visit_if_expression(self, node, children):
+        if len(children)==2:
+            return IfExpr(children[0],children[1],[])
+        else:
+            return IfExpr(children[0],children[1],children[2])
 
     def visit_arithmetic_expression(self, node, children):
         if len(children) > 1:
