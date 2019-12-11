@@ -40,21 +40,33 @@ int interpreter::evaluate_statement(node *nodex){
 }
 
 int interpreter::evaluate_code(vector<node*> nodex){
-    node statement;
-    int result = 0;
-//    cout<<"Do you try to evaluate code??"<<endl;
-    cout<<"Statement at nodex[0]:"<<nodex[0]->str()<<endl;
+    int result=212121212;
+    //cout<<"Just tell me you tried to evaluate the code"<<endl;
     for(int i=0; i<nodex.size(); i++){
         result = nodex[i]->accept(this);
     }
-//    cout<<"Result at nodex[0]: "<<result<<endl;
-    
-//    for(int i=0; i<nodex.size(); i++){
-//        statement = *nodex[i];
-//        result = statement.accept(this);
-//        cout<<"Result: "<<result<<endl;
-//    }
     return result;
+    
+    
+    
+    
+    
+    
+    //    node statement;
+//    int result = 0;
+////    cout<<"Do you try to evaluate code??"<<endl;
+//    cout<<"Statement at nodex[0]:"<<nodex[0]->str()<<endl;
+//    for(int i=0; i<nodex.size(); i++){
+//        result = nodex[i]->accept(this);
+//    }
+////    cout<<"Result at nodex[0]: "<<result<<endl;
+//
+////    for(int i=0; i<nodex.size(); i++){
+////        statement = *nodex[i];
+////        result = statement.accept(this);
+////        cout<<"Result: "<<result<<endl;
+////    }
+//    return result;
     
 }
 

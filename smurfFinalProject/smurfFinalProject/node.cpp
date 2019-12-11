@@ -139,27 +139,23 @@ void statementNode::print(){
 
 //code node
 codeNode::codeNode(){
-    cout<<"Statements [0]: "<<statements[0]->str()<<endl;
-//    if(statements.size()>0){
-//        cout<<"Statements [1]: "<<statement[1].str()<<endl;
-//    }
-}
-
-void codeNode::addToVect(node *statement){
-    statements.push_back(statement);
+//    statements.push_back(stmt);
 }
 
 int codeNode::accept(visitor *visitorx){
-    int result=0;
+    return visitorx->evaluate_code(statements);
+}
+
+string codeNode::str(){
+    string result;
     for(int i=0; i<statements.size(); i++){
-        result = visitorx->evaluate_code(statements);
+        result = statements[i]->str();
     }
     return result;
 }
 
-string codeNode::str(){
-    string result = statements[0]->str();
-    return result;
+void codeNode::addToVect(node *nodex){
+    statements.push_back(nodex);
 }
 
 

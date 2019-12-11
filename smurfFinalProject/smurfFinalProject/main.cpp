@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <vector>
 
 #include "visitor.hpp"
 #include "node.hpp"
@@ -89,33 +90,39 @@ node *assign(const SemanticValues &sv){
     return left;
 };
 
-//void code(const SemanticValues &sv){
-//    node *x = sv[0].get<ParseTreeNode>().get();
-//    codeNode *statement = new codeNode;
-//    statement->addToVect(x);
-//    
-//    for(int i=1; i<sv.size(); i++){
-//        node *x = sv[i].get<ParseTreeNode>().get();
-//        statement->addToVect(x);
-//    }
-//};
+node *code(const SemanticValues &sv){
+    codeNode *code = new codeNode();
+    cout << "new code node\n";
+    for(int i=0; i<sv.size(); i++){
+        node *x = sv[i].get<ParseTreeNode>().get();
+        cout << "adding statement\n";
+        code->addToVect(x);
+    }
+    return code;
+};
 
 node *statement(const SemanticValues &sv){
     node *x = sv[0].get<ParseTreeNode>().get();
-    for(unsigned int i=0; i<sv.size(); i++){
-        node *next = sv[i].get<ParseTreeNode>().get();
-        x = new statementNode(next);
-    }
+    node *statement = new statementNode(x);
     cout<<"Statement node X: "<<x->str()<<endl;
     return x;
+    
+    //    vector<node*> allStatements;
+    //    allStatements.push_back(statement);
+    
+    //    for(unsigned int i=0; i<sv.size(); i++){
+    //        node *next = sv[i].get<ParseTreeNode>().get();
+    //        allStatements.push_back(statement);
+    //        x = new statementNode(next);
+    //
+    //    }
 }
 
 void setup_ast_generation(parser &parser)
 {
-//    parser["code"] = [](const SemanticValues &sv){
-//        code(sv);
-//        return sv;
-//    };
+    parser["code"] = [](const SemanticValues &sv){
+        return ParseTreeNode(code(sv));
+    };
     
     parser["statement"] = [](const SemanticValues &sv) {
         node *n = statement(sv);

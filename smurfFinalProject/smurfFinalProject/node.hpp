@@ -89,8 +89,9 @@ public:
 };
 
 class codeNode: public node {
-public:
+private:
     vector<node*> statements;
+public:
     codeNode();
     string str();
     void addToVect(node*);
