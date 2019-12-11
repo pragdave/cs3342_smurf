@@ -8,7 +8,7 @@ import os
 def program(): return code, EOF
 def comment(): return _(r'#.*')
 def code() : return ZeroOrMore(statement)
-def statement() : return [("let", variable_declaration) , assignment , expr]       
+def statement() : return [("let", variable_declaration) , assignment , expr]
 def variable_declaration(): return decl, ZeroOrMore(",", decl)
 def decl(): return identifier, Optional("=", expr)
 def identifier() : return [_(r'[a-z]')], ZeroOrMore([_(r'a-zA-Z_0-9')])
@@ -32,15 +32,18 @@ def param_list():  return [("(", identifier, ZeroOrMore(",", identifier), ")") ,
 def brace_block(): return "{", code, "}"
 
 def main(debug = False):
-  
+    #current_dir = os.path.dirname(__file__)
+    #test_program = open(os.path.join(current_dir, 'C:\\Users\\mailt\Documents\\GitHub\\cs3342_smurf\\test_cases\\00_expr.smu')).read()
     parser = ParserPython(program, comment, debug = debug)
     #parse_tree = parser_parse(test_program)
     #parsing_tree = parser.parse(fileString)
     parsing_tree = parser.parse("1")
     print(f"parsing_tree: {parsing_tree}")
-    result = visit_parse_tree(parsing_tree, SmurfVisitor(debug=False))
-    #binding = {}
-    #result.eval(binding)
+    print(f"typeof tree: {type(parsing_tree)}")
+    result = visit_parse_tree(parsing_tree, SmurfVisitor(debug=True))
+    binding = {}
+    result.eval(binding)
+    print(f"HELLO WORLD")
     #print(f"result: {result}")
     #print(f"typeof result: {type(result)}")
 
@@ -50,4 +53,4 @@ def main(debug = False):
 
 
 if __name__ == "__main__":
-    main(debug=False)
+    main(debug=True)
