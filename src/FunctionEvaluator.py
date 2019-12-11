@@ -1,4 +1,4 @@
-from src.LangEvaluator import Context
+from LangEvaluator import Context
 
 
 class PrintFunction:
@@ -6,7 +6,13 @@ class PrintFunction:
         self.statement = statement
 
     def eval(self, context):
-        print(self.statement.eval(context))
+        output = self.statement.eval(context)
+        text = ""
+        # format output with pipes between multiple items
+        for x in range(0, len(output)-1):
+            text += str(output[x]) + "|"
+        text += str(output[len(output)-1])
+        print(("Print: " + text))
         return 0
 
 
@@ -35,7 +41,10 @@ class CallArguments:
         self.argList = argList
 
     def eval(self, context):
-        return list(map(lambda arg: arg.eval(context), self.argList))
+        outputList = []
+        for arg in self.argList:
+            outputList.append(arg.eval(context))
+        return outputList
 
 
 class FunctionCall:
@@ -55,10 +64,14 @@ class FunctionCall:
             raise Exception(
                 "Parameter list length did not match function definition.")
 
-        # create a new context for the function execution
+        # create a new context for the function execution, parent is the closure
+        # from the FunctionDefinition
         fContext = Context(thunk[2])
+
+        # map params to context
         i = 0
         for key in argKeys:
             fContext.setVar(key, argVals[i])
             i = i + 1
+
         return thunk[0].eval(fContext)

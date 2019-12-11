@@ -23,7 +23,7 @@ SMU ID: 47760132
 
 ##### Grading criteria (see [Grading](#grading) below):
 
-[ ] test-based
+[X] test-based
 
 [ ] feature based
 
@@ -45,7 +45,7 @@ I've included in this PR:
 
 [ ] a build file that will create an executable (if required)
 
-[ ] a script that will run the tests (if you're making a test-based submission)
+[X] a script that will run the tests (if you're making a test-based submission)
 
 (see [Deliverables](#deliverables) for more details)
 

@@ -7,9 +7,7 @@ class Context:
         self.context[name] = value
 
     def getVar(self, name):
-
         curContext = self
-
         while (not(curContext is None) and not(name in curContext.context)):
             curContext = curContext.parent
 

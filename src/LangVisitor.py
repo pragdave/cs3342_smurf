@@ -1,9 +1,9 @@
 from arpeggio import PTNodeVisitor
-from src.CodeEvaluator import *
-from src.ExpressionEvaluator import *
-from src.LangEvaluator import *
-from src.VariableEvaluator import *
-from src.FunctionEvaluator import *
+from CodeEvaluator import *
+from ExpressionEvaluator import *
+from LangEvaluator import *
+from VariableEvaluator import *
+from FunctionEvaluator import *
 
 
 class LangVisitor(PTNodeVisitor):

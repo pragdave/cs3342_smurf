@@ -1,4 +1,4 @@
-# python test_runner.py «path to interpreter»
+# python test_runner.py "../SmurfInvoker.py"
 import sys
 import re
 import os
