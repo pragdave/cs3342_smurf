@@ -36,12 +36,14 @@ def brace_block(): return "{", code, "}"
 def main(debug = False):
     #current_dir = os.path.dirname(__file__)
     #test_program = open(os.path.join(current_dir, 'C:\\Users\\mailt\Documents\\GitHub\\cs3342_smurf\\test_cases\\00_expr.smu')).read()
+
+    #Used for Picture?
     #PictureParser = ParserPEG(main, "program")
     parser = ParserPython(program, comment, debug = debug)
-    #parse_tree = parser_parse(test_program)
-    #parsing_tree = parser.parse(fileString)
-
+    #Used for Picture?
     #parsing_treePic = PictureParser.parse("1")
+
+
     file_object = open("mytest.smu", "r")
     fileString = file_object.read()
     smurfCode = sys.argv[1]
