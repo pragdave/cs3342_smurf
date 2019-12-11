@@ -41,16 +41,17 @@ def main(debug = False):
     #parsing_tree = parser.parse(fileString)
 
     #parsing_treePic = PictureParser.parse("1")
-
-    parsing_tree = parser.parse("print(10 / 5)")
+    file_object = open("mytest.smu", "r")
+    fileString = file_object.read()
+    parsing_tree = parser.parse(fileString)
     print(f"parsing_tree: {parsing_tree}")
     print(f"typeof tree: {type(parsing_tree)}")
     result = visit_parse_tree(parsing_tree, SmurfVisitor(debug=True))
     binding = {}
     result.eval(binding)
-    print(f"HELLO WORLD")
-    #print(f"result: {result}")
-    #print(f"typeof result: {type(result)}")
+    #print(f"HELLO WORLD")
+    print(f"result: {result}")
+    print(f"typeof result: {type(result)}")
 
     #print(f"typeOfName result: {type(result).__name__}")
     #print(f"result: {binding}")

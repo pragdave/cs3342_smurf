@@ -11,7 +11,8 @@ class Program:
         print(f"Making Program Class: {self.node} and {self.program}")
 
     def eval(self, binding):
-        print(f"Program eval {self.program.eval(binding)}")
+        print(f"ULTIMATE EVALUATION: {self.program.eval(binding)}")
+        print(f"Program Eval Not working?")
         return self.program.eval(binding)
 
 
@@ -132,9 +133,17 @@ class ToConsole:
         print(f"Into ToConsole")
         print(f"ToConsole function: {self.function}")
         print(f"ToConsole arguments: {self.arguments}")
+        print(f"ToConsole binding: {binding}")
         num = self.arguments.eval(binding)
         print(f"ToConsole num: {num}")
         if self.function == "print":
             if type(num) == int:
                 print(f"WE ACTUALLY MADE IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 print(num)
+class Variable_Declaration:
+    def __init__(self, declarations):
+        self.declarations = declarations
+    def eval(self, binding):
+        for newVariables in self.declarations:
+            variable = newVariables.evaluate(binding)
+        return variable

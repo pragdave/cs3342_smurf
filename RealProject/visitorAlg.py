@@ -18,6 +18,8 @@ class SmurfVisitor(PTNodeVisitor):
         print(f"visit statement children: {children}")
         print(f"visit statement children[0]: {children[0]}")
         print(f"visit statement node: {node}")
+        #if(children([0]) == "let"):
+            #return Variable_Declaration(children)
         return Statement(children[0])
     def visit_expr(self, node, children):
         #print(f"vist expr")
@@ -71,3 +73,8 @@ class SmurfVisitor(PTNodeVisitor):
             print(f"Got into Print If")
             print(f"function node: {node}")
             return ToConsole(node[0], children[0])
+
+    def visit_variable_declaration(self, node, children):
+        print(f"variable declaration node: {node}")
+        print(f"variable declaration children: {children}")
+        return
