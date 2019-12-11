@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="50f8a92d-b5bc-4067-8cd2-0d6210e95202" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/program_parse_tree.dot" beforeDir="false" afterPath="$PROJECT_DIR$/program_parse_tree.dot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/program_parser_model.dot" beforeDir="false" afterPath="$PROJECT_DIR$/program_parser_model.dot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visitorAlg.py" beforeDir="false" afterPath="$PROJECT_DIR$/visitorAlg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visitorNodes.py" beforeDir="false" afterPath="$PROJECT_DIR$/visitorNodes.py" afterDir="false" />
-    </list>
+    <list default="true" id="50f8a92d-b5bc-4067-8cd2-0d6210e95202" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +93,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="950" />
     <option name="width" value="979" />
     <option name="height" value="1040" />

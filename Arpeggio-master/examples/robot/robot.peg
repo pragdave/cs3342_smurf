@@ -1,6 +1,0 @@
-robot = 'begin' command* 'end' EOF
-command = UP/DOWN/LEFT/RIGHT
-UP = 'up'
-DOWN = 'down'
-LEFT = 'left'
-RIGHT = 'right'
