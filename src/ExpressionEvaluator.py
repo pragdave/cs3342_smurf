@@ -42,8 +42,8 @@ class BooleanEvaluator:
         self.symbol = symbol
 
     def eval(self, context):
-        lhs = int(context.eval(lhs))
-        rhs = int(context.eval(rhs))
+        lhs = int(self.lhs.eval(context))
+        rhs = int(self.rhs.eval(context))
         if self.symbol == "==":
             if lhs == rhs:
                 return 1

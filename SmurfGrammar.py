@@ -13,14 +13,10 @@ def comment(): return ("#", RXMatch(r'.*'))
 def code(): return ZeroOrMore(statement)
 
 
-def statement(): return (ZeroOrMore('\n'),
-                         [("let", variable_declaration),
-                          assignment,
-                          expr],
-                         ZeroOrMore('\n'))
+def statement(): return [("let", variable_declaration), assignment, expr]
 
 
-def variable_declaration(): return decl, ZeroOrMore(",", decl)
+def variable_declaration(): return (decl, ZeroOrMore(",", decl))
 
 
 def decl(): return identifier, Optional("=", expr)
