@@ -53,7 +53,7 @@ def if_statement():
     
 #Handles function assignment
 def fn_decl():
-    return var_ref, "=", "fn", "(", Optional(var_ref), ZeroOrMore(",", var_ref), ")", code_block
+    return Optional(var_ref, "="), [("fn", "(", Optional(var_ref), ZeroOrMore(",", var_ref), ")", code_block), fn_call]
     
 #Handles function declaration
 def fn_let():

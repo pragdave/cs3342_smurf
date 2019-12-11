@@ -50,7 +50,13 @@ class ASTGenerator(PTNodeVisitor):
         
     def visit_fn_decl(self, node, children):
         numChildren = len(children)
-        return nodes.Fn_Decl(children[0], children[1:numChildren-1], children[numChildren-1])
+        if node[0] =="fn":
+            return nodes.Fn_Decl("anon", children[0:numChildren-1], children[numChildren-1])
+        else:
+            if isinstance(children[1], nodes.Fn_Call):
+                return nodes.Fn_Decl(children[0], "Fn_Call", children[1])
+            else:
+                return nodes.Fn_Decl(children[0], children[1:numChildren-1], children[numChildren-1])
         
     def visit_fn_let(self, node, children):
         return nodes.Fn_Let(children)

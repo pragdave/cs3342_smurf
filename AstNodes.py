@@ -71,8 +71,8 @@ class Code_Block:
     def __init__(self, list):
         self.list = list
         
-    def accept(self, visitor, bindings):
-        return visitor.evaluate_code_block(self, bindings)
+    def accept(self, visitor, bindings, fn_decl=False):
+        return visitor.evaluate_code_block(self, bindings, fn_decl)
         
 class If_Statement:
     def __init__(self, boolExpr, ifBlock, elseBlock):
