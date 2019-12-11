@@ -8,21 +8,19 @@ class AstVisitor(PTNodeVisitor):
 
     # ------------------------- function -------------------------
     def visit_function_definition(self, node, children):
-        print("here")
         return FunctionDef(children[0], children[1])
 
     def visit_function_call(self, node, children):
         if len(children) == 1:
-            print(f"function var:{children[0]}" )
             return FunctionCall(children[0].name, [])
         else:
             return FunctionCall(children[0].name, children[1])
 
     def visit_param_list(self, node, children):
-        print(children)
         return children
 
-    def visit_call_arguments(self, node, )
+    def visit_call_arguments(self, node, children):
+        return children
 
     # ------------------------- variable -------------------------
     def visit_variable_declaration(self,node,children):
@@ -39,7 +37,6 @@ class AstVisitor(PTNodeVisitor):
     #     return VariableNode(str(node.value))
 
     def visit_variable_reference(self, node, children):
-        print(f"! var name:{node.value}")
         return VariableReference(node.value)
 
     def visit_arithmetic_expression(self, node, children):
