@@ -1,3 +1,4 @@
 ###Run Instructions###
-1) From a Unix command line, enter the root directory for this project.
-2) Run the RUN_TESTS.sh shell script via "./RUN_TESTS.sh".
+1) Ensure that Python3 and Arpeggio are installed.
+2) From a Unix command line, enter the root directory for this project.
+3) Run the RUN_TESTS.sh shell script via "./RUN_TESTS.sh".
