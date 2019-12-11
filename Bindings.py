@@ -4,8 +4,8 @@ class Bindings():
         self.binding = binding
     
     def getVal(self, identifier):
-        print("getValIdentifier:", identifier)
-        print(self.binding)
+        #print("getValIdentifier:", identifier)
+        #print(self.binding)
         if isinstance(identifier, str):
             if str(self.binding[identifier]):
                 return self.binding[identifier]
@@ -22,6 +22,11 @@ class Bindings():
         
     def setFunc(self, identifier, params, code, bindings):
         paramsTemp = []
+        print("setFuncBindings:",bindings)
+        
+        for param in bindings.binding:
+            self.binding[param] = bindings.getVal(param)
+            print(param)
         
         for param in params:
             print("identifier:",identifier)
