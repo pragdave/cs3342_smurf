@@ -8,7 +8,11 @@ class Binding():
         self.binding[name] = value
         
     def getValue(self, name):
-        return self.binding[name]
+        if name in self.binding.keys():
+            return self.binding[name]
+        else:
+            raise Exception("not a valid value")
+            
     
     def createVal(self, name, value):
         self.binding[name] = value

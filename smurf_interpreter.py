@@ -12,7 +12,7 @@ with open('01_variables.smu', 'r') as f:
 
 parser = ParserPython(Grammar.program, Grammar.comment, debug=debug)
 
-parse_tree = parser.parse("let a = 2, b = a+4 print(b)")
+parse_tree = parser.parse("print(c)")
 
 tree = visit_parse_tree(parse_tree, Visitor.Visitor())
 

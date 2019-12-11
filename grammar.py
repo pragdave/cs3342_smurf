@@ -83,7 +83,7 @@ def brace_block():
     return "{", code, "}"
 
 def print_smurf():
-    return "print", "(", OneOrMore([identifier, boolean_expression, arithmetic_expression, primary]), ")"
+    return "print", "(", [ boolean_expression, arithmetic_expression, primary, identifier], ")"
 
 def call_arguments():
     return (expr, ZeroOrMore(",", expr))

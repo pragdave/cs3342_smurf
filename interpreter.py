@@ -96,6 +96,9 @@ class Interpreter(PTNodeVisitor):
     
     def evaluate_mult_term(self, node, bindings):
         val = node.lhs.accept(self, bindings)
+        if str(type(val)) == 'NoneType':
+            print("not valid input")
+            return
         for i in range(1, len(node.expressions), 2):
             if(node.expressions[i-1] == '*'):
                 val *= node.expressions[i].accept(self, bindings)
