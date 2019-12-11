@@ -17,5 +17,6 @@ f = 'test_cases/20_fn_basic.smu'
 file = open(f, 'rU')
 contents = file.read()
 parse_tree = parser.parse(contents)
+
 AST = visit_parse_tree(parse_tree, LangVisitor(debug=False))
 AST.eval()

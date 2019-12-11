@@ -11,13 +11,12 @@ class PrintFunction:
 
 
 class FunctionDefinition:
-    def __init__(self, id, parentContext):
-        self.id = id
+    def __init__(self, params, parentContext):
+        self.params = params
         self.context = parentContext
 
     def eval(self, context):
-        funcContext = self.context.eval(context)
-        return (funcContext, self.id)
+        return (self.context, self.params)
 
 
 class ParamList:
@@ -27,7 +26,7 @@ class ParamList:
     def eval(self, parentContext):
         paramContext = Context(parentContext)
         for param in self.params:
-            paramContext.setVar(param.eval(paramContext))
+            paramContext.setVar(param.eval(paramContext), None)
         return paramContext
 
 
@@ -45,8 +44,18 @@ class FunctionCall:
         self.args = args
 
     def eval(self, parentContext):
-        id = self.id.eval(parentContext)
-        args = self.args.eval(parentContext)
-        funContext = Context(parentContext)
-        for arg in args:
-            print(arg)
+        thunk = self.id.eval(parentContext)
+        argKeys = thunk[1].eval(parentContext).context
+        argVals = self.args.eval(parentContext)
+
+        if len(argKeys) != len(argVals):
+            raise Exception(
+                "Parameter list length did not match function definition.")
+
+        fContext = Context(parentContext)
+        i = 0
+        for key in argKeys:
+            fContext.setVar(key, argVals[i])
+            i = i + 1
+
+        return thunk[0].eval(fContext)

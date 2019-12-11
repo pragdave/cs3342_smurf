@@ -78,7 +78,7 @@ class LangVisitor(PTNodeVisitor):
         return (CallArguments(children))
 
     def visit_function_definition(self, node, children):
-        return (FunctionDefinition(children[1], children[0]))
+        return (FunctionDefinition(children[0], children[1]))
 
     def visit_param_list(self, node, children):
         return (ParamList(children))
