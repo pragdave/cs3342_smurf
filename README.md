@@ -17,22 +17,22 @@ it would be blue).
 
 **Fill this in before submitting your final pull request**
 
-Name:
+Name: Troy Walker
 
-SMU ID:
+SMU ID: 47447742
 
 ##### Grading criteria (see [Grading](#grading) below):
 
 [ ] test-based
 
-[ ] feature based
+[X] feature based
 
 If feature based, put an X in the cell that represents the combination of syntax and implementation depth you want me to assess. (Just one X in the table.)
 
 |                            | Parses | Builds AST | Interprets |
 |----------------------------|-------:|-----------:|-----------:|
 | Integers                   |  [ ]   |    [ ]     |    [ ]     |
-| Expressions                |  [ ]   |    [ ]     |    [ ]     |
+| Expressions                |  [ ]   |    [ ]     |    [X]     |
 | Variables                  |  [ ]   |    [ ]     |    [ ]     |
 | Function calls (no params) |  [ ]   |    [ ]     |    [ ]     |
 | Function calls + bindings  |  [ ]   |    [ ]     |    [ ]     |
@@ -40,12 +40,12 @@ If feature based, put an X in the cell that represents the combination of syntax
 
 I've included in this PR:
 
-[ ] everything I'll need to build a running version of your submission (source,
+[You should only need arpeggio. The imports have been weird for me] everything I'll need to build a running version of your submission (source,
     dependency loading, etc)
 
-[ ] a build file that will create an executable (if required)
+[Should not need one] a build file that will create an executable (if required)
 
-[ ] a script that will run the tests (if you're making a test-based submission)
+[X] a script that will run the tests (if you're making a test-based submission)
 
 (see [Deliverables](#deliverables) for more details)
 
