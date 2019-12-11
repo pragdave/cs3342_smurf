@@ -14,7 +14,10 @@ class AstVisitor(PTNodeVisitor):
         if len(children) == 1:
             return FunctionCall(children[0].name, [])
         else:
-            return FunctionCall(children[0].name, children[1])
+            if children[0].name == "print":
+                return PrintCall(children[1])
+            else:
+                return FunctionCall(children[0].name, children[1])
 
     def visit_param_list(self, node, children):
         return children

@@ -69,11 +69,23 @@ class FunctionCall:
 
     def evaluate(self, binding):
         pValues = [
-            arg.evaluate(binding) for arg in self.args
-        ]
+                arg.evaluate(binding) for arg in self.args
+            ]
         thunk = binding.get_variable(self.name)
         return thunk.evaluate(binding, pValues)
 
+class PrintCall:
+    def __init__(self, args):
+        self.args = args
+
+    def evaluate(self, binding):
+        inner = self.args
+        output = "Print: "
+        for arg in inner:
+                output += str(arg.evaluate(binding))
+                if arg != inner[len(inner)-1]:
+                    output += '|'
+        print(output)
 
 # ------------------------- variable -------------------------
 class VariableDecl:

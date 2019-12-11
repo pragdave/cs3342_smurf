@@ -40,15 +40,8 @@ def relop():    return ['==','!=','>=','>','<=','<']
 
 
 test = """ 
-let fib = fn(n) {
-  if n < 2 {
-    n
-  }
-  else {
-    fib(n-1) + fib(n-2)
-  }
-}
-fib(10)
+let e = 99, f = 100, g = e+f
+print(e,f,g) 
 """
 
 # test = """ 
@@ -60,4 +53,4 @@ parser = ParserPython(program)
 parse_tree = parser.parse(test)
 print(parse_tree)
 ast = visit_parse_tree(parse_tree, AstVisitor(debug=True))
-print(ast.evaluate(Binding()))
+ast.evaluate(Binding())
