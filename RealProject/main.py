@@ -2,6 +2,7 @@ from arpeggio import *
 from arpeggio import Optional, ZeroOrMore, OneOrMore, EOF
 from arpeggio import RegExMatch as _
 from arpeggio import ParserPython
+import sys
 from arpeggio.cleanpeg import ParserPEG
 from visitorAlg import SmurfVisitor
 import os
@@ -43,15 +44,28 @@ def main(debug = False):
     #parsing_treePic = PictureParser.parse("1")
     file_object = open("mytest.smu", "r")
     fileString = file_object.read()
-    parsing_tree = parser.parse(fileString)
-    print(f"parsing_tree: {parsing_tree}")
-    print(f"typeof tree: {type(parsing_tree)}")
-    result = visit_parse_tree(parsing_tree, SmurfVisitor(debug=True))
+    smurfCode = sys.argv[1]
+    if(sys.argv[1][0] == '\"'):
+        smurfCode = smurfCode[1:]
+    if(sys.argv[1][(len(sys.argv[1])-1)] == '\"'):
+        smurfCode = smurfCode[:(len(smurfCode)-1)]
+    # print(f"smurfCode: {smurfCode}")
+    # print(sys.argv[1][0])
+    # print(sys.argv[1][(len(sys.argv[1]) - 1)])
+    # print(sys.argv[1][0] == '\"')
+    # print(sys.argv[1][(len(sys.argv)-1)] == '\"')
+    #print(f"SmurfCode: {smurfCode}")
+    parsing_tree = parser.parse(smurfCode)
+    # parsing_tree = parser.parse("\"1+3\"")
+
+    #print(f"parsing_tree: {parsing_tree}")
+    #print(f"typeof tree: {type(parsing_tree)}")
+    result = visit_parse_tree(parsing_tree, SmurfVisitor(debug=False))
     binding = {}
     result.eval(binding)
     #print(f"HELLO WORLD")
-    print(f"result: {result}")
-    print(f"typeof result: {type(result)}")
+    #print(f"result: {result}")
+    #print(f"typeof result: {type(result)}")
 
     #print(f"typeOfName result: {type(result).__name__}")
     #print(f"result: {binding}")
@@ -59,4 +73,4 @@ def main(debug = False):
 
 
 if __name__ == "__main__":
-    main(debug=True)
+    main(debug=False)
