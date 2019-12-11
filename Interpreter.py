@@ -8,9 +8,7 @@ class Binding:
         self.bindings[name] = value
     
     def get_variable(self, name):
-        value = self.bindings.get(name, 0)
-        return value
-
+        return self.bindings.get(name, 0)
 # Node Interpreter
 class CodeBlock:
     def __init__(self, expr):
@@ -22,6 +20,7 @@ class CodeBlock:
             result = e.evaluate(binding)
         return result
 
+# ------------------------- function -------------------------
 class FunctionDecl:
     def __init__(self, params, body):
         self.paramas = params
@@ -39,6 +38,8 @@ class FunctionCall:
         body = binding.get_variable(self.name)
         return body.evaluate(binding, [])
 
+
+# ------------------------- variable -------------------------
 class VariableDecl:
     def __init__(self, decl):
         self.decl = decl
@@ -79,9 +80,9 @@ class VariableReference:
     def evaluate(self, binding):
         return binding.get_variable(self.name)
 
-# class Identifier:
-#     def __init__(self, value):
-#         self.value = value
+# class VariableNode:
+#     def __init__(self, name):
+#         self.name = name
     
 #     def evaluate(self, binding):
 #         return self.value
@@ -93,7 +94,8 @@ class IntegerNode:
     def evaluate(self, binding):
         return self.value
 
-# Arithemetic Operation
+
+# ------------------------- expressions -------------------------
 class Add:
     def __init__(self, left, right):
         self.left = left

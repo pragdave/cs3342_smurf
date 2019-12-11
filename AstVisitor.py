@@ -6,7 +6,7 @@ class AstVisitor(PTNodeVisitor):
     def visit_code(self, node, children):
         return CodeBlock(children)
 
-    # function 
+    # ------------------------- function -------------------------
     def visit_function_definition(self, node, children):
         return FunctionDecl(children[0], children[1])
 
@@ -16,6 +16,7 @@ class AstVisitor(PTNodeVisitor):
         else:
             return FunctionCall(children[0], children[1])
 
+    # ------------------------- variable -------------------------
     def visit_variable_declaration(self,node,children):
         return VariableDecl(children)
 
@@ -26,9 +27,8 @@ class AstVisitor(PTNodeVisitor):
     def visit_assignment(self, node, children):
         return Assignment(children[0], children[1])
 
-    # why ?
     # def visit_identifier(self,node,children):
-    #     return Identifier(str(node.value))
+    #     return VariableNode(str(node.value))
 
     def visit_variable_reference(self, node, children):
         return VariableReference(node.value)
