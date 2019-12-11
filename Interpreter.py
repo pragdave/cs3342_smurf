@@ -13,6 +13,7 @@ class Binding:
     def set_variable(self, name, value):
         print(f"{name} <- {value}")
         self.bindings[name] = value
+        return value
     
     def get_variable(self, name):
         if name in self.bindings:
@@ -70,8 +71,8 @@ class FunctionCall:
         pValues = [
             arg.evaluate(binding) for arg in self.args
         ]
-        print(f"! call:{self.name}")
         thunk = binding.get_variable(self.name)
+        print(thunk)
         return thunk.evaluate(binding, pValues)
 
 
@@ -106,7 +107,7 @@ class Assignment:
         # refName = self.name.evaluate(binding)
         value = self.expr.evaluate(binding)
         binding.set_variable(self.name, value)
-        # return value
+        return value
         
 
 class VariableReference:

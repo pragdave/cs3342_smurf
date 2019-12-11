@@ -13,9 +13,9 @@ class AstVisitor(PTNodeVisitor):
     def visit_function_call(self, node, children):
         if len(children) == 1:
             print(f"function var:{children[0]}" )
-            return FunctionCall(children[0], [])
+            return FunctionCall(children[0].name, [])
         else:
-            return FunctionCall(children[0], children[1])
+            return FunctionCall(children[0].name, children[1])
 
     # ------------------------- variable -------------------------
     def visit_variable_declaration(self,node,children):
