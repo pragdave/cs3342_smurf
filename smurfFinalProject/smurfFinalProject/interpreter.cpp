@@ -41,16 +41,20 @@ int interpreter::evaluate_statement(node *nodex){
 
 int interpreter::evaluate_code(vector<node*> nodex){
     int result=212121212;
+    int result1 = 0;
+    int result2 = 0;
     //cout<<"Just tell me you tried to evaluate the code"<<endl;
-    for(int i=0; i<nodex.size(); i++){
-        result = nodex[i]->accept(this);
-    }
-    return result;
+    cout<<"Number of children nodes: "<<nodex.size()<<endl;
+    cout<<"Node: "<<nodex[0]->str()<<endl;
+    cout<<"Node: "<<nodex[1]->str()<<endl;
+//    for(int i=0; i<nodex.size(); i++){
+//        result = nodex[i]->accept(this);
+//        cout<<"Result: "<<result<<endl;
+//    }
+    result1 = nodex[0]->accept(this);
+    result2 = nodex[1]->accept(this);
     
-    
-    
-    
-    
+    return result1;
     
     //    node statement;
 //    int result = 0;
