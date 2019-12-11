@@ -36,14 +36,10 @@ int interpreter::evaluate_variable(node *nodex, string var){
 //
 //}
 
-int interpreter::evaluate_code(vector<node> codestatements){
-    for(int i=0; i<codestatements.size(); i++){
-        if(assignmentNode){
-            node node = codestatements[i];
-            evaluate_assignment(assignmentNode.self, assignmentNode.left, assignmentNode.right);
-        }
-    }
-    return -1;
+int interpreter::evaluate_code(vector<node> nodex){
+    node statement;
+    statement = nodex[0];
+    return statement.accept(this);
 }
 
 

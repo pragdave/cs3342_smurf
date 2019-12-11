@@ -108,21 +108,26 @@ void assignmentNode::print(string l, string r) {
 //code node
 codeNode::codeNode(node *statement){
     statements.push_back(*statement);
+    for(int i=0; i<statements.size(); i++){
+        cout<<"Statements at "<<i<<": "<<statements[i].str()<<endl;
+    }
 }
 
 int codeNode::accept(visitor *visitorx){
     return visitorx->evaluate_code(statements);
+    //return 0;
 }
 
-node codeNode::get(int location){
-    return statements[location];
-}
+//node codeNode::get(int location){
+//    return statements[location];
+//}
 
 string codeNode::str(node nodex){
     return nodex.str();
 }
 
-
+void codeNode::print(){
+}
 
 
 

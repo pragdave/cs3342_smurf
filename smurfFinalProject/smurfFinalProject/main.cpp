@@ -22,7 +22,6 @@ using namespace std;
 auto grammar = R"(
     program                 <-  code
     code                    <-  statement*
-    function_call           <-  'print' '(' call_arguments ')' / variable_reference '(' call_arguments ')'
     statement               <-  let_stmt / assignment / expr
     let_stmt                <-  'let' variable_declaration
     expr                    <-  'if' if_expression / boolean_expression / arithmetic_expression
@@ -35,6 +34,7 @@ auto grammar = R"(
     arithmetic_expression   <-  mult_term add_op arithmetic_expression / mult_term
     mult_term               <-  primary mul_op mult_term / primary
     primary                 <-  integer / function_call / variable_reference / '(' arithmetic_expression ')'
+    function_call           <-  'print' '(' call_arguments ')' / variable_reference '(' call_arguments ')'
     function_definition     <-  param_list brace_block
     integer                 <-  < '-'? [0-9]+ >
     add_op                  <-  < '+' / '-' >
@@ -76,6 +76,7 @@ node *bin_op(const SemanticValues &sv)
         string op = sv[i].get<ParseTreeNode>().get()->str();
         left = new binopNode(left, op, right);
     }
+    
     return left;
 };
 
@@ -87,25 +88,22 @@ node *assign(const SemanticValues &sv){
 };
 
 node *statement(const SemanticValues &sv){
-    cout<<"I got here!!"<<endl;
-    node *self = sv[0].get<ParseTreeNode>().get();
-    cout<<"Node: "<<self->str()<<endl;
+    node *x = sv[0].get<ParseTreeNode>().get();
+    cout<<"Statement: "<<x->str()<<endl;
     
-    node *cnode = new codeNode(self);
+    for (unsigned int i = 1; i < sv.size(); i += 2){
+        node *next = sv[i + 1].get<ParseTreeNode>().get();
+        x = new codeNode(next);
+    }
     
-//    for(int i=0; i<sv.size(); i++){
-//        node *next = sv[i+1].get<ParseTreeNode>().get();
-//        cout<<"Node "<<i<<": "<<next->str();
-//        cnode = new codeNode(next);
-//    }
-    return cnode;
+    return x;
 }
 
 void setup_ast_generation(parser &parser)
 {
     parser["statement"] = [](const SemanticValues &sv) {
-        cout<<"Statement Sections: "<<sv.str()<<endl;
         node *n = statement(sv);
+        cout<<" N: "<<n->str()<<endl;
         return ParseTreeNode(n);
     };
     

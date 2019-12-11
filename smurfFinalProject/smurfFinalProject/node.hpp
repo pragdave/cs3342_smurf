@@ -76,13 +76,13 @@ public:
 };
 
 class codeNode: public node {
-private:
     vector<node> statements;
 public:
     codeNode(node*);
     node get(int);
     string str(node);
     int accept(visitor*);
+    void print();
 };
 
 
