@@ -22,6 +22,7 @@ using namespace std;
 auto grammar = R"(
     program                 <-  code
     code                    <-  statement*
+    function_call           <-  'print' '(' call_arguments ')' / variable_reference '(' call_arguments ')'
     statement               <-  let_stmt / assignment / expr
     let_stmt                <-  'let' variable_declaration
     expr                    <-  'if' if_expression / boolean_expression / arithmetic_expression
@@ -34,7 +35,6 @@ auto grammar = R"(
     arithmetic_expression   <-  mult_term add_op arithmetic_expression / mult_term
     mult_term               <-  primary mul_op mult_term / primary
     primary                 <-  integer / function_call / variable_reference / '(' arithmetic_expression ')'
-    function_call           <-  'print' '(' call_arguments ')' / variable_reference '(' call_arguments ')'
     function_definition     <-  param_list brace_block
     integer                 <-  < '-'? [0-9]+ >
     add_op                  <-  < '+' / '-' >
@@ -89,13 +89,14 @@ node *assign(const SemanticValues &sv){
 
 node *statement(const SemanticValues &sv){
     node *x = sv[0].get<ParseTreeNode>().get();
-    cout<<"Statement: "<<x->str()<<endl;
+//    cout<<"Statement: "<<x->str()<<endl;
     
-    for (unsigned int i = 1; i < sv.size(); i += 2){
-        node *next = sv[i + 1].get<ParseTreeNode>().get();
+    for (unsigned int i = 0; i < sv.size(); i += 1){
+//        cout<<"Do you even get in here??"<<endl;
+        node *next = sv[i].get<ParseTreeNode>().get();
         x = new codeNode(next);
     }
-    
+//    cout<<"X that is the new Code Node: "<<x->str()<<endl;
     return x;
 }
 
@@ -103,34 +104,34 @@ void setup_ast_generation(parser &parser)
 {
     parser["statement"] = [](const SemanticValues &sv) {
         node *n = statement(sv);
-        cout<<" N: "<<n->str()<<endl;
+        cout<<"N: "<<n->str()<<endl;
         return ParseTreeNode(n);
     };
     
     parser["let_stmt"] = [](const SemanticValues &sv) {
-        //cout << "let statement\n";
+//        cout << "let statement\n";
         return sv[0];
     };
     
     parser["decl"] = [](const SemanticValues &sv) {
-        //cout << "decl\n";
+//        cout << "decl\n";
         node *n = assign(sv);
         return ParseTreeNode(n);
     };
     
     parser["assignment"] = [](const SemanticValues &sv) {
         node *n = assign(sv);
-        //cout<<"Assigning"<<endl;
+//        cout<<"Assigning"<<endl;
         return ParseTreeNode(n);
     };
     
     parser["identifier"] = [](const SemanticValues &sv) {
-        //cout << "identifier: '" << sv.str() << "'\n";
+//        cout << "identifier: '" << sv.str() << "'\n";
         return ParseTreeNode(new variableNode(sv.str()));
     };
     
     parser["expr"] = [](const SemanticValues &sv) {
-        //cout << "expr\n";
+//        cout << "expr\n";
         node *n = bin_op(sv);
         return ParseTreeNode(n);
     };
@@ -151,7 +152,7 @@ void setup_ast_generation(parser &parser)
     };
     
     parser["integer"] = [](const SemanticValues &sv) {
-        //cout << "integer '" << sv.token() << "'\n";
+//        cout << "integer '" << sv.token() << "'\n";
         return ParseTreeNode(new intNode(std::stoi(sv.token())));
     };
     

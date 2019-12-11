@@ -8,7 +8,7 @@
 // Based on pragdave/peglibeg
 
 #include "node.hpp"
-//node
+//general node
 string node::str(){
     return string("node");
 };
@@ -107,27 +107,20 @@ void assignmentNode::print(string l, string r) {
 
 //code node
 codeNode::codeNode(node *statement){
-    statements.push_back(*statement);
-    for(int i=0; i<statements.size(); i++){
-        cout<<"Statements at "<<i<<": "<<statements[i].str()<<endl;
-    }
+    statements.push_back(statement);
+//    cout<<"Statement SINGULAR: "<<statement->str()<<endl;
+//    cout<<"Statements : "<<statement[0]->str()<<endl;
 }
 
 int codeNode::accept(visitor *visitorx){
     return visitorx->evaluate_code(statements);
-    //return 0;
 }
 
-//node codeNode::get(int location){
-//    return statements[location];
-//}
-
-string codeNode::str(node nodex){
-    return nodex.str();
+string codeNode::str(){
+    string result = statements[0]->str();
+    return result;
 }
 
-void codeNode::print(){
-}
 
 
 

@@ -44,8 +44,8 @@ public:
     int evaluate_binop(node*, node*, string, node*);
     int evaluate_assignment(node*, node*, node*);
     int evaluate_variable(node*, string);
+    int evaluate_code(vector<node*>);
     //int evaluate_ifstatement(node*, node*, node*);
-    int evaluate_code(vector<node>);
 };
 
 
