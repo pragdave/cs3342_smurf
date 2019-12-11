@@ -11,7 +11,7 @@ varinode::varinode(/* args */){
 }
 
 varinode::varinode(string newname){
-    if(newname == "true"){
+    if(newname == "true"){                 // Boolean node has name true or false
         value = 1;
         vtype = "boolean";
     }
@@ -22,7 +22,6 @@ varinode::varinode(string newname){
     else{
         name = newname;
         bool trigger = true;
-
         if(newname[0] == '-'){
             for(int i = 1; i < newname.size();i++){
                 if (!isdigit(newname[i]))
@@ -32,18 +31,16 @@ varinode::varinode(string newname){
         else{
             for(int i = 0; i < newname.size();i++){
                 if (!isdigit(newname[i]))
-                    trigger = false;
+                    trigger = false;                 // All digit varinode should be a integer, else it is a character
             }
         }
         if(trigger == true){
-       // cout << newname << " is a number" << endl;
             value = stoi(newname);
             vtype = "integer";
         }
         else{
             value = 0;
             vtype = "character";
-       // cout << newname << " is a character" << endl;
         }
     }
 }
@@ -63,11 +60,8 @@ varinode& varinode::operator = (varinode const &obj) {
 
 
 varinode& varinode::operator >> (varinode const &obj){
-    std::cout << vtype << " and " << obj.vtype << std::endl;
     if(vtype == "character"){
-    //c.SetName(a.name);
     value = obj.value;
-    //c.vtype = "character";
     }
     else{
         std::cout << "Invalid Assignment" << std::endl;

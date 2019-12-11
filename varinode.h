@@ -6,14 +6,17 @@
 #include <stdio.h>
 #include <string>
 #include <fstream>
+#include "ast_node.h"
 
 
 class varinode{
 private:
-    std::string name;
-    int value;
+    std::string name;                               
+    int value;                                    // value is the true value behind the name, default is 0
 public:
-    std::string vtype;
+    AstNode* expr;
+    std::string parameter;
+    std::string vtype;                           // vtype is the type of this node, can be character, integer, or boolean
     varinode();
     varinode(std::string);
     varinode(const varinode&);
@@ -27,10 +30,10 @@ public:
     int GetValue();
     ~varinode();
 
-friend varinode operator + (varinode const& a , varinode const& b){
+friend varinode operator + (varinode const& a , varinode const& b){                   // Over Load Operators 
     varinode c;
     int Tvalue = a.value+b.value; 
-    c.SetValue(Tvalue);
+    c.SetValue(a.value+b.value);
     c.SetName(std::to_string(Tvalue));
     c.vtype = "integer";
     return c;

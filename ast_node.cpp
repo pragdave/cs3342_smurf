@@ -1,9 +1,6 @@
 #include "ast_node.h"
 
 
-////////////////////
-//  IntegerNode
-
  VarinodeNode::VarinodeNode(varinode* given){
    Vnode = given;
  }
@@ -22,8 +19,15 @@
    return visitor->evaluate_varinode(this, Vnode);
  }
 
-////////////////////
-//  BinopNode
+void VarinodeNode::update(std::string target, std::string newchange){
+    varinode* nnode = new varinode(newchange);
+    if(Vnode->GetName() == target){
+       Vnode = nnode;
+       return;
+    }
+    return;
+}
+
 
 BinopNode::BinopNode(AstNode *pleft, std::string pop, AstNode *pright)
 {
@@ -41,8 +45,49 @@ std::string BinopNode::to_string(){
 }
 
 
-////////////////////
-//  IfNode
+void BinopNode::update(std::string target, std::string newchange){
+    varinode* nnode = new varinode(target);
+    nnode->SetValue(stoi(newchange));
+    AstNode* newnode = new VarinodeNode(nnode);
+   // std::cout << target << " " << newchange << " " << op << " " << left->to_string() << " could not find " << right->to_string() << std::endl; 
+    if(left->to_string() == target){
+      left = newnode;
+      return;
+    }
+    if(right->to_string() == target){
+      right = newnode;
+      return;
+    }
+}
+
+
+FuncNode::FuncNode(AstNode *pfuncName, AstNode *pfuncParameter,  AstNode *pfuncExecution, std::vector<std::vector<varinode*>>* pList, int* player){
+  funcName = pfuncName;
+  funcParameter = pfuncParameter;
+  funcExecution = pfuncExecution;
+  List = pList;
+  layer = player;
+  size = 5;
+}
+
+FuncNode::FuncNode(AstNode *pfuncName, AstNode *pfuncParameter,  std::vector<std::vector<varinode*>>* pList, int* player){
+  funcName = pfuncName;
+  funcParameter = pfuncParameter;
+  List = pList;
+  layer = player;
+  funcExecution = new AstNode();
+  size = 4;
+}
+
+std::string FuncNode::to_string(){
+  return "(" + funcName->to_string() + " " + funcParameter->to_string() + " " + funcExecution->to_string() + ")";
+}
+
+varinode* FuncNode::accept(Visitor *visitor){
+  return visitor->evaluate_funcnode(this, funcName, funcParameter, funcExecution, List, layer, size);
+}
+
+
 IfNode::IfNode(AstNode *pcond, AstNode * pif){
   size = 2;
   condition = pcond;
@@ -70,17 +115,9 @@ varinode* IfNode::accept(Visitor *visitor){
 }
 
 
-////////////////////
-//  OpNode
-
-OpNode::OpNode(std::string pop)
-{
+OpNode::OpNode(std::string pop){
   op = pop;
 }
-
-// int OpNode::accept(Visitor *visitor) {
-//   return 0;  // never called.
-// }
 
 std::string OpNode::to_string(){
   return op;
