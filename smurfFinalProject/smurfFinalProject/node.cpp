@@ -90,8 +90,8 @@ string variableNode::str(){
 }
 
 int variableNode::accept(visitor *visitorx){
-    visitorx->evaluate_variable(this, variable);
-    return 0;
+    return visitorx->evaluate_variable(this, variable);
+    
 }
 
 void variableNode::print(){

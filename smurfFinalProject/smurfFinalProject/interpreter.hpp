@@ -40,6 +40,7 @@ class interpreter: public visitor {
     };
 public:
     visitor *visitorx;
+    vector<string> instantiatedVariables;
     int evaluate_integer(node*, int);
     int evaluate_binop(node*, node*, string, node*);
     int evaluate_assignment(node*, node*, node*);

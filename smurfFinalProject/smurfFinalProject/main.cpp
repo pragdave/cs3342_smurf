@@ -92,10 +92,10 @@ node *assign(const SemanticValues &sv){
 
 node *code(const SemanticValues &sv){
     codeNode *code = new codeNode();
-    cout << "new code node\n";
+    //cout << "new code node\n";
     for(int i=0; i<sv.size(); i++){
         node *x = sv[i].get<ParseTreeNode>().get();
-        cout << "adding statement\n";
+        //cout << "adding statement\n";
         code->addToVect(x);
     }
     return code;
@@ -104,7 +104,7 @@ node *code(const SemanticValues &sv){
 node *statement(const SemanticValues &sv){
     node *x = sv[0].get<ParseTreeNode>().get();
     node *statement = new statementNode(x);
-    cout<<"Statement node X: "<<x->str()<<endl;
+    //cout<<"Statement node X: "<<x->str()<<endl;
     return x;
     
     //    vector<node*> allStatements;
@@ -148,7 +148,7 @@ void setup_ast_generation(parser &parser)
     
     parser["identifier"] = [](const SemanticValues &sv) {
 //        cout << "identifier: '" << sv.str() << "'\n";
-        return ParseTreeNode(new variableNode(sv.str()));
+        return ParseTreeNode(new variableNode(sv.token()));
     };
     
     parser["expr"] = [](const SemanticValues &sv) {
@@ -204,12 +204,10 @@ int main(int argc, const char **argv) {
     cout<< "EXPR:" << expr <<endl;
     
     ParseTreeNode val = ParseTreeNode();
-    parser.parse(expr,val);
-    cout<<"Value going to the Parse Tree1: "<<val.to_string()<<endl;
-    parser.parse(expr,val);
+    //cout<<"Value going to the Parse Tree1: "<<val.to_string()<<endl;
     
     if (parser.parse(expr, val)){
-        cout<<"Value going to the Parse Tree2: "<<val.to_string()<<endl;
+        //cout<<"Value going to the Parse Tree2: "<<val.to_string()<<endl;
         visitor *interpret = new interpreter();
         interpret->bindings = new binding();
         

@@ -11,6 +11,7 @@
 #include <map>
 #include <string>
 #include <stdio.h>
+#include <iostream>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
     binding();
     void insertValue(string, int);
     int getBindingValue(string);
+    void printBindings();
 };
 
 #endif /* binding_hpp */
