@@ -11,12 +11,12 @@ class PrintFunction:
 
 
 class FunctionDefinition:
-    def __init__(self, params, parentContext):
+    def __init__(self, params, body):
         self.params = params
-        self.context = parentContext
+        self.body = body
 
     def eval(self, context):
-        return (self.context, self.params)
+        return (self.body, self.params, context)
 
 
 class ParamList:
@@ -45,17 +45,20 @@ class FunctionCall:
 
     def eval(self, parentContext):
         thunk = self.id.eval(parentContext)
+        # thunk[1] contains the "context" of the parameters,
+        # in which the var names are present but all are mapped to 'None' value
         argKeys = thunk[1].eval(parentContext).context
         argVals = self.args.eval(parentContext)
 
+        # raise exception if function is called without the proper number of parameters
         if len(argKeys) != len(argVals):
             raise Exception(
                 "Parameter list length did not match function definition.")
 
-        fContext = Context(parentContext)
+        # create a new context for the function execution
+        fContext = Context(thunk[2])
         i = 0
         for key in argKeys:
             fContext.setVar(key, argVals[i])
             i = i + 1
-
         return thunk[0].eval(fContext)

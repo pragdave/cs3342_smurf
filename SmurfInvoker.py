@@ -11,12 +11,11 @@ parser = ParserPython(program, comment)
 # dot -Tpng -O .\program_parse_tree.dot to turn dot to png
 
 
-# f = sys.argv[1]
-
-f = 'test_cases/20_fn_basic.smu'
+f = sys.argv[1]
 file = open(f, 'rU')
 contents = file.read()
 parse_tree = parser.parse(contents)
+
 
 AST = visit_parse_tree(parse_tree, LangVisitor(debug=False))
 AST.eval()
