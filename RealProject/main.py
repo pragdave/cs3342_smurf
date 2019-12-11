@@ -2,6 +2,7 @@ from arpeggio import *
 from arpeggio import Optional, ZeroOrMore, OneOrMore, EOF
 from arpeggio import RegExMatch as _
 from arpeggio import ParserPython
+from arpeggio.cleanpeg import ParserPEG
 from visitorAlg import SmurfVisitor
 import os
 
@@ -15,7 +16,7 @@ def identifier() : return [_(r'[a-z]')], ZeroOrMore([_(r'a-zA-Z_0-9')])
 def variable_reference(): return identifier
 def if_expression(): return expr, brace_block, Optional( "else", brace_block )
 def assignment(): return identifier, "=", expr
-def expr(): return [("fn", function_definition), ("if", if_expression) , boolean_expression ,arithmetic_expression]
+def expr(): return [("fn", function_definition), function_call, ("if", if_expression) , boolean_expression ,arithmetic_expression]
 def boolean_expression(): return arithmetic_expression, relop, arithmetic_expression
 def arithmetic_expression(): return [(mult_term, addop, arithmetic_expression) , mult_term]
 def mult_term(): return [(primary, mulop, mult_term) , primary]
@@ -34,9 +35,13 @@ def brace_block(): return "{", code, "}"
 def main(debug = False):
     #current_dir = os.path.dirname(__file__)
     #test_program = open(os.path.join(current_dir, 'C:\\Users\\mailt\Documents\\GitHub\\cs3342_smurf\\test_cases\\00_expr.smu')).read()
+    #PictureParser = ParserPEG(main, "program")
     parser = ParserPython(program, comment, debug = debug)
     #parse_tree = parser_parse(test_program)
     #parsing_tree = parser.parse(fileString)
+
+    #parsing_treePic = PictureParser.parse("1")
+
     parsing_tree = parser.parse("1")
     print(f"parsing_tree: {parsing_tree}")
     print(f"typeof tree: {type(parsing_tree)}")

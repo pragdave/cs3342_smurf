@@ -5,12 +5,14 @@ class IntNumber:
 
 
 class Program:
-    def __init__(self, code):
-        self.code = code
+    def __init__(self,node, program):
+        self.program = program
+        self.node = node
+        print(f"Making Program Class: {self.node} and {self.program}")
 
     def eval(self, binding):
-        print(f"Program eval {self.code.eval(binding)}")
-        return self.code.eval(binding)
+        print(f"Program eval {self.program.eval(binding)}")
+        return self.program.eval(binding)
 
 
 class Comment:
@@ -45,31 +47,32 @@ class Expr:
 
 
 class Arithmetic_Expressions:
-    def __init__(self, term):
-        self.term = term
+    def __init__(self, arith):
+        self.arith = arith
 
     def eval(self, binding):
-        print(f"Arithmetic Reached term[0]: {self.term[0]}")
-        print(f"Arithmetic Reached term: {self.term}")
-        return self.term[0].eval(binding)
+        print(f"Arithmetic Reached term[0]: {self.arith[0]}")
+        print(f"Arithmetic Reached term: {self.arith}")
+        return self.arith[0].eval(binding)
 
 
 class Mult_Term:
-    def __init__(self, primary):
-        self.primary = primary
+    def __init__(self, multTerm):
+        self.multTerm = multTerm
 
     def eval(self, binding):
         print(f"Mult_Term Reached: ")
-        return self.primary.eval(binding)
+        print(f"Mult Term node?: {self.binding}")
+        return self.multTerm.eval(binding)
 
 
-class Primary:
-    def __init__(self, integer):
-        self.integer = integer
-
-    def eval(self, binding):
-        print(f"Primary Reached self.integer:")
-        return self.integer.eval(binding)
+# class Primary:
+#     def __init__(self, primary):
+#         self.primary = primary
+#
+#     def eval(self, binding):
+#         print(f"Primary Reached self.integer:")
+#         return self.primary.eval(binding)
 
 
 class Integer:
@@ -86,11 +89,13 @@ class Function_Call:
         self.arguments = arguments
 
     def eval(self, binding):
+        print(f"self.arguments[0].eval(binding)[0]: {self.arguments[0].eval(binding)[0]}")
         parameters = self.arguments[0].eval(binding)[0]
-        args = self.call_args[1].eval(binding)
-
+        print(f"self.parameters[1].eval(binding): {self.parameters[1].eval(binding)}")
+        args = self.parameters[1].eval(binding)
         for i in range(len(parameters)):
             binding[parameters[i]] = args[i]
+        print(f"returning function_call: {binding[self.function.value][1].eval(binding)}")
         return binding[self.function.value][1].eval(binding)
 
 
@@ -102,7 +107,10 @@ class ToConsole:
 
     def eval(self, binding):
         print(f"Into ToConsole")
+        print(f"ToConsole function: {self.function}")
+        print(f"ToConsole arguments: {self.arguments}")
         num = self.arguments.eval(binding)
+        print(f"ToConsole num: {num}")
         if self.function == "print":
             if type(num) == int:
                 print(num)
