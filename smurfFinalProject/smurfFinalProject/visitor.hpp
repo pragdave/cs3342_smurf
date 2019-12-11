@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <string>
 #include "binding.hpp"
+#include <vector>
 #pragma once
 
 
@@ -27,6 +28,9 @@ public:
     virtual int evaluate_binop(node*, node*, string, node*);
     virtual int evaluate_assignment(node*, node*, node*);
     virtual int evaluate_variable(node*, string);
+    virtual int evaluate_code(vector<node>);
+    
+    //    virtual int evaluate_ifstatement(node*, node*, node*);
 };
 
 #endif /* visitor_hpp */

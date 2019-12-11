@@ -24,3 +24,11 @@ int visitor::evaluate_assignment(node *nodex, node *left, node *right){
 int visitor::evaluate_variable(node *nodex, string x){
     return 0;
 }
+
+int visitor::evaluate_code(vector<node> codestatements){
+    return 0;
+}
+
+//int visitor::evaluate_ifstatement(node *nodex, node *expr, node *children){
+//    return 0;
+//}

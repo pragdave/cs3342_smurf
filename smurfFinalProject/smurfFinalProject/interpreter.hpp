@@ -15,6 +15,7 @@
 #include <string>
 #include <functional>
 #include <iostream>
+#include <vector>
 #include "visitor.hpp"
 #include "node.hpp"
 #include "binding.hpp"
@@ -38,11 +39,13 @@ class interpreter: public visitor {
         {"<", [](int left, int right) {return left < right; }}
     };
 public:
+    visitor *visitorx;
     int evaluate_integer(node*, int);
     int evaluate_binop(node*, node*, string, node*);
     int evaluate_assignment(node*, node*, node*);
     int evaluate_variable(node*, string);
-    
+    //int evaluate_ifstatement(node*, node*, node*);
+    int evaluate_code(vector<node>);
 };
 
 

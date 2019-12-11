@@ -12,6 +12,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 #include "visitor.hpp"
 
 using namespace std;
@@ -72,6 +73,16 @@ public:
     string str();
     int accept(visitor*);
     void print(string, string);
+};
+
+class codeNode: public node {
+private:
+    vector<node> statements;
+public:
+    codeNode(node*);
+    node get(int);
+    string str(node);
+    int accept(visitor*);
 };
 
 

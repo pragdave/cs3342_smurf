@@ -105,6 +105,28 @@ void assignmentNode::print(string l, string r) {
     cout<<"Printing Assignment Node | Assignment: = | Left: "<<l<<" | Right: "<<r<<endl;
 }
 
+//code node
+codeNode::codeNode(node *statement){
+    statements.push_back(*statement);
+}
+
+int codeNode::accept(visitor *visitorx){
+    return visitorx->evaluate_code(statements);
+}
+
+node codeNode::get(int location){
+    return statements[location];
+}
+
+string codeNode::str(node nodex){
+    return nodex.str();
+}
+
+
+
+
+
+
 
 
 

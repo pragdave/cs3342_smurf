@@ -20,14 +20,32 @@ int interpreter::evaluate_binop(node *nodex, node *left, string operation, node 
 }
 
 int interpreter::evaluate_assignment(node *nodex, node *left, node *right){
-    left->accept(this);                                              //sets the variableName used in this->
+    left->accept(this);                                              //sets the variableName
     int rval = right->accept(this);
     this->bindings->insertValue(variableName, rval);
-    //cout<<"evaluating assignment | variableName: "<<variableName<<" | rvalue: "<<rval<<endl;
-    return rval;
+    int value = this->bindings->getBindingValue(variableName);
+    return value;
 }
 
 int interpreter::evaluate_variable(node *nodex, string var){
     variableName = var;
     return 0;
 }
+
+//int interpreter::evaluate_ifstatement(node *nodex, node *expr, node *children){
+//
+//}
+
+int interpreter::evaluate_code(vector<node> codestatements){
+    for(int i=0; i<codestatements.size(); i++){
+        if(assignmentNode){
+            node node = codestatements[i];
+            evaluate_assignment(assignmentNode.self, assignmentNode.left, assignmentNode.right);
+        }
+    }
+    return -1;
+}
+
+
+
+
