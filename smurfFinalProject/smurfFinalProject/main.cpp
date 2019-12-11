@@ -25,8 +25,7 @@ auto grammar = R"(
     function_call           <-  'print' '(' call_arguments ')' / variable_reference '(' call_arguments ')'
     statement               <-  let_stmt / assignment / expr
     let_stmt                <-  'let' variable_declaration
-    expr                    <-  'if' if_expression / boolean_expression / arithmetic_expression
-    if_expression           <-  expr brace_block ( 'else' brace_block )?
+    expr                    <-  boolean_expression / arithmetic_expression
     variable_declaration    <-  decl (',' decl)*
     decl                    <-  identifier ('=' expr)?
     variable_reference      <-  identifier
@@ -35,7 +34,6 @@ auto grammar = R"(
     arithmetic_expression   <-  mult_term add_op arithmetic_expression / mult_term
     mult_term               <-  primary mul_op mult_term / primary
     primary                 <-  integer / function_call / variable_reference / '(' arithmetic_expression ')'
-    function_definition     <-  param_list brace_block
     integer                 <-  < '-'? [0-9]+ >
     add_op                  <-  < '+' / '-' >
     mul_op                  <-  < '*' / '/' >
@@ -43,9 +41,13 @@ auto grammar = R"(
     identifier              <-  < [a-z][a-zA-Z_0-9]* >
     call_arguments          <-  (expr (',' expr)*)?
     param_list              <-  '(' identifier (',' identifier)* ')' / '(' ')'
-    brace_block             <-  '{' code '}'
     %whitespace             <-  [ \t\r\n]*
 )";
+
+//expr                    <-  'if' if_expression / boolean_expression / arithmetic_expression
+//if_expression           <-  expr brace_block ( 'else' brace_block )?
+//brace_block             <-  '{' code '}'
+//function_definition     <-  param_list brace_block
 
 class visitor;
 
@@ -87,26 +89,28 @@ node *assign(const SemanticValues &sv){
     return left;
 };
 
-node *statement(const SemanticValues &sv){
+node *code(const SemanticValues &sv){
     node *x = sv[0].get<ParseTreeNode>().get();
-    cout<<"Statement: "<<x->str()<<endl;
-    x = new codeNode(x);
-//    for (unsigned int i = 0; i < sv.size(); i += 1){
-////        cout<<"Do you even get in here??"<<endl;
-//        node *next = sv[i].get<ParseTreeNode>().get();
-//        x = new codeNode(next);
-//    }
-////    cout<<"X that is the new Code Node: "<<x->str()<<endl;
+//    cout<<"Statement: "<<x->str()<<endl;
+//    x = new codeNode(x);
+    for (unsigned int i = 0; i < sv.size(); i += 1){
+//        cout<<"Do you even get in here??"<<endl;
+        node *next = sv[i].get<ParseTreeNode>().get();
+        x = new codeNode(next);
+    }
+    cout<<"X that is the new Code Node: "<<x->str()<<endl;
     return x;
 }
 
 void setup_ast_generation(parser &parser)
 {
-    parser["statement"] = [](const SemanticValues &sv) {
-        
-        node *n = statement(sv);
-        cout<<"N: "<<n->str()<<endl;
+    parser["code"] = [](const SemanticValues &sv){
+        node *n = code(sv);
         return ParseTreeNode(n);
+    };
+    
+    parser["statement"] = [](const SemanticValues &sv) {
+        return sv[0];
     };
     
     parser["let_stmt"] = [](const SemanticValues &sv) {
@@ -184,8 +188,11 @@ int main(int argc, const char **argv) {
     cout<< "EXPR:" << expr <<endl;
     
     ParseTreeNode val = ParseTreeNode();
+    parser.parse(expr,val);
+    cout<<"Value going to the Parse Tree1: "<<val.to_string()<<endl;
     
     if (parser.parse(expr, val)){
+        cout<<"Value going to the Parse Tree2: "<<val.to_string()<<endl;
         visitor *interpret = new interpreter();
         interpret->bindings = new binding();
         

@@ -24,7 +24,7 @@ void node::print(string x){
 //int node
 intNode::intNode(int x){
     val = x;
-    print();
+    //print();
 }
 
 string intNode::str(){
@@ -46,7 +46,7 @@ binopNode::binopNode(node* l, string op, node* r){
     right = r;
     string lstr = l->str();
     string rstr = r->str();
-    print(op, lstr, rstr);
+    //print(op, lstr, rstr);
 }
 
 string binopNode::str(){
@@ -64,6 +64,7 @@ void binopNode::print(string op, string l, string r){
 //op node
 operationNode::operationNode(string op){
     operation = op;
+    //print();
 }
 
 int operationNode::accept(visitor *visitorx){
@@ -81,6 +82,7 @@ void operationNode::print(){
 //variable node
 variableNode::variableNode(string var){
     variable = var;
+    //print();
 }
 
 string variableNode::str(){
@@ -103,7 +105,7 @@ assignmentNode::assignmentNode(node *l, node *r){
     right = r;
     string lstr = l->str();
     string rstr = r->str();
-    print(lstr, rstr);
+    //print(lstr, rstr);
 }
 
 string assignmentNode::str(){
