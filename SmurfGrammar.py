@@ -4,16 +4,20 @@ from arpeggio.export import PTDOTExporter as PTDOTOutput
 from arpeggio import RegExMatch as RXMatch
 
 
-def program(): return code, EOF
+def program(): return (code, EOF)
 
 
-def comment(): return RXMatch(r'#.*')
+def comment(): return ("#", RXMatch(r'.*'))
 
 
 def code(): return ZeroOrMore(statement)
 
 
-def statement(): return [("let", variable_declaration), assignment, expr]
+def statement(): return (ZeroOrMore('\n'),
+                         [("let", variable_declaration),
+                          assignment,
+                          expr],
+                         ZeroOrMore('\n'))
 
 
 def variable_declaration(): return decl, ZeroOrMore(",", decl)
@@ -64,8 +68,7 @@ def mulop(): return ["*", "/"]
 def relop(): return ["==", "!=", ">=", ">", "<=", "<"]
 
 
-def function_call(): return [(variable_reference, "(", call_arguments, ")"),
-                             ("print", "(", call_arguments, ")")]
+def function_call(): return variable_reference, "(", call_arguments, ")"
 
 
 def call_arguments(): return Optional(expr, ZeroOrMore(",", expr))

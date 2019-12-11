@@ -1,4 +1,4 @@
-from LangVisitor import LangVisitor
+from LangVisitor import *
 from SmurfGrammar import *
 import sys
 
@@ -11,12 +11,8 @@ parser = ParserPython(program)  # calc is the root rule of your grammar
 
 
 f = sys.argv[1]
-print()
 file = open(f, "r")
 contents = file.read()
-print(contents)
-exit(0)
-
 parse_tree = parser.parse(contents)
 AST = visit_parse_tree(parse_tree, LangVisitor(debug=False))
 AST.eval()

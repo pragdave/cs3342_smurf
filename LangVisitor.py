@@ -29,12 +29,12 @@ class LangVisitor(PTNodeVisitor):
 
     def visit_if_expression(self, node, children):
         if len(children) == 2:
-            return (If_Expression(children[0], children[1]))
+            return (Conditional(children[0], children[1]))
         else:
-            return (If_Expression(children[0], children[1], children[2]))
+            return (Conditional(children[0], children[1], children[2]))
 
-    def visit_assignment(self, node, children):
-        return (Assignment(children[0], children[1]))
+    # def visit_assignment(self, node, children):
+    #     return (Assignment(children[0], children[1]))
 
     def visit_boolean_expression(self, node, children):
         left = children[0]
