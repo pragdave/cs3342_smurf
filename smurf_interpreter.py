@@ -5,18 +5,16 @@ import grammar as Grammar
 import visitor as Visitor
 from interpreter import Interpreter
 
-
 debug=False
 
-with open('00_expr.smu', 'r') as f:
+with open('01_variables.smu', 'r') as f:
     source = f.read()
-    #print(source)
 
 parser = ParserPython(Grammar.program, Grammar.comment, debug=debug)
 
-parse_tree = parser.parse(source)
+parse_tree = parser.parse("let a = 2 print(a)")
 
 tree = visit_parse_tree(parse_tree, Visitor.Visitor(debug=debug))
 
-tree.accept(Interpreter(), {})
+tree.accept(Interpreter())
 

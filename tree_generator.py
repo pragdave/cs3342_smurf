@@ -9,6 +9,15 @@ class Generator:
     def visit_variable(self, node, children):
         return nodes.Variable(node.value)
     
+    def visit_assignment(self, node, children):
+        return nodes.Assignment(children[0], children[2])
+    """
+    def visit_variable_decl(self, node, children):
+        if(len(children) > 2):
+            return nodes.Declarations(children[0], children[1:])
+        else:
+            return nodes.Declaration(children[0])
+    """
     def visit_arithmethic_expression(self, node, children):
         return nodes.Arithmetic_Expression(children[0], children[1:])
     

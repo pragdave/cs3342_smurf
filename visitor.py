@@ -8,10 +8,14 @@ class Visitor(PTNodeVisitor):
 
     def visit_assignment(self, node, children):
         if(len(children)) > 2:
-            return 
+            return Assignment(node, children)
         elif(len(children) == 2):
             return Assignment(node, children)
-    
+    """
+    def visit_variable_declaration(self, node, children):
+        if(len(children) > 2):
+            return Declarations(children[0], children[1:])
+    """
     def visit_print_smurf(self, node, children):
         return Print_Smurf(children)
     
@@ -37,13 +41,13 @@ class Visitor(PTNodeVisitor):
         return Boolean_Expression(children[0], children[1], children[2])
 
     def visit_identifier(self, node, children):
-        return children
+        return Identifier(children[0])
 
     def visit_decl(self, node, children):
-        if(len(children) > 2):
-            return (Assignment(children[0], children[2]))
+        if(len(children) == 2):
+            return (Assignment(children[0], children[1]))
         else:
-            return (Assignment(children[0], 0))
+            return (Declaration(children[0]))
 
     
 
