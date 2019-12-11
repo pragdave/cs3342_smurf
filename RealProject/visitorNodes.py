@@ -113,4 +113,5 @@ class ToConsole:
         print(f"ToConsole num: {num}")
         if self.function == "print":
             if type(num) == int:
+                print(f"WE ACTUALLY MADE IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 print(num)

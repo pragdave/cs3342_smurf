@@ -41,6 +41,7 @@ class SmurfVisitor(PTNodeVisitor):
 
     def visit_integer(self, node, children):
         print(f"Visit Integer children: {children}")
+        print(f"Visit Integer: {(node.value)}")
         print(f"Visit Integer: {int(node.value)}")
         return Integer(int(node.value))
 

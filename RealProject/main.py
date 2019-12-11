@@ -22,7 +22,7 @@ def arithmetic_expression(): return [(mult_term, addop, arithmetic_expression) ,
 def mult_term(): return [(primary, mulop, mult_term) , primary]
 def primary():  return [integer, function_call , variable_reference , ( "(", arithmetic_expression, ")")]
 def integer(): return _(r'-?[0-9]+')
-def integer(): return Optional("-"), OneOrMore(_(r'[0-9]'))
+def integer(): return Optional("-"), _(r'[0-9]+')
 def addop(): return ['+',  '-']
 def mulop(): return ['*' , '/']
 def relop(): return ['==' , '!=' , '>=' , '>' , '<=' , '<']
@@ -42,7 +42,7 @@ def main(debug = False):
 
     #parsing_treePic = PictureParser.parse("1")
 
-    parsing_tree = parser.parse("1")
+    parsing_tree = parser.parse("print(10)")
     print(f"parsing_tree: {parsing_tree}")
     print(f"typeof tree: {type(parsing_tree)}")
     result = visit_parse_tree(parsing_tree, SmurfVisitor(debug=True))
