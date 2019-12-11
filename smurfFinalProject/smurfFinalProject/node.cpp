@@ -24,6 +24,7 @@ void node::print(string x){
 //int node
 intNode::intNode(int x){
     val = x;
+    print();
 }
 
 string intNode::str(){
@@ -34,6 +35,10 @@ int intNode::accept(visitor *visitorx){
     return visitorx->evaluate_integer(this, val);
 }
 
+void intNode::print(){
+    cout<<"Printing Integer Node | Int: "<<val<<endl;
+}
+
 //binop node
 binopNode::binopNode(node* l, string op, node* r){
     left = l;
@@ -41,7 +46,7 @@ binopNode::binopNode(node* l, string op, node* r){
     right = r;
     string lstr = l->str();
     string rstr = r->str();
-    //print(op, lstr, rstr);
+    print(op, lstr, rstr);
 }
 
 string binopNode::str(){
@@ -69,6 +74,10 @@ string operationNode::str(){
     return operation;
 }
 
+void operationNode::print(){
+    cout<< "Printing Operation Node | Operation: "<<operation<<endl;
+}
+
 //variable node
 variableNode::variableNode(string var){
     variable = var;
@@ -83,6 +92,10 @@ int variableNode::accept(visitor *visitorx){
     return 0;
 }
 
+void variableNode::print(){
+    cout<<"Prining Variable Node | Variable: "<<variable<<endl;
+}
+
 //assignment node
 assignmentNode::assignmentNode(node *l, node *r){
     left = l;
@@ -90,7 +103,7 @@ assignmentNode::assignmentNode(node *l, node *r){
     right = r;
     string lstr = l->str();
     string rstr = r->str();
-    //print(lstr, rstr);
+    print(lstr, rstr);
 }
 
 string assignmentNode::str(){
@@ -109,11 +122,18 @@ void assignmentNode::print(string l, string r) {
 codeNode::codeNode(node *statement){
     statements.push_back(statement);
 //    cout<<"Statement SINGULAR: "<<statement->str()<<endl;
-//    cout<<"Statements : "<<statement[0]->str()<<endl;
+    cout<<"Statements [0]: "<<statement[0].str()<<endl;
+//    if(statements.size()>0){
+//        cout<<"Statements [1]: "<<statement[1].str()<<endl;
+//    }
 }
 
 int codeNode::accept(visitor *visitorx){
-    return visitorx->evaluate_code(statements);
+    int result=0;
+    for(int i=0; i<statements.size(); i++){
+        result = visitorx->evaluate_code(statements);
+    }
+    return result;
 }
 
 string codeNode::str(){

@@ -29,14 +29,15 @@ int interpreter::evaluate_assignment(node *nodex, node *left, node *right){
 
 int interpreter::evaluate_variable(node *nodex, string var){
     variableName = var;
+//    int value = this->bindings->getBindingValue(variableName);
     return 0;
 }
 
 int interpreter::evaluate_code(vector<node*> nodex){
     node statement;
-    int result;
+    int result = 0;
 //    cout<<"Do you try to evaluate code??"<<endl;
-//    cout<<"Statement at nodex[0]:"<<nodex[0]->str()<<endl;
+    cout<<"Statement at nodex[0]:"<<nodex[0]->str()<<endl;
     for(int i=0; i<nodex.size(); i++){
         result = nodex[i]->accept(this);
     }

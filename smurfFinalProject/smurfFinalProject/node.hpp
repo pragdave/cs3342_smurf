@@ -31,6 +31,7 @@ public:
     intNode(int);
     string str();
     int accept(visitor*);
+    void print();
 };
 
 class binopNode: public node {
@@ -52,6 +53,7 @@ public:
     operationNode(string);
     string str();
     int accept(visitor*);
+    void print();
 };
 
 class variableNode: public node {
@@ -61,6 +63,7 @@ public:
     variableNode(string);
     string str();
     int accept(visitor*);
+    void print();
 };
 
 class assignmentNode: public node {

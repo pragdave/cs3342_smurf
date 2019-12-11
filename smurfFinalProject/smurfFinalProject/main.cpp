@@ -89,20 +89,21 @@ node *assign(const SemanticValues &sv){
 
 node *statement(const SemanticValues &sv){
     node *x = sv[0].get<ParseTreeNode>().get();
-//    cout<<"Statement: "<<x->str()<<endl;
-    
-    for (unsigned int i = 0; i < sv.size(); i += 1){
-//        cout<<"Do you even get in here??"<<endl;
-        node *next = sv[i].get<ParseTreeNode>().get();
-        x = new codeNode(next);
-    }
-//    cout<<"X that is the new Code Node: "<<x->str()<<endl;
+    cout<<"Statement: "<<x->str()<<endl;
+    x = new codeNode(x);
+//    for (unsigned int i = 0; i < sv.size(); i += 1){
+////        cout<<"Do you even get in here??"<<endl;
+//        node *next = sv[i].get<ParseTreeNode>().get();
+//        x = new codeNode(next);
+//    }
+////    cout<<"X that is the new Code Node: "<<x->str()<<endl;
     return x;
 }
 
 void setup_ast_generation(parser &parser)
 {
     parser["statement"] = [](const SemanticValues &sv) {
+        
         node *n = statement(sv);
         cout<<"N: "<<n->str()<<endl;
         return ParseTreeNode(n);
@@ -190,13 +191,13 @@ int main(int argc, const char **argv) {
         
         cout << "Val that is being parsed: "<< val.to_string() << endl;
         cout << val.to_string() << " = " << val.get()->accept(interpret) << endl;
-        return 0;
     }
     
-    cout<<"Val: "<<&val<<endl;
-    
-    cout << "syntax error..." << endl;
-    return -1;
+    return 0;
+//    cout<<"Val: "<<&val<<endl;
+//
+//    cout << "syntax error..." << endl;
+//    return -1;
     
     /*
      comment                <-  '#' r'.*'
