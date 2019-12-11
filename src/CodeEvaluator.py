@@ -25,14 +25,14 @@ class Conditional:
     def __init__(self, condition, body, alternative=None):
         self.condition = condition
         self.body = body
-        self.alternative = alteriative
+        self.alternative = alternative
 
     def eval(self, context):
         if self.condition.eval(context) != 0:
-            return self.body.eval(binding)
+            return self.body.eval(context)
         else:
             if self.alternative is not None:
-                return self.alternative.eval(binding)
+                return self.alternative.eval(context)
 
 
 class PrintFunction:
@@ -50,5 +50,5 @@ class FunctionDefinition:
 
     def eval(self, context):
         params = self.params.eval(context)
-        var = self.id.eval(binding)
+        var = self.id.eval(context)
         funcContext = Context(var.parent)

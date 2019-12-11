@@ -2,7 +2,8 @@ from LangVisitor import *
 from SmurfGrammar import *
 import sys
 
-parser = ParserPython(program)  # calc is the root rule of your grammar
+# calc is the root rule of your grammar
+parser = ParserPython(program, comment)
 # Use param debug=True for verbose debugging
 # messages and grammar and parse tree visualization
 # using graphviz and dot
@@ -12,7 +13,7 @@ parser = ParserPython(program)  # calc is the root rule of your grammar
 
 f = sys.argv[1]
 file = open(f, "r")
-contents = file.read()
+contents = file.read().replace("\r", "")
 parse_tree = parser.parse(contents)
 AST = visit_parse_tree(parse_tree, LangVisitor(debug=False))
 AST.eval()
