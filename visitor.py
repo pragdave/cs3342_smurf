@@ -5,17 +5,16 @@ from grammar import *
 class Visitor(PTNodeVisitor):
     def visit_code(self, node, children):
         return Code(children)
+    
+    def visit_brace_block(self, node, children):
+        return Brace_Block(children)
 
     def visit_assignment(self, node, children):
         if(len(children)) > 2:
             return Assignment(node, children)
         elif(len(children) == 2):
             return Assignment(node, children)
-    """
-    def visit_variable_declaration(self, node, children):
-        if(len(children) > 2):
-            return Declarations(children[0], children[1:])
-    """
+
     def visit_print_smurf(self, node, children):
         return Print_Smurf(children)
     
@@ -43,13 +42,20 @@ class Visitor(PTNodeVisitor):
     def visit_identifier(self, node, children):
         return Identifier(children[0])
 
+    def visit_variable_declaration(self, node, children):
+        return Let_Decl(children)
+
     def visit_decl(self, node, children):
         if(len(children) == 2):
             return (Assignment(children[0], children[1]))
         else:
             return (Declaration(children[0]))
-
     
+    def visit_if_expr(self, node, children):
+        if(len(children) > 2):
+            return If_Else(children[0], children[1], children[3])
+        else:
+            return If_Expression(children[0], children[1])    
 
 
 

@@ -21,26 +21,38 @@ class Assignment:
     
     def accept(self, visitor, bindings):
         return visitor.evaluate_assignment(self, bindings)
-"""
-class Declarations:
-    def __init__(self, expr1, expressions):
-        self.expr1 = expr1
+
+class Brace_Block:
+    def __init__(self, expressions):
         self.expressions = expressions
     
     def accept(self, visitor, bindings):
-        if(len(self.expressions) > 2):
-            return visitor.evaluate_multiple_decl(self, bindings)
-        else:
-            return vis
+        return visitor.evaluate_brace_block(self, bindings)
+
+class Let_Decl:
+    def __init__(self, expressions):
+        self.expressions = expressions
+    
+    def accept(self, visitor, bindings):
+        return visitor.evaluate_let_decl(self, bindings)
 
 
 class If_Else:
-    def __init__(self, if_expr, else_expr):
+    def __init__(self, if_bool, if_expr, else_expr):
+        self.if_bool = if_bool
         self.if_expr = if_expr
         self.else_expr = else_expr
     
     def accept(self, visitor, bindings):
-        """
+        return visitor.evaluate_if_expr(self, bindings)
+
+class If_Expression:
+    def __init__(self, if_bool, if_expr):
+        self.if_bool = if_bool
+        self.if_expr = if_expr
+    
+    def accept(self, visitor, bindings):
+        return visitor.evaluate_if(self, bindings)
 
 class Declaration:
     def __init__(self, name):
@@ -97,7 +109,6 @@ class Identifier:
     def __init__(self, ident):
         self.ident = ident
     
-    #fix this --  change to evaluate identifier
     def accept(self, visitor, bindings):
         try:
             return visitor.evaluate_var_value(self, bindings)

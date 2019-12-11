@@ -23,6 +23,8 @@ def relop():
 #arithmetic_expression  = mult_term addop arithmetic_expression | mult_term
 #boolean_expression  = arithmetic_expression relop arithmetic_expression
 
+def primary():
+    return [integer, function_call, variable_reference, ( "(", arithmetic_expression, ")")]
 
 def mult_term():
     return [(primary, mulop, mult_term), primary]
@@ -51,7 +53,7 @@ def assignment():
     return identifier, "=", expr
 
 def expr():
-    return [("if", if_expression), boolean_expression, arithmetic_expression]
+    return [primary, ("if", if_expression), boolean_expression, arithmetic_expression]
 
 
 #decl = identifier ("=" expr)?
@@ -64,9 +66,6 @@ def decl():
 
 def variable_declaration():
     return decl, ZeroOrMore(",", decl)
-
-def primary():
-    return [integer, function_call, variable_reference, ( "(", arithmetic_expression, ")")]
 
 #statement = "let" variable_declaration | assignment | expr
 #comment  = "#" r'.*'
