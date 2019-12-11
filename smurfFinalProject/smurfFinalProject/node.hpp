@@ -78,11 +78,22 @@ public:
     void print(string, string);
 };
 
-class codeNode: public node {
-    vector<node*> statements;
+class statementNode: public node {
+private:
+    node *statement;
 public:
-    codeNode(node*);
+    statementNode(node*);
     string str();
+    int accept(visitor*);
+    void print();
+};
+
+class codeNode: public node {
+public:
+    vector<node*> statements;
+    codeNode();
+    string str();
+    void addToVect(node*);
     int accept(visitor*);
 };
 

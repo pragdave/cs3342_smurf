@@ -120,14 +120,33 @@ void assignmentNode::print(string l, string r) {
     cout<<"Printing Assignment Node | Assignment: = | Left: "<<l<<" | Right: "<<r<<endl;
 }
 
+//statement node
+statementNode::statementNode(node* stmt){
+    statement = stmt;
+}
+
+string statementNode::str(){
+    return statement->str();
+}
+
+int statementNode::accept(visitor *visitorx){
+    return visitorx->evaluate_statement(statement);
+}
+
+void statementNode::print(){
+    cout<<"Printing Statement Node | Statement: "<<statement->str();
+}
+
 //code node
-codeNode::codeNode(node *statement){
-    statements.push_back(statement);
-//    cout<<"Statement SINGULAR: "<<statement->str()<<endl;
-    cout<<"Statements [0]: "<<statement[0].str()<<endl;
+codeNode::codeNode(){
+    cout<<"Statements [0]: "<<statements[0]->str()<<endl;
 //    if(statements.size()>0){
 //        cout<<"Statements [1]: "<<statement[1].str()<<endl;
 //    }
+}
+
+void codeNode::addToVect(node *statement){
+    statements.push_back(statement);
 }
 
 int codeNode::accept(visitor *visitorx){

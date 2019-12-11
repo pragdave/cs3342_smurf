@@ -89,28 +89,37 @@ node *assign(const SemanticValues &sv){
     return left;
 };
 
-node *code(const SemanticValues &sv){
+//void code(const SemanticValues &sv){
+//    node *x = sv[0].get<ParseTreeNode>().get();
+//    codeNode *statement = new codeNode;
+//    statement->addToVect(x);
+//    
+//    for(int i=1; i<sv.size(); i++){
+//        node *x = sv[i].get<ParseTreeNode>().get();
+//        statement->addToVect(x);
+//    }
+//};
+
+node *statement(const SemanticValues &sv){
     node *x = sv[0].get<ParseTreeNode>().get();
-//    cout<<"Statement: "<<x->str()<<endl;
-//    x = new codeNode(x);
-    for (unsigned int i = 0; i < sv.size(); i += 1){
-//        cout<<"Do you even get in here??"<<endl;
+    for(unsigned int i=0; i<sv.size(); i++){
         node *next = sv[i].get<ParseTreeNode>().get();
-        x = new codeNode(next);
+        x = new statementNode(next);
     }
-    cout<<"X that is the new Code Node: "<<x->str()<<endl;
+    cout<<"Statement node X: "<<x->str()<<endl;
     return x;
 }
 
 void setup_ast_generation(parser &parser)
 {
-    parser["code"] = [](const SemanticValues &sv){
-        node *n = code(sv);
-        return ParseTreeNode(n);
-    };
+//    parser["code"] = [](const SemanticValues &sv){
+//        code(sv);
+//        return sv;
+//    };
     
     parser["statement"] = [](const SemanticValues &sv) {
-        return sv[0];
+        node *n = statement(sv);
+        return ParseTreeNode(n);
     };
     
     parser["let_stmt"] = [](const SemanticValues &sv) {
@@ -190,6 +199,7 @@ int main(int argc, const char **argv) {
     ParseTreeNode val = ParseTreeNode();
     parser.parse(expr,val);
     cout<<"Value going to the Parse Tree1: "<<val.to_string()<<endl;
+    parser.parse(expr,val);
     
     if (parser.parse(expr, val)){
         cout<<"Value going to the Parse Tree2: "<<val.to_string()<<endl;

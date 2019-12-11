@@ -33,6 +33,12 @@ int interpreter::evaluate_variable(node *nodex, string var){
     return 0;
 }
 
+int interpreter::evaluate_statement(node *nodex){
+    int result = 0;
+    result = nodex->accept(this);
+    return result;
+}
+
 int interpreter::evaluate_code(vector<node*> nodex){
     node statement;
     int result = 0;

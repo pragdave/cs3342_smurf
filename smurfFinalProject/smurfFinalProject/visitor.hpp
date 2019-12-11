@@ -28,6 +28,7 @@ public:
     virtual int evaluate_binop(node*, node*, string, node*);
     virtual int evaluate_assignment(node*, node*, node*);
     virtual int evaluate_variable(node*, string);
+    virtual int evaluate_statement(node*);
     virtual int evaluate_code(vector<node*>);
     
     //    virtual int evaluate_ifstatement(node*, node*, node*);
