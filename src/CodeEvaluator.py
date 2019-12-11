@@ -59,11 +59,18 @@ class Conditional:
 
 
 class Assignment:
-    # variable assignment
+    # assignment of var or function; note the id should already be declared
     def __init__(self, id, expr):
         self.id = id
         self.expr = expr
 
     def eval(self, context):
-        # Set variable inside dictionary of executing context
-        return context.setVar(self.id.eval(context), self.expr.eval(context))
+        # Check that the ID is inside the dictionary
+        if(context.getVar(self.id.eval(context)) is not None):
+            # Set variable inside dictionary of executing context
+            return context.setVar(self.id.eval(context), self.expr.eval(context))
+        else:
+            # Note that this statement should never execute unless a context failed to recognize
+            # an undefined var reference (the context should throw the exception; this is a failsafe)
+            raise Exception(
+                "Variable assignment attempted without declaration.")
