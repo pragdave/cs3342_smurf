@@ -1,0 +1,9 @@
+Testting:
+cd test_cases
+python3 ../test_runner.py "./a.out"
+
+
+
+To recompile program:
+cd test_cases
+g++ -std=c++11 ../SmurfInterpreter/main.cpp

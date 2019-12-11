@@ -1,0 +1,27 @@
+program                 <-  code eof
+code                    <-  statement*
+statement               <-  'let' variable_declaration _ / assignment / expr
+variable_declaration    <-  decl (',' decl)*
+decl                    <-  identifier ( _ '=' expr)?
+identifier              <-  [a-z][a-zA-Z_0-9]*
+variable_reference      <-  identifier
+if_expression           <-  expr brace_block ( 'else' brace_block )?
+assignment              <-  identifier _ '=' expr _
+expr                    <-  'fn' function_definition / 'if' if_expression / boolean_expression / arithmetic_expression
+boolean_expression      <-  arithmetic_expression _ relop arithmetic_expression
+arithmetic_expression   <-  mult_term _ addop arithmetic_expression _ / mult_term
+mult_term               <-  primary mulop mult_term  / primary
+primary                 <-  function_call / integer / variable_reference / '(' arithmetic_expression ')'
+integer                 <-  < '-'? [0-9]+ > 
+addop                   <-  < [-+] >
+mulop                   <-  < [/*] >
+relop                   <-  '==' / '!=' / '>=' / '>' / '<=' / '<'
+function_call           <-  'print' '(' call_arguments ')' / variable_reference '(' call_arguments ')' 
+call_arguments          <-  (expr (',' expr)*)?
+function_definition     <-  param_list brace_block
+param_list              <-  '(' identifier (',' identifier)* ')' /  '(' ')'
+brace_block             <-  '{' code  '}'
+%whitespace             <-  ([ \t\r\n] / comment)*
+~_                      <-  [ \t\r\n]*
+eof                     <-  !.
+comment                 <-  '#' (!'\n' .)* (eof / '\n')
