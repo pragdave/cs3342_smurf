@@ -35,6 +35,14 @@ class Conditional:
                 return self.alternative.eval(binding)
 
 
+class PrintFunction:
+    def __init__(self, statement):
+        self.statement = statement
+
+    def eval(self, context):
+        print(self.statement.eval(context))
+
+
 class FunctionDefinition:
     def __init__(self, params, id):
         self.id = id
@@ -44,12 +52,3 @@ class FunctionDefinition:
         params = self.params.eval(context)
         var = self.id.eval(binding)
         funcContext = Context(var.parent)
-
-
-class PrintFunction:
-    def __init__(self, statement):
-        self.statement = statement
-
-    def eval(self, context):
-        print("PRINT")
-        print(self.statement.eval(context))

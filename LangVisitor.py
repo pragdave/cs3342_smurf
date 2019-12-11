@@ -81,3 +81,9 @@ class LangVisitor(PTNodeVisitor):
 
     # def visit_param_list(self, node, children):
     #     return (Param_List(children))
+
+    def visit_print_function(self, node, children):
+        if len(children) == 0:
+            return (PrintFunction(Call_Arguments([])))
+        else:
+            return (PrintFunction(children[0]))
