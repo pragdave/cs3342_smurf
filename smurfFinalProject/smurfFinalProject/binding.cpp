@@ -10,7 +10,7 @@
 
 
 binding::binding(){
-//    printBindings();
+    //    printBindings();
 }
 
 void binding::insertValue(string var, int val){
@@ -23,10 +23,10 @@ int binding::getBindingValue(string var){
     //cout<<"Binds variable: "<<binds[var]<<endl;
     int result = binds.find(var)->second;
     if(result != 0){
-        cout<<"result"<<endl;
+        //cout<<"result"<<endl;
         return result;
     }
-    cout<<"Value: "<<result<<endl;
+    //cout<<"Value: "<<result<<endl;
     return result;
 }
 

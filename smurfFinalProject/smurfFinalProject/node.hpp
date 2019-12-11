@@ -7,8 +7,9 @@
 //
 // Based on pragdave/peglibeg
 
-#ifndef node_hpp
+//#ifndef node_hpp
 #define node_hpp
+
 #pragma once
 #include <iostream>
 #include <string>
@@ -97,12 +98,3 @@ public:
     void addToVect(node*);
     int accept(visitor*);
 };
-
-
-
-
-
-
-
-
-#endif /* node_hpp */

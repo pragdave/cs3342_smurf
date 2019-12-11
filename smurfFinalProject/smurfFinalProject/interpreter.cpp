@@ -22,7 +22,7 @@ int interpreter::evaluate_binop(node *nodex, node *left, string operation, node 
 int interpreter::evaluate_assignment(node *nodex, node *left, node *right){
     left->accept(this);                                              //sets the variableName
     int rval = right->accept(this);
-    cout<<"The value: "<<rval<<endl;
+    //cout<<"The value: "<<rval<<endl;
     bindings->insertValue(variableName, rval);
     int value = this->bindings->getBindingValue(variableName);
     return value;
@@ -41,49 +41,46 @@ int interpreter::evaluate_statement(node *nodex){
 
 int interpreter::evaluate_code(vector<node*> nodex){
     int result=212121212;
-//    int result1 = 0;
-//    int result2 = 0;
+    //    int result1 = 0;
+    //    int result2 = 0;
     //cout<<"Just tell me you tried to evaluate the code"<<endl;
-//    cout<<"Number of children nodes: "<<nodex.size()<<endl;
-//    cout<<"Node: "<<nodex[0]->str()<<endl;
-//    cout<<"Node: "<<nodex[1]->str()<<endl;
-//    cout<<"Node: "<<nodex[2]->str()<<endl;
+    //    cout<<"Number of children nodes: "<<nodex.size()<<endl;
+    //    cout<<"Node: "<<nodex[0]->str()<<endl;
+    //    cout<<"Node: "<<nodex[1]->str()<<endl;
+    //    cout<<"Node: "<<nodex[2]->str()<<endl;
     //cout<<"Node: "<<nodex[3]->str()<<endl;
     
     //result = nodex[0]->accept(this);
     
     for(int i=0; i<nodex.size(); i++){
-//        cout<<"Is this where things go poorly?"<<endl;
-//        cout<<"Node x at "<<i<<": "<<nodex[i]->str();
+        //        cout<<"Is this where things go poorly?"<<endl;
+        //        cout<<"Node x at "<<i<<": "<<nodex[i]->str();
         result = nodex[i]->accept(this);
-        cout<<"Result: "<<result<<endl;
+        //cout<<"Result: "<<result<<endl;
     }
-//    result1 = nodex[0]->accept(this);
-//    result2 = nodex[1]->accept(this);
+    //    result1 = nodex[0]->accept(this);
+    //    result2 = nodex[1]->accept(this);
     
     return result;
     
     //    node statement;
-//    int result = 0;
-////    cout<<"Do you try to evaluate code??"<<endl;
-//    cout<<"Statement at nodex[0]:"<<nodex[0]->str()<<endl;
-//    for(int i=0; i<nodex.size(); i++){
-//        result = nodex[i]->accept(this);
-//    }
-////    cout<<"Result at nodex[0]: "<<result<<endl;
-//
-////    for(int i=0; i<nodex.size(); i++){
-////        statement = *nodex[i];
-////        result = statement.accept(this);
-////        cout<<"Result: "<<result<<endl;
-////    }
-//    return result;
+    //    int result = 0;
+    ////    cout<<"Do you try to evaluate code??"<<endl;
+    //    cout<<"Statement at nodex[0]:"<<nodex[0]->str()<<endl;
+    //    for(int i=0; i<nodex.size(); i++){
+    //        result = nodex[i]->accept(this);
+    //    }
+    ////    cout<<"Result at nodex[0]: "<<result<<endl;
+    //
+    ////    for(int i=0; i<nodex.size(); i++){
+    ////        statement = *nodex[i];
+    ////        result = statement.accept(this);
+    ////        cout<<"Result: "<<result<<endl;
+    ////    }
+    //    return result;
     
 }
 
 //int interpreter::evaluate_ifstatement(node *nodex, node *expr, node *children){
 //
 //}
-
-
-

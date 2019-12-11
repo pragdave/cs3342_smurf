@@ -49,6 +49,7 @@ auto grammar = R"(
 //if_expression           <-  expr brace_block ( 'else' brace_block )?
 //brace_block             <-  '{' code '}'
 //function_definition     <-  param_list brace_block
+//comment                <-  '#' r'.*'
 
 class visitor;
 
@@ -130,29 +131,29 @@ void setup_ast_generation(parser &parser)
     };
     
     parser["let_stmt"] = [](const SemanticValues &sv) {
-//        cout << "let statement\n";
+        //        cout << "let statement\n";
         return sv[0];
     };
     
     parser["decl"] = [](const SemanticValues &sv) {
-//        cout << "decl\n";
+        //        cout << "decl\n";
         node *n = assign(sv);
         return ParseTreeNode(n);
     };
     
     parser["assignment"] = [](const SemanticValues &sv) {
         node *n = assign(sv);
-//        cout<<"Assigning"<<endl;
+        //        cout<<"Assigning"<<endl;
         return ParseTreeNode(n);
     };
     
     parser["identifier"] = [](const SemanticValues &sv) {
-//        cout << "identifier: '" << sv.str() << "'\n";
+        //        cout << "identifier: '" << sv.str() << "'\n";
         return ParseTreeNode(new variableNode(sv.token()));
     };
     
     parser["expr"] = [](const SemanticValues &sv) {
-//        cout << "expr\n";
+        //        cout << "expr\n";
         node *n = bin_op(sv);
         return ParseTreeNode(n);
     };
@@ -173,7 +174,7 @@ void setup_ast_generation(parser &parser)
     };
     
     parser["integer"] = [](const SemanticValues &sv) {
-//        cout << "integer '" << sv.token() << "'\n";
+        //        cout << "integer '" << sv.token() << "'\n";
         return ParseTreeNode(new intNode(std::stoi(sv.token())));
     };
     
@@ -211,29 +212,14 @@ int main(int argc, const char **argv) {
         visitor *interpret = new interpreter();
         interpret->bindings = new binding();
         
-        cout << "Val that is being parsed: "<< val.to_string() << endl;
+//        cout << "Val that is being parsed: "<< val.to_string() << endl;
         cout << val.to_string() << " = " << val.get()->accept(interpret) << endl;
     }
     
     return 0;
-//    cout<<"Val: "<<&val<<endl;
-//
-//    cout << "syntax error..." << endl;
-//    return -1;
-    
-    /*
-     comment                <-  '#' r'.*'
-     */
+    //    cout<<"Val: "<<&val<<endl;
+    //
+    //    cout << "syntax error..." << endl;
+    //    return -1;
     
 }
-
-
-
-
-
-
-
-
-
-
-

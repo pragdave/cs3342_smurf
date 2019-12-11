@@ -36,8 +36,8 @@ class interpreter: public visitor {
         {">=", [](int left, int right) {return left >= right; }},
         {">", [](int left, int right) {return left > right; }},
         {"<=", [](int left, int right) {return left <= right; }},
-        {"<", [](int left, int right) {return left < right; }}
-    };
+            {"<", [](int left, int right) {return left < right; }}
+            };
 public:
     visitor *visitorx;
     vector<string> instantiatedVariables;
@@ -49,6 +49,6 @@ public:
     int evaluate_code(vector<node*>);
     //int evaluate_ifstatement(node*, node*, node*);
 };
-
-
+            
+            
 #endif /* interpreter_hpp */

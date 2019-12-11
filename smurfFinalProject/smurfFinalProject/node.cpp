@@ -139,7 +139,7 @@ void statementNode::print(){
 
 //code node
 codeNode::codeNode(){
-//    statements.push_back(stmt);
+    //    statements.push_back(stmt);
 }
 
 int codeNode::accept(visitor *visitorx){
@@ -157,16 +157,3 @@ string codeNode::str(){
 void codeNode::addToVect(node *nodex){
     statements.push_back(nodex);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
