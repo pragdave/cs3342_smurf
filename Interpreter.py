@@ -175,7 +175,7 @@ class BoolExpr:
         }
         return operation.get(self.op,"nothing")
 
-class BasicExpr:
+class AddExpr:
     def __init__(self, left, op, right):
         self.left = left
         self.op = op
@@ -187,40 +187,20 @@ class BasicExpr:
         operation = {
             '+':(lhs+rhs),
             '-':(lhs-rhs),
+        }
+        return operation.get(self.op,"nothing")
+
+class MulExpr:
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+    
+    def evaluate(self, binding):
+        lhs = self.left.evaluate(binding)
+        rhs = self.right.evaluate(binding)
+        operation = {
             '*':(lhs*rhs),
             '/':int(lhs/rhs)
         }
         return operation.get(self.op,"nothing")
-
-class Add:
-    def __init__(self, left, right):
-        self.left = left
-        self.right = right
-
-    def evaluate(self, binding):
-        return (self.left.evaluate(binding) + self.right.evaluate(binding))
-
-class Subtract:
-    def __init__(self, left, right):
-        self.left = left
-        self.right = right
-
-    def evaluate(self, binding):
-        return (self.left.evaluate(binding) - self.right.evaluate(binding))
-
-class Multiply:
-    def __init__(self, left, right):
-        self.left = left
-        self.right = right
-
-    def evaluate(self, binding):
-        return (self.left.evaluate(binding) * self.right.evaluate(binding))
-
-class Divide:
-    def __init__(self, left, right):
-        self.left = left
-        self.right = right
-
-    def evaluate(self, binding):
-        return int(self.left.evaluate(binding) / self.right.evaluate(binding))
-    

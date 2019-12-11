@@ -53,13 +53,13 @@ class AstVisitor(PTNodeVisitor):
 
     def visit_arithmetic_expression(self, node, children):
         if len(children) > 1:
-            return BasicExpr(children[0],children[1],children[2])
+            return AddExpr(children[0],children[1],children[2])
         else:
             return children[0]
 
     def visit_multerm(self, node, children):
         if len(children) > 1:
-            return BasicExpr(children[0],children[1],children[2])
+            return MulExpr(children[0],children[1],children[2])
         else:
             return children[0]
     
