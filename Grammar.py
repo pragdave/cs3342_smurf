@@ -3,7 +3,7 @@ from arpeggio import RegExMatch as _
 from AstVisitor import *
 
 # general 
-def program():   return code, EOF
+def program():   return code,EOF
 def comment():   return ("#",_(r'.*'))
 def code():      return ZeroOrMore(statement)
 def statement(): return [("let", variable_declaration), 
@@ -40,8 +40,14 @@ def relop():    return ['==','!=','>=','>','<=','<']
 
 
 test = """ 
-let e = 99, f = 100, g = e+f
-print(e,f,g) 
+print(1)            
+print(3 - 1)        
+print(2+1)          
+print(2 * 5 - 3*2)  
+print(4 - -1)       
+print(5--1)         
+print(21/3)         
+print((3-1)*(3+1))  
 """
 
 # test = """ 
@@ -49,8 +55,10 @@ print(e,f,g)
 # three()
 # """
 
-parser = ParserPython(program)
-parse_tree = parser.parse(test)
-print(parse_tree)
-ast = visit_parse_tree(parse_tree, AstVisitor(debug=True))
-ast.evaluate(Binding())
+def run(test):
+    parser = ParserPython(program)
+    parse_tree = parser.parse(test)
+    ast = visit_parse_tree(parse_tree, AstVisitor(debug=False))
+    ast.evaluate(Binding())
+
+run(test)

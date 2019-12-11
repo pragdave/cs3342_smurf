@@ -173,6 +173,6 @@ class Divide:
         self.left = left
         self.right = right
 
-    def accept(self, binding):
+    def evaluate(self, binding):
         return int(self.left.evaluate(binding) / self.right.evaluate(binding))
     
