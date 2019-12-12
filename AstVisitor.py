@@ -35,9 +35,6 @@ class AstVisitor(PTNodeVisitor):
     def visit_assignment(self, node, children):
         return Assignment(children[0], children[1])
 
-    # def visit_identifier(self,node,children):
-    #     return VariableNode(str(node.value))
-
     def visit_variable_reference(self, node, children):
         return VariableReference(node.value)
 
