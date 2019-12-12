@@ -17,13 +17,13 @@ it would be blue).
 
 **Fill this in before submitting your final pull request**
 
-Name:
+Name: Jack Rosenblatt
 
-SMU ID:
+SMU ID: 47767490
 
 ##### Grading criteria (see [Grading](#grading) below):
 
-[ ] test-based
+[X] test-based
 
 [ ] feature based
 
@@ -40,12 +40,15 @@ If feature based, put an X in the cell that represents the combination of syntax
 
 I've included in this PR:
 
-[ ] everything I'll need to build a running version of your submission (source,
+[X] everything I'll need to build a running version of your submission (source,
     dependency loading, etc)
+	#I only used arpeggio
 
-[ ] a build file that will create an executable (if required)
+[X] a build file that will create an executable (if required)
+	#I do not need one
 
-[ ] a script that will run the tests (if you're making a test-based submission)
+[X] a script that will run the tests (if you're making a test-based submission)
+	#To run enter test cases folder and run file name run_tests_[py, python, python3].bat. i.e. I run files with py so I would use run_tests_py.bat
 
 (see [Deliverables](#deliverables) for more details)
 
