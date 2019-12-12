@@ -40,10 +40,10 @@ If feature based, put an X in the cell that represents the combination of syntax
 
 I've included in this PR:
 
-[You should only need arpeggio. The imports have been weird for me] everything I'll need to build a running version of your submission (source,
+[X] everything I'll need to build a running version of your submission (source,
     dependency loading, etc)
 
-[Should not need one] a build file that will create an executable (if required)
+[X] a build file that will create an executable (if required)
 
 [X] a script that will run the tests (if you're making a test-based submission)
 
