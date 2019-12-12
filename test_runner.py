@@ -1,8 +1,18 @@
-# python test_runner.py «path to interpreter»
+
 import sys, re
 import os, os.path
-from subprocess import Popen, PIPE
 import shlex
+import subprocess
+try:
+  bashCommand = "pip3 install arpeggio"
+  process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+  output, error = process.communicate()
+  print("arpeggio installed!")
+except:
+  bashCommand = "pip install arpeggio"
+  process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+  output, error = process.communicate()
+  print("arpeggio installed!")
 
 def get_expected(path):
   with open(path) as f:
@@ -10,7 +20,7 @@ def get_expected(path):
   return [ v for _,v in re.findall(r'(#=>\s*)(.+)', content, re.M) ]
 
 def normalize(output):
-  return [ v for _,v in re.findall(r'(Print:\s*)(.+)\r\n', output, re.M) ]
+  return [ v for _,v in re.findall(r'(Print:\s*)(.+)\r?\n', output, re.M) ]
 
 def compare(stdout, expected):
   output = normalize(stdout)
@@ -31,7 +41,7 @@ test_files  = [
 
 for program in test_files:
   expected = get_expected(program)
-  process = Popen(interpreter + [ program], stdout=PIPE, stderr=PIPE)
+  process = subprocess.Popen(interpreter + [ program], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   stdout, stderr = process.communicate()
   print(program)
   if len(stderr) > 0:

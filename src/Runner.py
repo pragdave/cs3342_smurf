@@ -5,7 +5,6 @@ from sys import argv, path
 from Interpreter import *
 from Visitor import *
 
-
 grammar = """
 program 
   = code EOF
@@ -70,12 +69,12 @@ param_list
 brace_block 
   = "{" code  "}"
 """
-def run(program):
-    parser = ParserPEG(grammar, "program", "comment", debug=False)
-    tree = parser.parse(program)
-    ast = visit_parse_tree(tree, VisitorClass(debug=False))
-    ast.eval(Interpreter())
 
 with open(argv[1]) as file:
-    contents = file.read()
-run(contents)
+    content = file.read()
+    with open("log.txt", "w") as f:
+        f.write(content)
+parser = ParserPEG(grammar, "program", "comment", debug=False)
+tree = parser.parse(content)
+ast = visit_parse_tree(tree, VisitorClass(debug=False))
+ast.eval(Interpreter())
