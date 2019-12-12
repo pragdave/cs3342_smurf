@@ -14,3 +14,5 @@ print(100)
 print(99)
 
 Instead, I uses functions to reorganize those imputs, and store those new inputs in a string vector. Next, I loop through those strings and compile them in the parser. 
+
+Better use GCC to compile

@@ -29,8 +29,7 @@ void VarinodeNode::update(std::string target, std::string newchange){           
 }
 
 
-BinopNode::BinopNode(AstNode *pleft, std::string pop, AstNode *pright)
-{
+BinopNode::BinopNode(AstNode *pleft, std::string pop, AstNode *pright){
   left = pleft;
   op = pop;
   right = pright;
