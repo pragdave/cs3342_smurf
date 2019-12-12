@@ -13,7 +13,7 @@ def var_ref():
     
 #An optional plus/minus followed by a number or an arithmetic expression
 def factor():
-    return [number, fn_call, var_ref, ("(", arithmetic_expression, ")")]
+    return [number, fn_call, var_ref, ("(", arithmetic_expression, ")"), fn_decl]
 
 #One or more factors multiplied/divided together
 def mult_term():
@@ -53,7 +53,7 @@ def if_statement():
     
 #Handles function assignment
 def fn_decl():
-    return Optional(var_ref, "="), [("fn", "(", Optional(var_ref), ZeroOrMore(",", var_ref), ")", code_block), fn_call]
+    return [(Optional(var_ref, "="), ("fn", "(", Optional(var_ref), ZeroOrMore(",", var_ref), ")", code_block)), (var_ref, "=", fn_call)]
     
 #Handles function declaration
 def fn_let():
@@ -69,7 +69,7 @@ def fn_call():
 
 #Declares what types can be their own line
 def valid_line():
-    return [if_statement, print_func, fn_let, fn_decl, fn_call, var_let, var_decl, arithmetic_expression]
+    return [if_statement, print_func, fn_let, fn_decl, var_let, var_decl, arithmetic_expression]
 
 #Declares what types can be evaluated to a value
 def evaluatable():
