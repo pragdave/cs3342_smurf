@@ -42,13 +42,13 @@ I've included in this PR:
 
 [X] everything I'll need to build a running version of your submission (source,
     dependency loading, etc)
-	#I only used arpeggio
+#I only used arpeggio
 
 [X] a build file that will create an executable (if required)
-	#I do not need one
+#I do not need one
 
 [X] a script that will run the tests (if you're making a test-based submission)
-	#To run enter test cases folder and run file name run_tests_[py, python, python3].bat. i.e. I run files with py so I would use run_tests_py.bat
+#To run enter test cases folder and run file name run_tests_[py, python, python3].bat. i.e. I run files with py so I would use run_tests_py.bat
 
 (see [Deliverables](#deliverables) for more details)
 
