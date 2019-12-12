@@ -1,5 +1,5 @@
 from arpeggio import *
-from visitorNodes import *
+from interpreter import *
 
 
 class SmurfVisitor(PTNodeVisitor):
@@ -7,7 +7,10 @@ class SmurfVisitor(PTNodeVisitor):
     def visit_program(self, node, children):
         # print(f"visit program children: {children}")
         # print(f"visit program children[0]: {children[0]}")
-        return Program(node,children[0])
+        if(len(children) > 0):
+            return Program(node,children[0])
+        else: 
+            return
 
     def visit_code(self, node, children):
         # print(f"visit code children: {children}")
@@ -20,17 +23,32 @@ class SmurfVisitor(PTNodeVisitor):
         # print(f"visit statement node: {node}")
         #if(children([0]) == "let"):
             #return Variable_Declaration(children)
-        return Statement(children[0])
+        if(len(children) > 0):
+            return Statement(children[0])
+        else:
+            return
     def visit_expr(self, node, children):
-        #print(f"vist expr")
+        # print(f"vist expr children : {children}")
         if (len(children) == 1):  # tells if its a fn or if compared to a arith_expr
             # print(f"visit expr children[0]: {children[0]}")
             # print(f"visit expr node: {node}")
             return Expr(children[0])
-        else:
+        elif len(children) > 0:
             # print(f"visit expr children[1]: {children[1]}")
             # print(f"visit expr node: {node}")
             return Expr(children[1])
+        return
+
+    def visit_if_expression(self,node, children):
+        # print(f"If Expression Node: {node}")
+        # print(f"If Expression Children: {children}")
+        return If(children)
+
+    def visit_boolean_expression(self,node,children):
+        # print(f"visit boolean expression len.children: {len(children)}")
+        # print(f"visit boolean expression children: {children}")
+        # print(f"vist boolean node: {node}")
+        return Boolean(children[0],children[1] ,children[2])
 
     def visit_arithmetic_expression(self, node, children):
         # print(f"visit arith expression len.children: {len(children)}")
@@ -39,7 +57,7 @@ class SmurfVisitor(PTNodeVisitor):
         #return Arithmetic_Expressions(children)
         if(len(children) == 1):
             return children[0]
-        elif(children[1] == '-') or (children[1] == '+'):
+        else:
             return AddSub(children[0],children[1] ,children[2])
 
         print(f"SYNTAX ERROR: INCORRECT ARIHMETIC EXPRESSION")
@@ -50,7 +68,7 @@ class SmurfVisitor(PTNodeVisitor):
         # print(f"Visit Mult Term node: {node}")
         if (len(children) == 1):
             return children[0]
-        elif (children[1] == '*') or (children[1] == '/'):
+        else:
             return MultDivide(children[0], children[1], children[2])
 
     # def visit_primary(self, node, children):
@@ -67,15 +85,9 @@ class SmurfVisitor(PTNodeVisitor):
         return Integer(int(node.value))
 
     def visit_function_call(self, node, children):
-        # print(f"visit function call children: {children}")
-        # print(f"visit function call node: {node}")
-        if node[0].value == "print" or node[0].value == "(":
+        #print(f"visit function call children: {children}")
+        #print(f"visit function call node: {node}")
+        if len(children) > 0:
             # print(f"Got into Print If")
             # print(f"function node: {node}")
-            return ToConsole(node[0], children[0])
-
-    def visit_variable_declaration(self, node, children):
-        # print(f"variable declaration node: {node}")
-        # print(f"variable declaration children: {children}") # print(f"variable declaration node: {node}")
-        # print(f"variable declaration children: {children}")
-        return
+            return FunctionCall(node[0], children[0])
