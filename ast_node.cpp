@@ -19,7 +19,7 @@
    return visitor->evaluate_varinode(this, Vnode);
  }
 
-void VarinodeNode::update(std::string target, std::string newchange){
+void VarinodeNode::update(std::string target, std::string newchange){              // Update the Vnode's name
     varinode* nnode = new varinode(newchange);
     if(Vnode->GetName() == target){
        Vnode = nnode;
@@ -49,8 +49,7 @@ void BinopNode::update(std::string target, std::string newchange){
     varinode* nnode = new varinode(target);
     nnode->SetValue(stoi(newchange));
     AstNode* newnode = new VarinodeNode(nnode);
-   // std::cout << target << " " << newchange << " " << op << " " << left->to_string() << " could not find " << right->to_string() << std::endl; 
-    if(left->to_string() == target){
+    if(left->to_string() == target){                   // Update the element in the binop expression
       left = newnode;
       return;
     }
@@ -61,23 +60,41 @@ void BinopNode::update(std::string target, std::string newchange){
 }
 
 
-FuncNode::FuncNode(AstNode *pfuncName, AstNode *pfuncParameter,  AstNode *pfuncExecution, std::vector<std::vector<varinode*>>* pList, int* player){
+FuncNode::FuncNode(AstNode *pfuncName, AstNode *pfuncParameter,  AstNode *pfuncExecution, std::vector<std::vector<varinode*>>* pList, int* player, int situation){
   funcName = pfuncName;
   funcParameter = pfuncParameter;
   funcExecution = pfuncExecution;
   List = pList;
   layer = player;
-  size = 5;
+  size = situation;
 }
 
-FuncNode::FuncNode(AstNode *pfuncName, AstNode *pfuncParameter,  std::vector<std::vector<varinode*>>* pList, int* player){
+FuncNode::FuncNode(AstNode *pfuncName, AstNode *pfuncParameter,  std::vector<std::vector<varinode*>>* pList, int* player, int situation){
+  if(situation == 4){
   funcName = pfuncName;
   funcParameter = pfuncParameter;
+  funcExecution = new AstNode();
+  }
+  else if(situation == 3){
+  funcName = pfuncName;
+  funcExecution = pfuncParameter;
+  funcParameter = new AstNode();
+  }
   List = pList;
   layer = player;
-  funcExecution = new AstNode();
-  size = 4;
+  size = situation;
 }
+
+
+FuncNode::FuncNode(AstNode *pfuncName, std::vector<std::vector<varinode*>>* pList, int* player, int situation){
+  List = pList;
+  layer = player;
+  size = situation;
+  funcName = pfuncName;
+  funcParameter = new AstNode();
+  funcExecution = new AstNode();
+}
+
 
 std::string FuncNode::to_string(){
   return "(" + funcName->to_string() + " " + funcParameter->to_string() + " " + funcExecution->to_string() + ")";

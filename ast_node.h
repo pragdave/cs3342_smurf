@@ -7,7 +7,7 @@
 
 class AstNode{
 public:
-    virtual std::string to_string() { return std::string("node"); };
+    virtual std::string to_string() { return std::string("null"); };
     virtual varinode* accept(Visitor *visitor){
         varinode* temp;
         return temp;
@@ -52,8 +52,9 @@ class FuncNode : public AstNode{
     AstNode *funcExecution;
 
 public:
-    FuncNode(AstNode *pfuncName, AstNode *pfuncParameter,  AstNode *pfuncExecution, std::vector<std::vector<varinode*>>* pList, int* player);
-    FuncNode(AstNode *pfuncName, AstNode *pfuncParameter,  std::vector<std::vector<varinode*>>* pList, int* player);
+    FuncNode(AstNode *pfuncName, AstNode *pfuncParameter,  AstNode *pfuncExecution, std::vector<std::vector<varinode*>>* pList, int* player, int situation);
+    FuncNode(AstNode *pfuncName, AstNode *pfuncParameter,  std::vector<std::vector<varinode*>>* pList, int* player, int situation);
+    FuncNode(AstNode *pfuncName, std::vector<std::vector<varinode*>>* pList, int* player, int situation);
     std::string to_string();
     varinode* accept(Visitor *visitor);
 };
