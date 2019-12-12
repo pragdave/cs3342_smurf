@@ -8,7 +8,6 @@ class Interpreter(PTNodeVisitor):
     ##############
     
     def evaluate_number(self, node, bindings):
-        #print("number:",node.sign,node.value)
         if node.sign == "-":
             return -1 * int(node.value)
         return int(node.value)
@@ -29,14 +28,12 @@ class Interpreter(PTNodeVisitor):
         return int(multTerm)
         
     def evaluate_arithmetic_expression(self, node, bindings):
-        #print("arithmetic_expression")
         expr = node.multTerm.accept(self, bindings)
         for i in range(1, len(node.plusAndTermList), 2):
             if i and node.plusAndTermList[i-1] == "-":
                 expr -= node.plusAndTermList[i].accept(self, bindings)
             else:
                 expr += node.plusAndTermList[i].accept(self, bindings)
-        #print("done arithmetic_expression")
         return int(expr)
     
     ####################
@@ -49,7 +46,6 @@ class Interpreter(PTNodeVisitor):
     def evaluate_var_let(self, node, bindings):
         for decl in node.list:
             if isinstance(decl, str):
-                print("varLet")
                 bindings.setVal(decl, 0)
             else:
                 decl.accept(self, bindings)
@@ -104,12 +100,15 @@ class Interpreter(PTNodeVisitor):
     ###################
     
     def evaluate_fn_decl(self, node, bindings):
+        #Handles functions declared from a closure
         if isinstance(node.paramList, str):
             codeBlock = bindings.getVal(node.codeBlock.name)
-            funcToRun = node.codeBlock.accept(self, bindings)
-            funcToRunParamList = funcToRun.paramList
             paramsToPass = node.codeBlock.paramList
             paramsToSet = codeBlock[0]
+            
+            funcName = node.name.ident
+            funcToRun = node.codeBlock.accept(self, bindings)
+            funcToRunParamList = funcToRun.paramList
             bindingToPass = Bindings(codeBlock[-1].binding, {})
             
             index = 0
@@ -117,11 +116,13 @@ class Interpreter(PTNodeVisitor):
                 bindingToPass.setVal(paramsToSet[index], param.accept(self,bindings))
                 index += 1
             
-            bindings.setFunc(node.name.ident, funcToRunParamList, funcToRun, bindingToPass)
+            bindings.setFunc(funcName, funcToRunParamList, funcToRun, bindingToPass)
             return codeBlock[1].accept(self, bindings)
         else:
+            #Handles annonymous functions
             if isinstance(node.name, str):
                 return node
+            #Handles normal function declaration
             else:
                 newBindings = Bindings(bindings, {})
                 bindings.setFunc(node.name.ident, node.paramList, node.codeBlock, newBindings)

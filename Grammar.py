@@ -4,16 +4,17 @@ from arpeggio import RegExMatch, Optional, ZeroOrMore, OneOrMore, EOF
 #Math Portion#
 ##############
 
-#Int or float or nothing
+#Positive or negative int
 def number():
     return Optional("-"), RegExMatch('\d*\.\d*|\d+')
-    
+
+#A variable/function identifier
 def var_ref():
     return RegExMatch('[a-z][a-zA-Z_0-9]*')
     
-#An optional plus/minus followed by a number or an arithmetic expression
+#The base concept that can be used in an arithmetic_exression
 def factor():
-    return [number, fn_call, var_ref, ("(", arithmetic_expression, ")"), fn_decl]
+    return [number, fn_call, var_ref, ("(", arithmetic_expression, ")")]
 
 #One or more factors multiplied/divided together
 def mult_term():
@@ -50,7 +51,11 @@ def code_block():
 #Handles if statements
 def if_statement():
     return "if", boolean_expression, code_block, "else", code_block
-    
+   
+###################
+#Cusotom Functions#
+###################
+   
 #Handles function assignment
 def fn_decl():
     return [(Optional(var_ref, "="), ("fn", "(", Optional(var_ref), ZeroOrMore(",", var_ref), ")", code_block)), (var_ref, "=", fn_call)]
@@ -73,7 +78,7 @@ def valid_line():
 
 #Declares what types can be evaluated to a value
 def evaluatable():
-    return [if_statement, arithmetic_expression, fn_call, code_block, arithmetic_expression, boolean_expression]
+    return [if_statement, arithmetic_expression, fn_call, code_block, arithmetic_expression, boolean_expression, print_func]
     
 def func_parameters():
     return "(", Optional(evaluatable), ZeroOrMore(",", evaluatable), ")"

@@ -47,7 +47,11 @@ class ASTGenerator(PTNodeVisitor):
         
     def visit_if_statement(self, node, children):
         return nodes.If_Statement(children[0], children[1], children[2])
-        
+    
+    ###################
+    #Cusotom Functions#
+    ###################
+    
     def visit_fn_decl(self, node, children):
         numChildren = len(children)
         if node[0] =="fn":
