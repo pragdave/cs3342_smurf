@@ -31,7 +31,6 @@ public:
     virtual int evaluate_statement(node*);
     virtual int evaluate_code(vector<node*>);
     
-    //    virtual int evaluate_ifstatement(node*, node*, node*);
 };
 
 #endif /* visitor_hpp */

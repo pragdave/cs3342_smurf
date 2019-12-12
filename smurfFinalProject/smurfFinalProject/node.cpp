@@ -46,7 +46,7 @@ binopNode::binopNode(node* l, string op, node* r){
     right = r;
     string lstr = l->str();
     string rstr = r->str();
-    print(op, lstr, rstr);
+    //print(op, lstr, rstr);
 }
 
 string binopNode::str(){
@@ -64,7 +64,7 @@ void binopNode::print(string op, string l, string r){
 //op node
 operationNode::operationNode(string op){
     operation = op;
-    print();
+    //print();
 }
 
 int operationNode::accept(visitor *visitorx){
@@ -123,7 +123,7 @@ void assignmentNode::print(string l, string r) {
 //statement node
 statementNode::statementNode(node* stmt){
     statement = stmt;
-    print();
+    //print();
 }
 
 string statementNode::str(){
@@ -139,9 +139,7 @@ void statementNode::print(){
 }
 
 //code node
-codeNode::codeNode(){
-    //    statements.push_back(stmt);
-}
+codeNode::codeNode(){}
 
 int codeNode::accept(visitor *visitorx){
     return visitorx->evaluate_code(statements);

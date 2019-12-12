@@ -33,6 +33,3 @@ int visitor::evaluate_statement(node *nodex){
     return 0;
 }
 
-//int visitor::evaluate_ifstatement(node *nodex, node *expr, node *children){
-//    return 0;
-//}

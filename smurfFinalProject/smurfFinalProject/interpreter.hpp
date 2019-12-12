@@ -47,7 +47,7 @@ public:
     int evaluate_variable(node*, string);
     int evaluate_statement(node*);
     int evaluate_code(vector<node*>);
-    //int evaluate_ifstatement(node*, node*, node*);
+
 };
             
             
