@@ -4,10 +4,10 @@ class Bindings():
         self.binding = binding
     
     def getVal(self, identifier):
-        #print("getValIdentifier:", identifier)
+        print("getValIdentifier:", identifier)
         #print(self.binding)
         if isinstance(identifier, str):
-            if str(self.binding[identifier]):
+            if identifier in self.binding:
                 return self.binding[identifier]
             else:
                 return self.parent.getVal(identifier)
@@ -22,25 +22,25 @@ class Bindings():
         
     def setFunc(self, identifier, params, code, bindings):
         paramsTemp = []
-        print("setFuncBindings:",bindings)
+        #print("setFuncBindings:",bindings)
         
         for param in bindings.binding:
             self.binding[param] = bindings.getVal(param)
-            print(param)
+            #sprint(param)
         
         for param in params:
-            print("identifier:",identifier)
+            #print("identifier:",identifier)
             if isinstance(identifier, str):
-                print("param:",param)
+                #print("param:",param)
                 paramsTemp.append(param)
             else:
-                print("param:",param.ident)
+                #print("param:",param.ident)
                 paramsTemp.append(param.ident)
             
-        print("paramsTemp:",paramsTemp)
+        #print("paramsTemp:",paramsTemp)
         
         self.binding[identifier] = [paramsTemp, code, bindings]
-        print("self.binding:",self.binding)
+        #print("self.binding:",self.binding)
         
     def copy(self):
         tempBinding = dict(self.binding)

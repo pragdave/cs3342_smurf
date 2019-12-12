@@ -20,13 +20,7 @@ class Interpreter(PTNodeVisitor):
         return node.value.accept(self, bindings)
         
     def evaluate_mult_term(self, node, bindings):
-        #print("in multTerm")
         multTerm = node.factor.accept(self, bindings)
-        #print("bindings:",bindings)
-        #print("multTerm:",multTerm)
-        #print("multTermIsStr:", isinstance(multTerm, str))
-        #print("multTermIsObject:", isinstance(multTerm, object))
-        #print("multTermIsInt:", isinstance(multTerm, int))
         for i in range(1, len(node.multAndFactList), 2):
             if node.multAndFactList[i-1] == "*":
                 multTerm *= node.multAndFactList[i].accept(self, bindings)
@@ -50,7 +44,6 @@ class Interpreter(PTNodeVisitor):
     ####################
     
     def evaluate_var_decl(self, node, bindings):
-        #print("varDecl")
         bindings.setVal(node.name, node.expr.accept(self, bindings))
     
     def evaluate_var_let(self, node, bindings):
@@ -106,47 +99,44 @@ class Interpreter(PTNodeVisitor):
             return node.ifBlock.accept(self, bindings)
         return node.elseBlock.accept(self, bindings)
     
+    ###################
+    #Cusotom Functions#
+    ###################
+    
     def evaluate_fn_decl(self, node, bindings):
         if isinstance(node.name, str):
-            print("function declaration:",node.name)
+            print("\nFUNC_DECL:",node.name)
         else:
-            print("function declaration:",node.name.ident)
-            
+            print("\nFUNC_DECL:",node.name.ident)
             
         if isinstance(node.paramList, str):
-            #Figure out how to set x as the paramList not 2
-            #Need to set x to 2
             codeBlock = bindings.getVal(node.codeBlock.name)
             funcToRun = node.codeBlock.accept(self, bindings)
+            funcToRunParamList = funcToRun.paramList
+            paramsToPass = node.codeBlock.paramList
+            paramsToSet = codeBlock[0]
+            bindingToPass = Bindings(codeBlock[-1].binding, {})
+            
             print("node.name:",node.name.ident)
             print("node.codeBlock.accept:",funcToRun)
             print("node.codeBlock.name:",node.codeBlock.name.ident)
             print("bindings:",bindings)
-            print("node.codeBlock.name:",funcToRun.name)
-            funcToRunParamList = funcToRun.paramList[0].ident
-            paramsToPass = node.codeBlock.paramList
-            print("node.codeBlock.paramList:",funcToRunParamList)
+            print("funcToRun.name:",funcToRun.name)
+            print("funcToRunParamList:",funcToRunParamList)
             print("n:",paramsToPass[0].accept(self,bindings))
             print("codeBlock:",codeBlock)
-            print("codeBlockBindings:",codeBlock[-1].binding)
-            print("node.codeBlockBinding:",node.codeBlock)
+            print("paramsToSet:",paramsToSet)
+            print("bindingToPass:",bindingToPass.binding)
             
-            bindingToPass = codeBlock[2].binding
-            #set n = 2)
-            
-            paramsToSet = codeBlock[0]
-            print(paramsToSet)
-            
-            #params to pass: 2
             index = 0
             for param in paramsToPass:
-                bindingToPass[paramsToSet[index].ident] = param.accept(self,bindings)
+                bindingToPass.setVal(paramsToSet[index], param.accept(self,bindings))
                 #bindingToPass[paramsToSet[index]] = param.accept(self,bindings)
                 index += 1
             
-            print("bindingToPass:",bindingToPass)
+            #print("bindingToPass:",bindingToPass.binding)
             
-            bindings.setFunc(node.name.ident, funcToRunParamList, funcToRun, Bindings(bindings,bindingToPass))
+            bindings.setFunc(node.name.ident, funcToRunParamList, funcToRun, bindingToPass)
             return codeBlock[1].accept(self, bindings)
         else:
             if isinstance(node.name, str):
@@ -154,37 +144,37 @@ class Interpreter(PTNodeVisitor):
                 print("BINDINGS:",bindings)
                 return node
             else:
+                print("node:",node)
+                print("node.name:",node.name.ident)
                 newBindings = Bindings(bindings, {})
                 bindings.setFunc(node.name.ident, node.paramList, node.codeBlock, newBindings)
                 print("bindings:",bindings)
-                return node.codeBlock.accept(self, bindings, True)
+                print("newBindings:",newBindings)
+                return node.codeBlock.accept(self, newBindings, True)
         
     def evaluate_fn_let(self, node, bindings):
         for decl in node.list:
             decl.accept(self, bindings)
             
     def evaluate_fn_call(self, node, bindings):
-        print("FUNC_CALL")
-        bindingsTemp = bindings.copy()
-        function = bindingsTemp.getVal(node.name)
-        #print("funcName:",node.name.ident)
-        #print("bindings:",bindings)
+        print("\nFUNC_CALL")
+        print(node.name.ident)
+        print("bindings:",bindings)
         #function = bindings.getVal(node.name)
+        function = bindings.getVal(node.name.ident)
         parameters = function[0]
         code = function[1]
-        #bindingsTemp = function[-1]
-        #print("bindingsTemp:",bindingsTemp)
+        bindingsTemp = function[-1].copy()
+        print("function call bindings:",bindingsTemp)
+        
         index = 0
         for param in parameters:
-            val = node.paramList[index].accept(self,bindings)
             bindingsTemp.setVal(param, node.paramList[index].accept(self, bindings))
             index += 1
+        
+        print("bindingsTemp:",bindingsTemp)
         print("Done evaluating func call")
-        print(bindingsTemp.binding)
-        #print("bindings:",bindingsTemp.binding)
-        #print("code:",code)
         if isinstance(code, nodes.Fn_Decl):
-            #print("code.codeBlock:",code.codeBlock)
             return code.codeBlock.accept(self, bindingsTemp)
         return code.accept(self, bindingsTemp)
     
