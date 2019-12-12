@@ -128,13 +128,6 @@ class VariableReference:
     def evaluate(self, binding):
         return binding.get_variable(self.name)
 
-# class VariableNode:
-#     def __init__(self, name):
-#         self.name = name
-    
-#     def evaluate(self, binding):
-#         return self.value
-
 class IntegerNode:
     def __init__(self, value):
         self.value = value
