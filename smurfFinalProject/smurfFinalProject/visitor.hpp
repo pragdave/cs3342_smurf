@@ -20,10 +20,10 @@ using namespace std;
 
 class node;
 
-class visitor {
-public:
-    binding *bindings;
-    string variableName;
+class visitor {                                                     //The visitor class is the super class that the
+public:                                                             //interpreter class is derived from. All of the
+    binding *bindings;                                              //functions in the interpreter class are default
+    string variableName;                                            //set in this class.
     virtual int evaluate_integer(node*, int);
     virtual int evaluate_binop(node*, node*, string, node*);
     virtual int evaluate_assignment(node*, node*, node*);

@@ -20,6 +20,8 @@
 using namespace peg;
 using namespace std;
 
+//This is the gammar to allow for smurf parsing and AST generation, then ultimately interpretation from the AST.
+
 auto grammar = R"(
     program                 <-  code
     code                    <-  statement*
@@ -52,7 +54,7 @@ auto grammar = R"(
 //function_definition     <-  param_list brace_block
 //comment                <-  '#' r'.*'
 
-class visitor;
+class visitor;                                                      //The visitor pattern goes to each node to evaluate
 
 class ParseTreeNode
 {
@@ -70,36 +72,36 @@ public:
     }
 };
 
-node *bin_op(const SemanticValues &sv)
-{
-    node *left = sv[0].get<ParseTreeNode>().get();
-    for (unsigned int i = 1; i < sv.size(); i += 2){
-        node *right = sv[i + 1].get<ParseTreeNode>().get();
-        string op = sv[i].get<ParseTreeNode>().get()->str();
-        left = new binopNode(left, op, right);
+node *bin_op(const SemanticValues &sv)                              //The binop function takes in the string passed to the parser
+{                                                                   //and breaks it into nodes and pointer nodes to create a smaller
+    node *left = sv[0].get<ParseTreeNode>().get();                  //tree within the larger AST consisting of two values as children
+    for (unsigned int i = 1; i < sv.size(); i += 2){                //and an operation node as the parent:
+        node *right = sv[i + 1].get<ParseTreeNode>().get();         //              operation
+        string op = sv[i].get<ParseTreeNode>().get()->str();        //              |       |
+        left = new binopNode(left, op, right);                      //          value       value
     }
     return left;
 };
-
-node *assign(const SemanticValues &sv){
-    node *left = sv[0].get<ParseTreeNode>().get();
-    node *right = sv[1].get<ParseTreeNode>().get();
-    left = new assignmentNode(left, right);
-    return left;
+                                                                    //The assign function is similar to the binop function in that it has
+node *assign(const SemanticValues &sv){                             //the same structure, but instead of an operation node as a parent,
+    node *left = sv[0].get<ParseTreeNode>().get();                  //the parent node is an assignment node and the left child is a
+    node *right = sv[1].get<ParseTreeNode>().get();                 //variable or identifier:
+    left = new assignmentNode(left, right);                         //              assignment
+    return left;                                                    //             |          |
+};                                                                  //        variable        value
+    
+node *code(const SemanticValues &sv){                               //The code function allows for multiple statements to be read in from
+    codeNode *code = new codeNode();                                //the command line. It takes in the strings passed to the parser and
+    for(int i=0; i<sv.size(); i++){                                 //adds each statement to a child node under the main codeNode in a vector.
+        node *x = sv[i].get<ParseTreeNode>().get();                 //It can take in as many children statement nodes as it needs to.
+        code->addToVect(x);                                         //              c  o  d  ... e
+    }                                                               //              |    |   ... |
+    return code;                                                    //      statement statement  statement
 };
 
-node *code(const SemanticValues &sv){
-    codeNode *code = new codeNode();
-    for(int i=0; i<sv.size(); i++){
-        node *x = sv[i].get<ParseTreeNode>().get();
-        code->addToVect(x);
-    }
-    return code;
-};
-
-node *statement(const SemanticValues &sv){
-    node *x = sv[0].get<ParseTreeNode>().get();
-    return x;
+node *statement(const SemanticValues &sv){                          //The statement function allows for entire statements that may consist of
+    node *x = sv[0].get<ParseTreeNode>().get();                     //multiple nodes to be compressed into one so that it can be passed to the
+    return x;                                                       //codeNode's vector for storage before interpretation.
 }
 
 void setup_ast_generation(parser &parser)
@@ -187,9 +189,9 @@ int main(int argc, const char **argv) {
         visitor *interpret = new interpreter();
         interpret->bindings = new binding();
         
-        cout<<"Final Value: "<<val.to_string()<<endl;
-        cout << val.to_string() << " = " << val.get()->accept(interpret) << endl;
-    }
+        cout<<"Ultimate Value that was Evaluated: "<<val.to_string()<<endl;                 //I couldn't entirely figure out how to print the AST as it was being
+        cout << val.to_string() << " = " << val.get()->accept(interpret) << endl;           //produced, but the Ultimate Value is the final piece of smurf code
+    }                                                                                       //that is interpreted to return the final output.
     
     return 0;
     

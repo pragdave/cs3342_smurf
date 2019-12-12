@@ -13,12 +13,12 @@ binding::binding(){
     //printBindings();
 }
 
-void binding::insertValue(string var, int val){
+void binding::insertValue(string var, int val){             //insert values into the binding map
     binds.insert(pair<string, int>(var, val));
     binds[var] = val;
 }
 
-int binding::getBindingValue(string var){
+int binding::getBindingValue(string var){                   //return a variable's value based on the map keypair
     int result = binds.find(var)->second;
     if(result != 0){
         return result;

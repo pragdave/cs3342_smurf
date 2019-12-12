@@ -97,4 +97,5 @@ public:
     string str();
     void addToVect(node*);
     int accept(visitor*);
+    void print();
 };
