@@ -1,0 +1,15 @@
+You need to pip install arpeggio for the program to run.
+
+To run the test cases:
+- In terminal, navigate to the directory containing this file.
+- run "python3 test_runner.py "python3 ./smurf.py" "
+
+To run each test case individually:
+python3 smurf.py "./test_cases/00_expr.smu"
+python3 smurf.py "./test_cases/01_variables.smu"
+python3 smurf.py "./test_cases/02_let.smu"
+python3 smurf.py "./test_cases/10_if.smu"
+python3 smurf.py "./test_cases/20_fn_basic.smu"
+python3 smurf.py "./test_cases/21_recursive_fns.smu"
+python3 smurf.py "./test_cases/22_closures.smu"
+python3 smurf.py "./test_cases/99_fib.smu"
