@@ -38,7 +38,7 @@ If feature based, put an X in the cell that represents the combination of syntax
 | Function calls + bindings  |  [ ]   |    [ ]     |    [ ]     |
 
 
-I've included in this PR:
+I've included in this PR: Look at execution_instructions.txt.
 
 [x] everything I'll need to build a running version of your submission (source,
     dependency loading, etc)
