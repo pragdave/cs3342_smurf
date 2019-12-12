@@ -17,13 +17,13 @@ it would be blue).
 
 **Fill this in before submitting your final pull request**
 
-Name:
+Name: Ethan Potthoff
 
-SMU ID:
+SMU ID: 47353076
 
 ##### Grading criteria (see [Grading](#grading) below):
 
-[ ] test-based
+[X] test-based
 
 [ ] feature based
 
@@ -43,7 +43,7 @@ I've included in this PR:
 [ ] everything I'll need to build a running version of your submission (source,
     dependency loading, etc)
 
-[ ] a build file that will create an executable (if required)
+[ ] a build file that will create an executable (if required) [see EXECUTION_INSTRUCTIONS.txt]
 
 [ ] a script that will run the tests (if you're making a test-based submission)
 
