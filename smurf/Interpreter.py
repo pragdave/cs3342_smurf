@@ -24,7 +24,7 @@ class Binding:
 
         raise Exception(f"Variable '{name} is not defined")
 
-class Thunk:
+class SubBinding:
     def __init__(self, params, body, binding):
         self.params = params
         self.body = body
@@ -36,11 +36,10 @@ class Thunk:
 
         for param, arg in zip(self.params, args):
             binding.set_variable(param, arg)
-        
-        result = self.body.evaluate(binding)
+        value = self.body.evaluate(binding)
 
         binding = binding.pop()
-        return result
+        return value
         
 # Node Interpreter
 class CodeBlock:
@@ -60,7 +59,7 @@ class FunctionDef:
         self.body = body
 
     def evaluate(self,binding):
-        return Thunk(self.params, self.body, binding)
+        return SubBinding(self.params, self.body, binding)
 
 class FunctionCall:
     def __init__(self, name, args):
@@ -103,11 +102,9 @@ class Decl:
         self.expr = expr
     
     def evaluate(self, binding):
-        # refName = self.name.evaluate(binding)
         value = self.expr.evaluate(binding)
         binding.set_variable(self.name, value)
         return value
-
 
 class Assignment:
     def __init__(self, name, expr):
@@ -115,12 +112,10 @@ class Assignment:
         self.expr = expr
     
     def evaluate(self, binding):
-        # refName = self.name.evaluate(binding)
         value = self.expr.evaluate(binding)
         binding.set_variable(self.name, value)
         return value
         
-
 class VariableReference:
     def __init__(self, name):
         self.name = name
