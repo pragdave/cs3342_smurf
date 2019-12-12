@@ -17,15 +17,15 @@ it would be blue).
 
 **Fill this in before submitting your final pull request**
 
-Name: Alden Shiverick     
+Name: **Alden Shiverick**     
 
-SMU ID: 47124068
+SMU ID: **47124068**
 
 ##### Grading criteria (see [Grading](#grading) below):
 
 [ ] test-based
 
-[X] feature based
+[**X**] feature based
 
 If feature based, put an X in the cell that represents the combination of syntax and implementation depth you want me to assess. (Just one X in the table.)
 
@@ -33,7 +33,7 @@ If feature based, put an X in the cell that represents the combination of syntax
 |----------------------------|-------:|-----------:|-----------:|
 | Integers                   |  [ ]   |    [ ]     |    [ ]     |
 | Expressions                |  [ ]   |    [ ]     |    [ ]     |
-| Variables                  |  [ ]   |    [ ]     |    [X]     |
+| Variables                  |  [ ]   |    [ ]     |    [**X**]     |
 | Function calls (no params) |  [ ]   |    [ ]     |    [ ]     |
 | Function calls + bindings  |  [ ]   |    [ ]     |    [ ]     |
 
