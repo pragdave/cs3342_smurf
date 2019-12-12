@@ -46,7 +46,7 @@ binopNode::binopNode(node* l, string op, node* r){
     right = r;
     string lstr = l->str();
     string rstr = r->str();
-    //print(op, lstr, rstr);
+    print(op, lstr, rstr);
 }
 
 string binopNode::str(){
@@ -64,7 +64,7 @@ void binopNode::print(string op, string l, string r){
 //op node
 operationNode::operationNode(string op){
     operation = op;
-    //print();
+    print();
 }
 
 int operationNode::accept(visitor *visitorx){
@@ -123,6 +123,7 @@ void assignmentNode::print(string l, string r) {
 //statement node
 statementNode::statementNode(node* stmt){
     statement = stmt;
+    print();
 }
 
 string statementNode::str(){
@@ -134,7 +135,7 @@ int statementNode::accept(visitor *visitorx){
 }
 
 void statementNode::print(){
-    cout<<"Printing Statement Node | Statement: "<<statement->str();
+    cout<<"Printing Statement Node | Statement: "<<statement->str()<<endl;
 }
 
 //code node
