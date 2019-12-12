@@ -18,9 +18,6 @@ def compare(stdout, expected):
     print("Expected:", expected)
     print("Actual:  ", output)
     print("\n")
-  else:
-    print("Test Passed")
-    print("\n")
 
 
 
