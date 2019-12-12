@@ -41,13 +41,13 @@ If feature based, put an X in the cell that represents the combination of syntax
 I've included in this PR:
 
 [X] everything I'll need to build a running version of your submission (source,
-    dependency loading, etc)
+    dependency loading, etc)<br>
 ##I only used arpeggio
 
-[X] a build file that will create an executable (if required)
+[X] a build file that will create an executable (if required)<br>
 ##I do not need one
 
-[X] a script that will run the tests (if you're making a test-based submission)
+[X] a script that will run the tests (if you're making a test-based submission)<br>
 ##To run enter test cases folder and run file name run_tests_[py, python, python3].bat. i.e. I run files with py so I would use run_tests_py.bat
 
 (see [Deliverables](#deliverables) for more details)
