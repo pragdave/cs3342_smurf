@@ -1,0 +1,6 @@
+				Parses	     Builds AST      Interprets
+Integers			[ ]		[ ]		[ ]
+Expressions			[ ]		[ ]		[ ]
+Variables			[ ]		[ ]		[X]
+Function calls (no params)	[X]		[ ]		[ ]
+Function calls + bindings	[ ]		[ ]		[ ]

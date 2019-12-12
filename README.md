@@ -1,5 +1,11 @@
 # Programming Languages: Final Project
 
+Name: Jaymie Ruddock
+SMU id: 47428255
+feature based grading:
+ -- variables row, interprets column 
+ -- can also parse functions but I could not figure out how it was handling AST
+
 This note describes the final project for the Programming Languages class.
 
 The project involves implementing a small yet relatively powerful programming

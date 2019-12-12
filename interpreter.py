@@ -89,9 +89,11 @@ class Interpreter(PTNodeVisitor):
             elif(node.expressions[i-1] == '-'):
                 val -= node.expressions[i].accept(self, bindings)
             if len(node.expressions) > 2:
-                print("({} {} {})".format(node.expressions[i-1].accept(self, bindings), node.lhs.accept(self, bindings), node.expressions[i].accept(self, bindings)), end="")
+                print("({} {} {})".format(node.expressions[i-1].accept(self, bindings), node.lhs.accept(self, bindings), node.expressions[i].accept(self, bindings)))
+                print(val)
             else:
-                print("({} {} {})".format(node.expressions[i-1], node.lhs.accept(self, bindings), node.expressions[i].accept(self, bindings)), end="")
+                print("({} {} {})".format(node.expressions[i-1], node.lhs.accept(self, bindings), node.expressions[i].accept(self, bindings)))
+                print(val)
         return int(val)
     
     def evaluate_mult_term(self, node, bindings):
@@ -106,8 +108,10 @@ class Interpreter(PTNodeVisitor):
                 val /= node.expressions[i].accept(self, bindings)
             if len(node.expressions) > 2:
                 print("({} {} {})".format(node.expressions[i-1].accept(self, bindings), node.lhs.accept(self, bindings), node.expressions[i].accept(self, bindings)))
+                print(val)
             else:
                 print("{} {} {}".format(node.expressions[i-1], node.lhs.accept(self, bindings), node.expressions[i].accept(self, bindings)))
+                print(val)
         return int(val)
     
     def evaluate_bool_expr(self, node, bindings):
