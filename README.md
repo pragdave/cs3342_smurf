@@ -17,15 +17,15 @@ it would be blue).
 
 **Fill this in before submitting your final pull request**
 
-Name:
+Name:Dylan Weeks
 
-SMU ID:
+SMU ID:47343235
 
 ##### Grading criteria (see [Grading](#grading) below):
 
 [ ] test-based
 
-[ ] feature based
+[x] feature based
 
 If feature based, put an X in the cell that represents the combination of syntax and implementation depth you want me to assess. (Just one X in the table.)
 
@@ -33,14 +33,14 @@ If feature based, put an X in the cell that represents the combination of syntax
 |----------------------------|-------:|-----------:|-----------:|
 | Integers                   |  [ ]   |    [ ]     |    [ ]     |
 | Expressions                |  [ ]   |    [ ]     |    [ ]     |
-| Variables                  |  [ ]   |    [ ]     |    [ ]     |
+| Variables                  |  [x]   |    [x]     |    [x]     |
 | Function calls (no params) |  [ ]   |    [ ]     |    [ ]     |
 | Function calls + bindings  |  [ ]   |    [ ]     |    [ ]     |
 
 
 I've included in this PR:
 
-[ ] everything I'll need to build a running version of your submission (source,
+[x] everything I'll need to build a running version of your submission (source,
     dependency loading, etc)
 
 [ ] a build file that will create an executable (if required)
