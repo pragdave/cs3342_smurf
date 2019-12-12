@@ -1,4 +1,4 @@
-# python test_runner.py «path to interpreter»
+# python test_runner.py path to interpreter
 import sys, re
 import os, os.path
 from subprocess import Popen, PIPE
